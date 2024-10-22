@@ -1,13 +1,15 @@
 CREATE TABLE pegi_ratings (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL,
-    rating VARCHAR(10) UNIQUE NOT NULL,
-    description TEXT
+    rating VARCHAR(255) UNIQUE NOT NULL,
+    description TEXT,
+    image_url VARCHAR(2048)
 );
 
 CREATE TABLE esrb_ratings (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL,
-    rating VARCHAR(10) UNIQUE NOT NULL,
-    description TEXT
+    rating VARCHAR(255) UNIQUE NOT NULL,
+    description TEXT,
+    image_url VARCHAR(2048)
 );
 
 CREATE TABLE videogames (
