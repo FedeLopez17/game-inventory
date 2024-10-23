@@ -2,14 +2,14 @@ CREATE TABLE pegi_ratings (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL,
     rating VARCHAR(255) UNIQUE NOT NULL,
     description TEXT,
-    image_url VARCHAR(2048)
+    image_url VARCHAR(2048) NOT NULL
 );
 
 CREATE TABLE esrb_ratings (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL,
     rating VARCHAR(255) UNIQUE NOT NULL,
     description TEXT,
-    image_url VARCHAR(2048)
+    image_url VARCHAR(2048) NOT NULL
 );
 
 CREATE TABLE videogames (
@@ -31,15 +31,15 @@ CREATE TABLE videogames (
 
 CREATE TABLE images (
   id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  videogame_id INTEGER REFERENCES videogames(id),
-  image_url TEXT
+  videogame_id INTEGER REFERENCES videogames(id) NOT NULL,
+  image_url TEXT NOT NULL
 );
 
 CREATE TABLE genres (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL,
     name VARCHAR(255) UNIQUE NOT NULL,
     description TEXT NOT NULL,
-    icon_url VARCHAR(2048)
+    icon_url VARCHAR(2048) NOT NULL
 );
 
 CREATE TABLE videogames_genres (
@@ -52,7 +52,7 @@ CREATE TABLE publishers (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL,
     name VARCHAR(255) UNIQUE NOT NULL,
     description TEXT,
-    logo_image_url VARCHAR(2048)
+    logo_image_url VARCHAR(2048) NOT NULL
 );
 
 CREATE TABLE videogames_publishers (
@@ -65,7 +65,7 @@ CREATE TABLE studios (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL,
     name VARCHAR(255) UNIQUE NOT NULL,
     description TEXT,
-    logo_image_url VARCHAR(2048)
+    logo_image_url VARCHAR(2048) NOT NULL
 );
 
 CREATE TABLE videogames_studios (
@@ -78,7 +78,7 @@ CREATE TABLE platforms (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL,
     name VARCHAR(255) UNIQUE NOT NULL,
     description TEXT,
-    logo_image_url VARCHAR(2048)
+    logo_image_url VARCHAR(2048) NOT NULL
 );
 
 CREATE TABLE videogames_platforms (
