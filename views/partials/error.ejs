@@ -1,0 +1,4 @@
+<% const fieldError = errors && errors.find(err => err.path === fieldName); %>
+<% if (fieldError) { %>
+<span class="error"><%= fieldError.msg %></span>
+<% } %>
