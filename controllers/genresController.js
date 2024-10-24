@@ -48,10 +48,7 @@ module.exports = {
   addGenre: [
     validateGenre,
     async (req, res) => {
-      console.log("ADD GENRE");
-
       const errors = validationResult(req);
-      console.log(errors);
       if (!errors.isEmpty()) {
         return res.status(400).render("add-genre", {
           errors: errors.array(),
