@@ -15,6 +15,7 @@
           placeholder="Genre name"
           id="genre-name"
           autocomplete="off"
+          value="<%= formData && formData.name ? formData.name : '' %>"
         />
         <%- include("partials/error", { errors: locals.errors, fieldName: 'name' }) %>
       </section>
@@ -26,7 +27,7 @@
           id="genre-description"
           placeholder="Genre description"
           rows="6"
-        ></textarea>
+        ><%= formData && formData.description ? formData.description : '' %>"</textarea>
         <%- include("partials/error", { errors: locals.errors, fieldName: 'description' }) %>
       </section>
 

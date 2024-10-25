@@ -52,6 +52,7 @@ module.exports = {
       if (!errors.isEmpty()) {
         return res.status(400).render("add-genre", {
           errors: errors.array(),
+          formData: req.body,
         });
       }
 
