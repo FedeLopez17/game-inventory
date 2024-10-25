@@ -8,8 +8,8 @@ module.exports = {
 
   getGenreByName: async (name) => {
     const { rows } = await pool.query(
-      `SELECT * FROM genres WHERE name = $1`,
-      name
+      `SELECT * FROM genres WHERE name ILIKE $1`,
+      [name]
     );
     return rows[0];
   },
