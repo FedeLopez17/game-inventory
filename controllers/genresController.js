@@ -43,6 +43,22 @@ module.exports = {
     res.render("genres", { genres });
   },
 
+  //TODO: this should return related games
+  getGenreById: async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      const genre = await genreQueries.getGenreById(id);
+      if (!genre) {
+        return res.status(404).send("Genre not found");
+      }
+      res.render("genre", { genre });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Error fetching genre");
+    }
+  },
+
   getAddGenre: async (req, res) => res.render("add-genre"),
 
   addGenre: [

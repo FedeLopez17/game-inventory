@@ -2,13 +2,20 @@ const pool = require("../../config/pool.js");
 
 module.exports = {
   getAllGenres: async () => {
-    const { rows } = await pool.query(`SELECT * FROM genres`);
+    const { rows } = await pool.query("SELECT * FROM genres");
     return rows;
+  },
+
+  getGenreById: async (id) => {
+    const { rows } = await pool.query("SELECT * FROM GENRES WHERE id = $1", [
+      id,
+    ]);
+    return rows[0];
   },
 
   getGenreByName: async (name) => {
     const { rows } = await pool.query(
-      `SELECT * FROM genres WHERE name ILIKE $1`,
+      "SELECT * FROM genres WHERE name ILIKE $1",
       [name]
     );
     return rows[0];

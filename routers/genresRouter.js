@@ -4,6 +4,7 @@ const upload = require("../config/multerConfig");
 const genresController = require("../controllers/genresController");
 
 genresRouter.get("/", genresController.getGenres);
+genresRouter.get("/:id", genresController.getGenreById);
 
 genresRouter.get("/add", genresController.getAddGenre);
 genresRouter.post(
