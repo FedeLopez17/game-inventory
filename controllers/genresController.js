@@ -155,6 +155,12 @@ module.exports = {
   updateGenre: [
     validateGenreUpdate,
     async (req, res) => {
+      const { password } = req.body;
+
+      if (password !== process.env.ADMIN_PASSWORD) {
+        return res.status(401).send("Wrong password");
+      }
+
       const { id } = req.params;
 
       const errors = validationResult(req);
