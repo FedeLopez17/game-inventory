@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="/updateGenre.js" defer></script>
+    <title>Update Genre</title>
+  </head>
+  <body>
+    <form>
+      <section>
+        <label for="genre-name">Name:</label>
+        <input
+          type="text"
+          name="name"
+          placeholder="Genre name"
+          id="genre-name"
+          autocomplete="off"
+          value="<%= locals.formData && formData.name ? formData.name : '' %>"
+        />
+        <%- include("partials/error", { errors: locals.errors, fieldName: 'name' }) %>
+      </section>
+
+      <section>
+        <label for="genre-description">Description:</label>
+        <textarea
+          name="description"
+          id="genre-description"
+          placeholder="Genre description"
+          rows="6"
+        ><%= locals.formData && formData.description ? formData.description : '' %></textarea>
+        <%- include("partials/error", { errors: locals.errors, fieldName: 'description' }) %>
+      </section>
+
+      <section>
+        <label for="image">Image:</label>
+        <input type="file" id="image" name="genre-image" accept="image/*" />
+        <%- include("partials/error", { errors: locals.errors, fieldName: 'file' }) %>
+      </section>
+
+      <button type="button" onclick="updateGenre(<%= id %>)">Update Genre</button>
+    </form>
+  </body>
+</html>

@@ -31,4 +31,11 @@ module.exports = {
   deleteGenreById: async (id) => {
     await pool.query("DELETE FROM genres WHERE id = $1", [id]);
   },
+
+  updateGenre: async (id, name, description, imageUrl) => {
+    await pool.query(
+      "UPDATE genres SET name = $1, description = $2, icon_url = $3 WHERE id = $4",
+      [name, description, imageUrl, id]
+    );
+  },
 };

@@ -38,6 +38,33 @@ const validateGenre = [
   }),
 ];
 
+const validateGenreUpdate = [
+  body("name")
+    .trim()
+    .notEmpty()
+    .withMessage("Name cannot be empty.")
+    .isLength({ max: 255 })
+    .withMessage("Name must be at most 255 characters."),
+
+  body("description")
+    .trim()
+    .notEmpty()
+    .withMessage("Description cannot be empty.")
+    .isLength({ max: 500 })
+    .withMessage("Description must be at most 500 characters."),
+
+  body("file").custom((value, { req }) => {
+    if (req.file) {
+      const fileSize = req.file.size; // Size in bytes
+      if (fileSize > 2 * 1024 * 1024) {
+        // 2MB
+        throw new Error("Image file must be less than 2MB.");
+      }
+    }
+    return true;
+  }),
+];
+
 module.exports = {
   getGenres: async (req, res) => {
     const genres = await genreQueries.getAllGenres();
@@ -112,4 +139,64 @@ module.exports = {
       res.status(500).send("Error uploading image or adding genre");
     }
   },
+
+  getUpdateGenre: async (req, res) => {
+    const { id } = req.params;
+
+    const genre = await genreQueries.getGenreById(id);
+
+    if (!genre) {
+      return res.status(404).send("Genre not found");
+    }
+
+    res.render("update-genre", { formData: { ...genre }, id });
+  },
+
+  updateGenre: [
+    validateGenreUpdate,
+    async (req, res) => {
+      const { id } = req.params;
+
+      const errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        // This won't work as I'm fetching with js.
+        // return res.status(400).render("update-genre", {
+        //   errors: errors.array(),
+        //   formData: req.body,
+        //   id,
+        // });
+
+        return res.status(400).send(errors);
+      }
+
+      const { name, description } = req.body;
+      const newFileUploaded = req.file !== undefined;
+
+      const existingGenre = await genreQueries.getGenreById(id);
+
+      if (!existingGenre) {
+        return res.status(404).send("Genre not found");
+      }
+
+      if (newFileUploaded) {
+        const fileBuffer = req.file.buffer;
+        const uploadResult = await streamUpload(fileBuffer, "genres");
+        const newImageUrl = uploadResult.secure_url;
+
+        await deleteImage("genres", existingGenre.icon_url);
+
+        await genreQueries.updateGenre(id, name, description, newImageUrl);
+      } else {
+        await genreQueries.updateGenre(
+          id,
+          name,
+          description,
+          existingGenre.icon_url
+        );
+      }
+
+      res.status(204).send();
+    },
+  ],
 };
