@@ -27,4 +27,24 @@ const streamUpload = (fileBuffer, folderName = "game-inventory") => {
   });
 };
 
-module.exports = streamUpload;
+const getPublicIdFromUrl = (folder, url) => {
+  const regex = /\/([^\/]+)\/([^\/]+)$/; // Match the last two segments of the URL
+  const match = url.match(regex);
+  if (match) {
+    return folder + "/" + match[2].split(".")[0]; // Extract the public ID (remove file extension)
+  }
+  throw new Error("Invalid Cloudinary URL");
+};
+
+const deleteImage = async (folder, url) => {
+  try {
+    const publicId = getPublicIdFromUrl(folder, url);
+    const result = await cloudinary.uploader.destroy(publicId);
+    return result;
+  } catch (error) {
+    console.error("Error deleting image:", error);
+    throw error;
+  }
+};
+
+module.exports = { streamUpload, deleteImage };

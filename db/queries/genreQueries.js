@@ -27,4 +27,8 @@ module.exports = {
       [name, description, image]
     );
   },
+
+  deleteGenreById: async (id) => {
+    await pool.query("DELETE FROM genres WHERE id = $1", [id]);
+  },
 };

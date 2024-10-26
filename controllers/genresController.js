@@ -1,6 +1,7 @@
 const genreQueries = require("../db/queries/genreQueries");
-const streamUpload = require("../config/cloudinaryConfig");
+const { streamUpload, deleteImage } = require("../config/cloudinaryConfig");
 const { body, validationResult } = require("express-validator");
+require("dotenv").config();
 
 const validateGenre = [
   body("name")
@@ -88,4 +89,27 @@ module.exports = {
       }
     },
   ],
+
+  deleteGenreById: async (req, res) => {
+    const { id } = req.params;
+    const { password } = req.body;
+
+    if (password !== process.env.ADMIN_PASSWORD) {
+      return res.status(401).send("Wrong password");
+    }
+
+    try {
+      const genre = await genreQueries.getGenreById(id);
+      if (!genre) {
+        return res.status(404).send("Genre not found");
+      }
+
+      await genreQueries.deleteGenreById(id);
+      await deleteImage("genres", genre.icon_url);
+      res.status(204).send(); // No Content - deletion successful
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Error uploading image or adding genre");
+    }
+  },
 };

@@ -3,8 +3,7 @@ const genresRouter = express.Router();
 const upload = require("../config/multerConfig");
 const genresController = require("../controllers/genresController");
 
-genresRouter.get("/", genresController.getGenres);
-genresRouter.get("/:id", genresController.getGenreById);
+genresRouter.delete("/delete/:id", genresController.deleteGenreById);
 
 genresRouter.get("/add", genresController.getAddGenre);
 genresRouter.post(
@@ -12,5 +11,8 @@ genresRouter.post(
   upload.single("genre-image"),
   genresController.addGenre
 );
+
+genresRouter.get("/", genresController.getGenres);
+genresRouter.get("/:id", genresController.getGenreById);
 
 module.exports = genresRouter;
