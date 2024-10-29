@@ -17,7 +17,7 @@
           autocomplete="off"
           value="<%= locals.formData && formData.name ? formData.name : '' %>"
         />
-        <%- include("partials/error", { errors: locals.errors, fieldName: 'name' }) %>
+        <%- include("../partials/error", { errors: locals.errors, fieldName: 'name' }) %>
       </section>
 
       <section>
@@ -28,13 +28,13 @@
           placeholder="Genre description"
           rows="6"
         ><%= locals.formData && formData.description ? formData.description : '' %></textarea>
-        <%- include("partials/error", { errors: locals.errors, fieldName: 'description' }) %>
+        <%- include("../partials/error", { errors: locals.errors, fieldName: 'description' }) %>
       </section>
 
       <section>
         <label for="image">Image:</label>
         <input type="file" id="image" name="genre-image" accept="image/*" />
-        <%- include("partials/error", { errors: locals.errors, fieldName: 'file' }) %>
+        <%- include("../partials/error", { errors: locals.errors, fieldName: 'file' }) %>
       </section>
 
       <button type="submit">Add Genre</button>

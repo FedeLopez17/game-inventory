@@ -68,7 +68,7 @@ const validateGenreUpdate = [
 module.exports = {
   getGenres: async (req, res) => {
     const genres = await genreQueries.getAllGenres();
-    res.render("genres", { genres });
+    res.render("genres/genres", { genres });
   },
 
   //TODO: this should return related games
@@ -80,21 +80,21 @@ module.exports = {
       if (!genre) {
         return res.status(404).send("Genre not found");
       }
-      res.render("genre", { genre });
+      res.render("genres/genre", { genre });
     } catch (err) {
       console.error(err);
       res.status(500).send("Error fetching genre");
     }
   },
 
-  getAddGenre: async (req, res) => res.render("add-genre"),
+  getAddGenre: async (req, res) => res.render("genres/add-genre"),
 
   addGenre: [
     validateGenre,
     async (req, res) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(400).render("add-genre", {
+        return res.status(400).render("genres/add-genre", {
           errors: errors.array(),
           formData: req.body,
         });
@@ -149,7 +149,7 @@ module.exports = {
       return res.status(404).send("Genre not found");
     }
 
-    res.render("update-genre", { formData: { ...genre }, id });
+    res.render("genres/update-genre", { formData: { ...genre }, id });
   },
 
   updateGenre: [
@@ -167,7 +167,7 @@ module.exports = {
 
       if (!errors.isEmpty()) {
         // This won't work as I'm fetching with js.
-        // return res.status(400).render("update-genre", {
+        // return res.status(400).render("genres/update-genre", {
         //   errors: errors.array(),
         //   formData: req.body,
         //   id,
