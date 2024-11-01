@@ -1,0 +1,10 @@
+.toggle-form {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  margin: 10px 0;
+}
+
+.toggle-form.show {
+  max-height: fit-content;
+}
