@@ -22,10 +22,12 @@ module.exports = {
   },
 
   addGenre: async (name, description, image) => {
-    await pool.query(
-      "INSERT INTO genres (name, description, icon_url) VALUES ($1, $2, $3)",
+    const result = await pool.query(
+      "INSERT INTO genres (name, description, icon_url) VALUES ($1, $2, $3) RETURNING *",
       [name, description, image]
     );
+
+    return result.rows[0];
   },
 
   deleteGenreById: async (id) => {
