@@ -6,11 +6,11 @@
     <title>Add Genre</title>
   </head>
   <body>
-    <form action="/genres/add" method="post" enctype="multipart/form-data">
+    <form action="/genres/add" method="post" enctype="multipart/form-data" id="add-genre">
       
-      <%- include("../partials/genre-inputs", { errors: locals.errors, formData: locals.formData, isAdd: true}) %>
+      <%- include("../partials/genre-inputs", { errors: locals.errors, formData: locals.formData, isAdd: true, form: "add-genre"}) %>
 
-      <button type="submit">Add Genre</button>
+      <button type="submit" form="add-genre">Add Genre</button>
     </form>
   </body>
 </html>
