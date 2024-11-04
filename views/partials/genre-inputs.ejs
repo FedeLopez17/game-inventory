@@ -1,42 +1,44 @@
-<section>
-  <label for="genre-name">Name:</label>
-  <input
-    type="text"
-    name="name"
-    placeholder="Genre name"
-    id="genre-name"
-    autocomplete="off"
-    value="<%= locals.formData && formData.name %>"
+<section class="genre-inputs">
+  <section>
+    <label for="genre-name">Name:</label>
+    <input
+      type="text"
+      name="name"
+      placeholder="Genre name"
+      id="genre-name"
+      autocomplete="off"
+      value="<%= locals.formData && formData.name %>"
+      required
+      form=<%= locals.form || "" %>
+    />
+    <%- include("error", { errors: locals.errors, fieldName: 'name' }) %>
+  </section>
+  
+  <section>
+    <label for="genre-description">Description:</label>
+    <textarea
+      name="description"
+      id="genre-description"
+      placeholder="Genre description"
+      rows="6"
+      required
+      form=<%= locals.form || "" %>
+    ><%= locals.formData && formData.description %></textarea
+    >
+    <%- include("error", { errors: locals.errors, fieldName: 'description' }) %>
+  </section>
+  
+  <section>
+    <label for="image">Image:</label>
+    <input 
+    type="file" 
+    id="genre-image" 
+    name="genre-image" 
+    accept="image/*" 
+    <%= locals.isAdd && "required" %>
     form=<%= locals.form || "" %>
-    required
-  />
-  <%- include("error", { errors: locals.errors, fieldName: 'name' }) %>
+    />
+    <%- include("error", { errors: locals.errors, fieldName: 'file' }) %>
+  </section>  
 </section>
 
-<section>
-  <label for="genre-description">Description:</label>
-  <textarea
-    name="description"
-    id="genre-description"
-    placeholder="Genre description"
-    rows="6"
-    required
-    form=<%= locals.form || "" %>
-  >
-<%= locals.formData && formData.description %></textarea
-  >
-  <%- include("error", { errors: locals.errors, fieldName: 'description' }) %>
-</section>
-
-<section>
-  <label for="image">Image:</label>
-  <input 
-  type="file" 
-  id="image" 
-  name="genre-image" 
-  accept="image/*" 
-  <%= locals.isAdd && "required" %>
-  form=<%= locals.form || "" %>
-  />
-  <%- include("error", { errors: locals.errors, fieldName: 'file' }) %>
-</section>
