@@ -1,5 +1,8 @@
 const express = require("express");
 const genresRouter = require("./routers/genresRouter");
+const gamesRouter = require("./routers/gamesRouter");
+const studiosRouter = require("./routers/studiosRouter");
+const publishersRouter = require("./routers/publishersRouter");
 
 const app = express();
 
@@ -12,6 +15,12 @@ app.use(express.json());
 app.use(express.static("public"));
 
 app.use("/genres", genresRouter);
+app.use("/studios", studiosRouter);
+app.use("/publishers", publishersRouter);
+
+app.use("/games", gamesRouter);
+
+app.get("/", (req, res) => res.redirect("/games"));
 
 app.use((req, res) => res.status(404).render("404"));
 
