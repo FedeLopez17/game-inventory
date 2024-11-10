@@ -1,0 +1,20 @@
+<% const capitalizedEntity = entity.charAt(0).toUpperCase() + entity.slice(1) %>
+<% const formId = "add-" + entity %>
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add <%= capitalizedEntity %></title>
+  </head>
+  <body>
+    <form action="<%= formAction %>" method="post" enctype="multipart/form-data" id="<%= formId %>">
+      
+      <%- include("partials/entity-inputs", { errors: locals.errors, formData: locals.formData, isAdd: true, form: formId, entity }) %>
+
+      <button type="submit" form="<%= formId %>">Add <%= capitalizedEntity %></button>
+    </form>
+  </body>
+</html>
