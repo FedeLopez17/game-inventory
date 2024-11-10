@@ -1,0 +1,48 @@
+<% const capitalizedEntity = entity.charAt(0).toUpperCase() + entity.slice(1) %>
+
+
+<section class="<%= entity %>-inputs">
+    <section>
+      <label for="<%= entity %>-name">Name:</label>
+      <input
+        type="text"
+        name="name"
+        placeholder="<%= capitalizedEntity %> name"
+        id="<%= entity %>-name"
+        autocomplete="off"
+        value="<%= locals.formData && formData.name %>"
+        required
+        form=<%= locals.form || "" %>
+      />
+      <%- include("error", { errors: locals.errors, fieldName: 'name' }) %>
+    </section>
+    
+    <section>
+      <label for="<%= entity %>-description">Description:</label>
+      <textarea
+        name="description"
+        id="<%= entity %>-description"
+        placeholder="<%= capitalizedEntity %> description"
+        rows="6"
+        required
+        form=<%= locals.form || "" %>
+      ><%= locals.formData && formData.description %></textarea
+      >
+      <%- include("error", { errors: locals.errors, fieldName: 'description' }) %>
+    </section>
+    
+    <section>
+      <label for="image">Image:</label>
+      <input 
+      type="file" 
+      id="<%= entity %>-image" 
+      name="<%= entity %>-image" 
+      accept="image/*" 
+      <%= locals.isAdd && "required" %>
+      form=<%= locals.form || "" %>
+      />
+      <%- include("error", { errors: locals.errors, fieldName: 'file' }) %>
+    </section>  
+  </section>
+  
+  
