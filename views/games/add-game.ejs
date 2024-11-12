@@ -8,31 +8,33 @@
     <title>Add Game</title>
   </head>
   <body>
-    <form id="add-genre" onsubmit="addGenre(); return false;"></form>
-    <form action="" method="post">
+    <form id="add-genre" onsubmit="addEntity('genre', '/genres/add'); return false;"></form>
+    <form id="add-studio" onsubmit="addEntity('studio', '/studios/add'); return false;"></form>
+    <form id="add-publisher" onsubmit="addEntity('publisher', '/publishers/add'); return false;"></form>
+    <form id="add-game" action="/games/add" method="post">
       <section>
         <label for="title">Title</label>
-        <input type="text" id="title" name="title" />
+        <input type="text" id="title" name="title" required/>
       </section>
 
       <section>
         <label for="cover-image">Cover image</label>
-        <input type="file" accept="image/*" id="cover-image" name="cover" />
+        <input type="file" accept="image/*" id="cover-image" name="cover"/>
       </section>
 
       <section>
         <label for="banner-image">Banner image</label>
-        <input type="file" accept="image/*" id="banner-image" name="banner" />
+        <input type="file" accept="image/*" id="banner-image" name="banner"/>
       </section>
 
       <section>
         <label for="release-date">Release date</label>
-        <input type="date" id="release-date" name="release" />
+        <input type="date" id="release-date" name="release" required/>
       </section>
 
       <section>
         <label for="description">Description</label>
-        <textarea name="description" id="description" rows="4"></textarea>
+        <textarea name="description" id="description" rows="4" required></textarea>
       </section>
 
       <section>
@@ -44,6 +46,16 @@
         <label for="goty">Did this game win Game of The Year Award?</label>
         <input type="checkbox" name="goty" id="goty" />
       </section>
+
+      <fieldset>
+        <legend>Plaforms</legend>
+
+        <% platforms.forEach(platform => { %>
+          <label>
+            <input type="checkbox" name="platforms" value=<%= platform.id %> required onClick="validateAtLeastOneChecked("platforms")"/> <%= platform.name %>
+          </label>
+        <% }) %>
+      </fieldset>
 
       <fieldset>
         <legend>PEGI Rating</legend>
@@ -104,22 +116,57 @@
       </fieldset>
 
       <fieldset>
-        <legend>Genre</legend>
-        <section class="genres">
+        <legend>Genre(s)</legend>
+        <section class="genre-wrapper">
           <% genres.forEach(genre => { %>
             <label>
-              <input type="radio" name="genre" value=<%= genre.id %> required /> <%= genre.name %>
+              <input type="checkbox" name="genre" value=<%= genre.id %> required onClick="validateAtLeastOneChecked("genre")"/> <%= genre.name %>
             </label>
           <% }) %>
         </section>
-         
-      </fieldset>
 
-      <section><p>Don't see the genre?</p> <button type="button" onclick="toggleForm()">Add Genre</button></section>
-      <section class="toggle-form">
-        <%- include("../partials/genre-inputs", { errors: locals.errors, formData: locals.formData, isAdd: true, form: "add-genre"}) %>
+        <section><p>Don't see the genre?</p> <button type="button" onclick="toggleForm('genre-form')">Add Genre</button></section>
+      <section class="toggle-form" id="genre-form">
+        <%- include("../partials/entity-inputs", { isAdd: true, form: "add-genre", entity: "genre"}) %>
         <button type="submit" form="add-genre">Add</button>
        </section>
+      </fieldset>
+
+      <fieldset>
+        <legend>Studio(s)</legend>
+        <section class="studio-wrapper">
+          <% studios.forEach(studio => { %>
+            <label>
+              <input type="checkbox" name="studio" value=<%= studio.id %> required onClick="validateAtLeastOneChecked("studio")"/> <%= studio.name %>
+            </label>
+          <% }) %>
+        </section>
+
+        <section><p>Don't see the studio?</p> <button type="button" onclick="toggleForm('studio-form')">Add Studio</button></section>
+      <section class="toggle-form" id="studio-form">
+        <%- include("../partials/entity-inputs", { isAdd: true, form: "add-studio", entity: "studio" }) %>
+        <button type="submit" form="add-studio">Add</button>
+       </section>
+      </fieldset>
+
+      <fieldset>
+        <legend>Publisher(s)</legend>
+        <section class="publisher-wrapper">
+          <% publishers.forEach(publisher => { %>
+            <label>
+              <input type="checkbox" name="publisher" value=<%= publisher.id %> required onClick="validateAtLeastOneChecked("publisher")"/> <%= publisher.name %>
+            </label>
+          <% }) %>
+        </section>
+
+        <section><p>Don't see the publisher?</p> <button type="button" onclick="toggleForm('publisher-form')">Add Publisher</button></section>
+      <section class="toggle-form" id="publisher-form">
+        <%- include("../partials/entity-inputs", { isAdd: true, form: "add-publisher", entity: "publisher" }) %>
+        <button type="submit" form="add-publisher">Add</button>
+       </section>
+      </fieldset>
+
+      <button type="submit" form="add-game">Add Game</button>
 
     </form>
   </body>

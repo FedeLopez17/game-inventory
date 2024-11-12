@@ -4,16 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="/scripts/script.js" defer></script>
-    <title>Genres</title>
+    <title>Publishers</title>
   </head>
   <body>
-    <a href="/genres/add">Add Genre</a>
-    <h1>Genres:</h1>
+    <a href="/publishers/add">Add Publisher</a>
+    <h1>Publishers:</h1>
     <ul>
-      <% genres.forEach(genre => { %>
+      <% publishers.forEach(publisher => { %>
       <li>
-        <%= genre.name %>
-        <button type="button" onClick="deleteEntity('genre', <%= genre.id %>, '/genres/delete', '/genres')">
+        <%= publisher.name %>
+        <button type="button" onClick="deleteEntity('publisher', <%= publisher.id %>, '/publishers/delete', '/publishers')">
           Delete
         </button>
       </li>
