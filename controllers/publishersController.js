@@ -131,7 +131,7 @@ module.exports = {
     }
 
     try {
-      const publisher = await publisher.getPublisherById(id);
+      const publisher = await publisherQueries.getPublisherById(id);
       if (!publisher) {
         return res.status(404).send("Publisher not found");
       }
