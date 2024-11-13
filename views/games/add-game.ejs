@@ -52,7 +52,7 @@
 
         <% platforms.forEach(platform => { %>
           <label>
-            <input type="checkbox" name="platforms" value=<%= platform.id %> required onClick="validateAtLeastOneChecked("platforms")"/> <%= platform.name %>
+            <input type="checkbox" name="platforms" value=<%= platform.id %> required onClick="validateAtLeastOneChecked('platforms')"/> <%= platform.name %>
           </label>
         <% }) %>
       </fieldset>
@@ -120,7 +120,7 @@
         <section class="genre-wrapper">
           <% genres.forEach(genre => { %>
             <label>
-              <input type="checkbox" name="genre" value=<%= genre.id %> required onClick="validateAtLeastOneChecked("genre")"/> <%= genre.name %>
+              <input type="checkbox" name="genre" value=<%= genre.id %> required onClick="validateAtLeastOneChecked('genre')"/> <%= genre.name %>
             </label>
           <% }) %>
         </section>
@@ -137,7 +137,7 @@
         <section class="studio-wrapper">
           <% studios.forEach(studio => { %>
             <label>
-              <input type="checkbox" name="studio" value=<%= studio.id %> required onClick="validateAtLeastOneChecked("studio")"/> <%= studio.name %>
+              <input type="checkbox" name="studio" value=<%= studio.id %> required onClick="validateAtLeastOneChecked('studio')"/> <%= studio.name %>
             </label>
           <% }) %>
         </section>
@@ -154,7 +154,7 @@
         <section class="publisher-wrapper">
           <% publishers.forEach(publisher => { %>
             <label>
-              <input type="checkbox" name="publisher" value=<%= publisher.id %> required onClick="validateAtLeastOneChecked("publisher")"/> <%= publisher.name %>
+              <input type="checkbox" name="publisher" value=<%= publisher.id %> required onClick="validateAtLeastOneChecked('publisher')"/> <%= publisher.name %>
             </label>
           <% }) %>
         </section>
@@ -165,6 +165,8 @@
         <button type="submit" form="add-publisher">Add</button>
        </section>
       </fieldset>
+
+      <!-- [MULTIPLE IMAGE INPUT GOES HERE] -->
 
       <button type="submit" form="add-game">Add Game</button>
 

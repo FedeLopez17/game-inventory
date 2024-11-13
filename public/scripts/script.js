@@ -7,10 +7,12 @@ const validateAtLeastOneChecked = (name) => {
   const checkboxes = document.querySelectorAll(
     `input[type="checkbox"][name="${name}"]`
   );
+
   const atLeastOneChecked = Array.from(checkboxes).some(
     (checkbox) => checkbox.checked
   );
-  checkboxes[0].required = !atLeastOneChecked;
+
+  checkboxes.forEach((checkbox) => (checkbox.required = !atLeastOneChecked));
 };
 
 const addEntity = async (entityName, fetchUrl) => {
