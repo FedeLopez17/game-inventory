@@ -1,7 +1,6 @@
 const studioQueries = require("../db/queries/studioQueries");
 const { streamUpload, deleteImage } = require("../config/cloudinaryConfig");
 const { body, validationResult } = require("express-validator");
-require("dotenv").config();
 
 const validateStudio = [
   body("name")

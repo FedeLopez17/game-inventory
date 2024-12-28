@@ -1,7 +1,6 @@
 const genreQueries = require("../db/queries/genreQueries");
 const { streamUpload, deleteImage } = require("../config/cloudinaryConfig");
 const { body, validationResult } = require("express-validator");
-require("dotenv").config();
 
 const validateGenre = [
   body("name")

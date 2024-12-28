@@ -1,7 +1,6 @@
 const publisherQueries = require("../db/queries/publisherQueries");
 const { streamUpload, deleteImage } = require("../config/cloudinaryConfig");
 const { body, validationResult } = require("express-validator");
-require("dotenv").config();
 
 const validatePublisher = [
   body("name")
