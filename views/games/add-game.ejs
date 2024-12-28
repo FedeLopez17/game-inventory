@@ -11,15 +11,17 @@
     <form id="add-genre" onsubmit="addEntity('genre', '/genres/add'); return false;"></form>
     <form id="add-studio" onsubmit="addEntity('studio', '/studios/add'); return false;"></form>
     <form id="add-publisher" onsubmit="addEntity('publisher', '/publishers/add'); return false;"></form>
-    <form id="add-game" action="/games/add" method="post">
+    <form id="add-game" action="/games/add" method="post" enctype="multipart/form-data">
       <section>
         <label for="title">Title</label>
         <input type="text" id="title" name="title" required/>
+        <%- include("../partials/error", { errors: locals.errors, fieldName: 'title' }) %>
       </section>
 
       <section>
         <label for="cover-image">Cover image</label>
-        <input type="file" accept="image/*" id="cover-image" name="cover"/>
+        <input type="file" accept="image/*" id="cover-image" name="cover" required/>
+        <%- include("../partials/error", { errors: locals.errors, fieldName: 'cover' }) %>
       </section>
 
       <section>
@@ -30,11 +32,13 @@
       <section>
         <label for="release-date">Release date</label>
         <input type="date" id="release-date" name="release" required/>
+        <%- include("../partials/error", { errors: locals.errors, fieldName: 'release' }) %>
       </section>
 
       <section>
         <label for="description">Description</label>
         <textarea name="description" id="description" rows="4" required></textarea>
+        <%- include("../partials/error", { errors: locals.errors, fieldName: 'description' }) %>
       </section>
 
       <section>
@@ -55,6 +59,8 @@
             <input type="checkbox" name="platforms" value=<%= platform.id %> required onClick="validateAtLeastOneChecked('platforms')"/> <%= platform.name %>
           </label>
         <% }) %>
+
+        <%- include("../partials/error", { errors: locals.errors, fieldName: 'platforms' }) %>
       </fieldset>
 
       <fieldset>
@@ -91,6 +97,7 @@
           step="0.1"
           placeholder="IGN Score"
         />
+        <%- include("../partials/error", { errors: locals.errors, fieldName: 'ign' }) %>
 
         <label for="opencritic">OpenCritic Score (0-100):</label>
         <input
@@ -102,6 +109,7 @@
           step="1"
           placeholder="OpenCritic Score"
         />
+        <%- include("../partials/error", { errors: locals.errors, fieldName: 'opencritic' }) %>
 
         <label for="metacritic">Metacritic Score (0-100):</label>
         <input
@@ -113,6 +121,7 @@
           step="1"
           placeholder="Metacritic Score"
         />
+        <%- include("../partials/error", { errors: locals.errors, fieldName: 'metacritic' }) %>
       </fieldset>
 
       <fieldset>
@@ -123,6 +132,7 @@
               <input type="checkbox" name="genre" value=<%= genre.id %> required onClick="validateAtLeastOneChecked('genre')"/> <%= genre.name %>
             </label>
           <% }) %>
+          <%- include("../partials/error", { errors: locals.errors, fieldName: 'genre' }) %>
         </section>
 
         <section><p>Don't see the genre?</p> <button type="button" onclick="toggleForm('genre-form')">Add Genre</button></section>
@@ -140,6 +150,7 @@
               <input type="checkbox" name="studio" value=<%= studio.id %> required onClick="validateAtLeastOneChecked('studio')"/> <%= studio.name %>
             </label>
           <% }) %>
+          <%- include("../partials/error", { errors: locals.errors, fieldName: 'studio' }) %>
         </section>
 
         <section><p>Don't see the studio?</p> <button type="button" onclick="toggleForm('studio-form')">Add Studio</button></section>
@@ -157,6 +168,7 @@
               <input type="checkbox" name="publisher" value=<%= publisher.id %> required onClick="validateAtLeastOneChecked('publisher')"/> <%= publisher.name %>
             </label>
           <% }) %>
+          <%- include("../partials/error", { errors: locals.errors, fieldName: 'publisher' }) %>
         </section>
 
         <section><p>Don't see the publisher?</p> <button type="button" onclick="toggleForm('publisher-form')">Add Publisher</button></section>

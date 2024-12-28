@@ -31,11 +31,21 @@ const validateGame = [
     .isLength({ max: 500 })
     .withMessage("Description must be at most 500 characters."),
 
-  body("files").custom((value, { req }) => {
+  body("platforms").notEmpty().withMessage("Platform/s cannot be empty."),
+
+  body("genre").notEmpty().withMessage("Genre/s cannot be empty."),
+
+  body("studio").notEmpty().withMessage("Studio/s cannot be empty."),
+
+  body("publisher").notEmpty().withMessage("Publisher/s cannot be empty."),
+
+  body("cover").custom((_, { req }) => {
     if (!req.files.cover) {
       throw new Error("Cover image is required.");
     }
-    const fileSize = req.files.cover.size; // Size in bytes
+    const fileSize = req.files.cover[0].size; // Size in bytes
+    console.log("COVER FILE SIZE: " + fileSize);
+
     if (fileSize > 2 * 1024 * 1024) {
       // 2MB
       throw new Error("Image file must be less than 2MB.");
