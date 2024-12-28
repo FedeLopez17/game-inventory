@@ -3,7 +3,7 @@
 
 <section class="<%= entity %>-inputs">
     <section>
-      <label for="<%= entity %>-name">Name:</label>
+      <label for="<%= entity %>-name">Name: <%- include("required-symbol") %></label>
       <input
         type="text"
         name="name"
@@ -32,7 +32,7 @@
     </section>
     
     <section>
-      <label for="image">Image:</label>
+      <label for="image">Image: <%- include("required-symbol") %></label>
       <input 
       type="file" 
       id="<%= entity %>-image" 

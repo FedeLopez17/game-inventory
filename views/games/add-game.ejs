@@ -13,13 +13,13 @@
     <form id="add-publisher" onsubmit="addEntity('publisher', '/publishers/add'); return false;"></form>
     <form id="add-game" action="/games/add" method="post" enctype="multipart/form-data">
       <section>
-        <label for="title">Title</label>
+        <label for="title">Title: <%- include("../partials/required-symbol") %></label>
         <input type="text" id="title" name="title" required/>
         <%- include("../partials/error", { errors: locals.errors, fieldName: 'title' }) %>
       </section>
 
       <section>
-        <label for="cover-image">Cover image</label>
+        <label for="cover-image">Cover image: <%- include("../partials/required-symbol") %></label>
         <input type="file" accept="image/*" id="cover-image" name="cover" required/>
         <%- include("../partials/error", { errors: locals.errors, fieldName: 'cover' }) %>
       </section>
@@ -30,13 +30,13 @@
       </section>
 
       <section>
-        <label for="release-date">Release date</label>
+        <label for="release-date">Release date: <%- include("../partials/required-symbol") %></label>
         <input type="date" id="release-date" name="release" required/>
         <%- include("../partials/error", { errors: locals.errors, fieldName: 'release' }) %>
       </section>
 
       <section>
-        <label for="description">Description</label>
+        <label for="description">Description: <%- include("../partials/required-symbol") %></label>
         <textarea name="description" id="description" rows="4" required></textarea>
         <%- include("../partials/error", { errors: locals.errors, fieldName: 'description' }) %>
       </section>
@@ -52,7 +52,7 @@
       </section>
 
       <fieldset>
-        <legend>Plaforms</legend>
+        <legend>Plaforms: <%- include("../partials/required-symbol") %></legend>
 
         <% platforms.forEach(platform => { %>
           <label>
@@ -125,7 +125,7 @@
       </fieldset>
 
       <fieldset>
-        <legend>Genre(s)</legend>
+        <legend>Genre(s): <%- include("../partials/required-symbol") %></legend>
         <section class="genre-wrapper">
           <% genres.forEach(genre => { %>
             <label>
@@ -143,7 +143,7 @@
       </fieldset>
 
       <fieldset>
-        <legend>Studio(s)</legend>
+        <legend>Studio(s): <%- include("../partials/required-symbol") %></legend>
         <section class="studio-wrapper">
           <% studios.forEach(studio => { %>
             <label>
@@ -161,7 +161,7 @@
       </fieldset>
 
       <fieldset>
-        <legend>Publisher(s)</legend>
+        <legend>Publisher(s): <%- include("../partials/required-symbol") %></legend>
         <section class="publisher-wrapper">
           <% publishers.forEach(publisher => { %>
             <label>
