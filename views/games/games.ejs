@@ -3,9 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles/style.css">
     <title>Games</title>
   </head>
   <body>
+    <%- include("../partials/header", { activeEntity: "games", addButtonText: "Add Game" }) %>
+
     <h1>Games will go here</h1>
+    <% games.forEach((game)=> {%> <%= game.title %> <%})%>
   </body>
 </html>

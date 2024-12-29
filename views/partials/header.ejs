@@ -1,0 +1,25 @@
+<header>
+  <h1>Games Inventory</h1>
+  <a href="/games" class="<%= activeEntity === 'games' ? 'active' : '' %>"
+    >Games</a
+  >
+  <a href="/genres" class="<%= activeEntity === 'genres' ? 'active' : '' %>"
+    >Genres</a
+  >
+  <a
+    href="/publishers"
+    class="<%= activeEntity === 'publishers' ? 'active' : '' %>"
+    >Publishers</a
+  >
+  <a href="/studios" class="<%= activeEntity === 'studios' ? 'active' : '' %>"
+    >Studios</a
+  >
+
+  <a href="/<%= activeEntity %>/add" class="add-button"
+    ><img
+      src="/assets/images/icons/add.svg"
+      alt="<%= addButtonText %>"
+      title="<%= addButtonText %>"
+    /><%= addButtonText %></a
+  >
+</header>

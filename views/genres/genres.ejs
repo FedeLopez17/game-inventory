@@ -4,10 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="/scripts/script.js" defer></script>
+    <link rel="stylesheet" href="/styles/style.css">
     <title>Genres</title>
   </head>
   <body>
-    <a href="/genres/add">Add Genre</a>
+    <%- include("../partials/header", { activeEntity: "genres", addButtonText: "Add Genre" }) %>
+
     <h1>Genres:</h1>
     <ul>
       <% genres.forEach(genre => { %>

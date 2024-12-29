@@ -1,3 +1,7 @@
+* {
+  margin: 0;
+}
+
 .toggle-form {
   max-height: 0;
   overflow: hidden;
@@ -7,4 +11,31 @@
 
 .toggle-form.show {
   max-height: fit-content;
+}
+
+/* Header */
+
+header {
+  background-color: grey;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+  padding: 0 12px;
+}
+
+header > .add-button {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin-left: auto;
+  gap: 6px;
+}
+
+header img {
+  width: 1rem;
+}
+
+header a.active {
+  background-color: red;
 }
