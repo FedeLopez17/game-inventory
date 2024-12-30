@@ -1,25 +1,28 @@
 <header>
   <h1>Games Inventory</h1>
-  <a href="/games" class="<%= activeEntity === 'games' ? 'active' : '' %>"
+  <a href="/games" class="<%= activeEntity.includes('game') ? 'active' : '' %>"
     >Games</a
   >
-  <a href="/genres" class="<%= activeEntity === 'genres' ? 'active' : '' %>"
+  <a href="/genres" class="<%= activeEntity.includes('genre') ? 'active' : '' %>"
     >Genres</a
   >
   <a
     href="/publishers"
-    class="<%= activeEntity === 'publishers' ? 'active' : '' %>"
+    class="<%= activeEntity.includes('publisher') ? 'active' : '' %>"
     >Publishers</a
   >
-  <a href="/studios" class="<%= activeEntity === 'studios' ? 'active' : '' %>"
+  <a href="/studios" class="<%= activeEntity.includes('studio') ? 'active' : '' %>"
     >Studios</a
   >
 
-  <a href="/<%= activeEntity %>/add" class="add-button"
-    ><img
-      src="/assets/images/icons/add.svg"
-      alt="<%= addButtonText %>"
-      title="<%= addButtonText %>"
-    /><%= addButtonText %></a
-  >
+  <% if (locals.addButtonText) { %>
+    <a href="/<%= activeEntity %>/add" class="add-button">
+      <img
+        src="/assets/images/icons/add.svg"
+        alt="<%= addButtonText %>"
+        title="<%= addButtonText %>"
+      />
+      <%= addButtonText %>
+    </a>
+  <% } %>
 </header>

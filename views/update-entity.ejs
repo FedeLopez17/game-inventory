@@ -12,6 +12,8 @@
     <title>Update <%= capitalizedEntity %></title>
   </head>
   <body>
+      <%- include("./partials/header", { activeEntity: "studios" }) %>
+
       <%- include("partials/entity-inputs", { errors: locals.errors, formData: locals.formData, form: formId, entity, capitalizedEntity}) %>
       <button type="button" onclick="updateEntity('<%= entity %>', <%= id %>, '<%= fetchUrl %>', '<%= redirect %>')" form="<%= formId %>">Update <%= capitalizedEntity %></button>
   </body>

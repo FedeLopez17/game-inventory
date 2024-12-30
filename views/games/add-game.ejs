@@ -8,6 +8,8 @@
     <title>Add Game</title>
   </head>
   <body>
+    <%- include("../partials/header", { activeEntity: "games" }) %>
+
     <form id="add-genre" onsubmit="addEntity('genre', '/genres/add'); return false;"></form>
     <form id="add-studio" onsubmit="addEntity('studio', '/studios/add'); return false;"></form>
     <form id="add-publisher" onsubmit="addEntity('publisher', '/publishers/add'); return false;"></form>

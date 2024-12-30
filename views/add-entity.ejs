@@ -11,6 +11,8 @@
     <title>Add <%= capitalizedEntity %></title>
   </head>
   <body>
+    <%- include("./partials/header", { activeEntity: entity }) %>
+
     <form action="<%= formAction %>" method="post" enctype="multipart/form-data" id="<%= formId %>">
       
       <%- include("partials/entity-inputs", { errors: locals.errors, formData: locals.formData, isAdd: true, form: formId, entity }) %>
