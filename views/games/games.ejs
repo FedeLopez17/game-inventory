@@ -8,8 +8,8 @@
   </head>
   <body>
     <%- include("../partials/header", { activeEntity: "games", addButtonText: "Add Game" }) %>
-
-    <h1>Games will go here</h1>
-    <% games.forEach((game)=> {%> <%= game.title %> <%})%>
+    <section class="card-wrapper">
+      <% games.forEach((game)=> {%> <%- include("./game-card", {game}) %> <%})%>
+    </section>
   </body>
 </html>
