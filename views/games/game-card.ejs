@@ -1,56 +1,58 @@
-<article class="card">
-  <section class="cover-wrapper">
-    <img
-      src="<%= game.cover_image_url %>"
-      alt="<%= game.name %> Cover Image"
-      class="cover"
-    />
-  </section>
-  <section class="card-data">
-
-    <section class="data-wrapper">
-      <section class="platforms">
-
-        <%  const GENERAL_PLATFORMS = [ "Windows", "PlayStation", "Xbox", "Nintendo"]; %>
-
-        <%  const platforms = GENERAL_PLATFORMS.reduce((arr, generalPlatform) => { %>
-        <%   if (game.platforms.some(platform => platform.toLowerCase().includes(generalPlatform.toLowerCase()))) { %>
-        <%    arr.push(generalPlatform); %>
-        <%  } %>
-        <%  return arr; %>
-        <%  }, []); %>
-
-        <% for( let platform of platforms) { %>
-        <img
-        src="/assets/images/platforms/<%= platform.toLowerCase() %>.png"
-        alt="<%= platform %>"
-        title="<%= platform %>"
-        class="platform"
-        />
-        <% } %>
-      </section>
-
-      <section class="age-ratings">
-        <% if(game.esrb_rating) { %>
-          <img
-          src="/assets/images/age-ratings/<%= game.esrb_image_url %>"
-          alt="ESRB Rating: <%= game.esrb_rating %>"
-          title="<%= game.esrb_rating %>"
-          class="esrb rating"
-        />
-        <% } %>
-  
-        <% if(game.pegi_rating) { %>
-          <img
-          src="/assets/images/age-ratings/<%= game.pegi_image_url %>"
-          alt="PEGI Rating: <%= game.pegi_rating %>"
-          title="<%= game.pegi_rating %>"
-          class="pegi rating"
-        />
-        <% } %>
-      </section>
+<a class="card-anchor" href="/games/<%= game.videogame_id %>">
+  <article class="card">
+    <section class="cover-wrapper">
+      <img
+        src="<%= game.cover_image_url %>"
+        alt="<%= game.name %> Cover Image"
+        class="cover"
+      />
     </section>
+    <section class="card-data">
 
-    <p class="game-title"><%= game.title %></p>
-  </section>
-</article>
+      <section class="data-wrapper">
+        <section class="platforms">
+
+          <%  const GENERAL_PLATFORMS = [ "Windows", "PlayStation", "Xbox", "Nintendo"]; %>
+
+          <%  const platforms = GENERAL_PLATFORMS.reduce((arr, generalPlatform) => { %>
+          <%   if (game.platforms.some(platform => platform.toLowerCase().includes(generalPlatform.toLowerCase()))) { %>
+          <%    arr.push(generalPlatform); %>
+          <%  } %>
+          <%  return arr; %>
+          <%  }, []); %>
+
+          <% for( let platform of platforms) { %>
+          <img
+          src="/assets/images/platforms/<%= platform.toLowerCase() %>.png"
+          alt="<%= platform %>"
+          title="<%= platform %>"
+          class="platform"
+          />
+          <% } %>
+        </section>
+
+        <section class="age-ratings">
+          <% if(game.esrb_rating) { %>
+            <img
+            src="/assets/images/age-ratings/<%= game.esrb_image_url %>"
+            alt="ESRB Rating: <%= game.esrb_rating %>"
+            title="<%= game.esrb_rating %>"
+            class="esrb rating"
+          />
+          <% } %>
+    
+          <% if(game.pegi_rating) { %>
+            <img
+            src="/assets/images/age-ratings/<%= game.pegi_image_url %>"
+            alt="PEGI Rating: <%= game.pegi_rating %>"
+            title="<%= game.pegi_rating %>"
+            class="pegi rating"
+          />
+          <% } %>
+        </section>
+      </section>
+
+      <p class="game-title"><%= game.title %></p>
+    </section>
+  </article>
+</a>

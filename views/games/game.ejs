@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles/style.css" />
+    <title><%= game.title %></title>
+  </head>
+  <body>
+    <%- include("../partials/header", { activeEntity: "games" }) %>
+    <article>
+      <% if(game.banner) { %>
+      <img src="<%= game.banner %>" alt="<%= game.title %> banner" />
+      <% } %>
+
+      <h1><%= game.title %></h1>
+
+      <!-- [IMAGES AND VIDEOS HERE] -->
+
+      <h2>Description</h2>
+      <p><%= game.description %></p>
+
+      <p>Videogame ID: <%= game.videogame_id %></p>
+
+      <p>Release Date: <%= game.release_date %></p>
+
+      <% if (game.website) { %>
+      <p>
+        Website:
+        <a href="<%= game.website %>" target="_blank"><%= game.website %></a>
+      </p>
+      <% } %>
+
+      <p>Added At: <%= game.added_at %></p>
+
+      <% if (game.metacritic_rating !== null) { %>
+      <p>Metacritic Rating: <%= game.metacritic_rating %></p>
+      <% } %>
+    
+      <% if (game.opencritic_rating !== null) { %>
+      <p>OpenCritic Rating: <%= game.opencritic_rating %></p>
+      <% } %>
+      
+      <% if (game.ign_rating !== null) { %>
+      <p>IGN Rating: <%= game.ign_rating %></p>
+      <% } %>
+
+      <p>Game of the Year: <%= game.goty ? 'true' : 'false' %></p>
+
+      <% if (game.esrb_rating !== null) { %>
+      <p>ESRB Rating: <%= game.esrb_rating %></p>
+      <% } %>
+      
+      <% if (game.esrb_description !== null) { %>
+      <p>ESRB Description: <%= game.esrb_description %></p>
+      <% } %>
+      
+      <% if (game.pegi_rating !== null) { %>
+      <p>PEGI Rating: <%= game.pegi_rating %></p>
+      <% } %> 
+      
+      <% if (game.pegi_description !== null) { %>
+      <p>PEGI Description: <%= game.pegi_description %></p>
+      <% } %>
+
+      <p>Genres:</p>
+      <ul>
+        <% game.genres.forEach(function(genre) { %>
+        <li><%= genre %></li>
+        <% }); %>
+      </ul>
+
+      <p>Platforms:</p>
+      <ul>
+        <% game.platforms.forEach(function(platform) { %>
+        <li><%= platform %></li>
+        <% }); %>
+      </ul>
+
+      <p>Publishers:</p>
+      <ul>
+        <% game.publishers.forEach(function(publisher) { %>
+        <li><%= publisher %></li>
+        <% }); %>
+      </ul>
+
+      <p>Studios:</p>
+      <ul>
+        <% game.studios.forEach(function(studio) { %>
+        <li><%= studio %></li>
+        <% }); %>
+      </ul>
+    </article>
+  </body>
+</html>

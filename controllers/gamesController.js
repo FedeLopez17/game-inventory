@@ -78,6 +78,21 @@ module.exports = {
     res.render("games/games", { games });
   },
 
+  getGameById: async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      const game = await gameQueries.getGameById(id);
+      if (!game) {
+        return res.status(404).send("Game not found");
+      }
+      res.render("games/game", { game });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Error fetching game");
+    }
+  },
+
   getAddGame: async (req, res) => {
     const pegiRatings = await ageRatingQueries.getAllPegiRatings();
     const esrbRatings = await ageRatingQueries.getAllEsrbRatings();
