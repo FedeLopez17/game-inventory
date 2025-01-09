@@ -10,8 +10,8 @@
   <body>
     <%- include("../partials/header", { activeEntity: "games" }) %>
     <article>
-      <% if(game.banner) { %>
-      <img src="<%= game.banner %>" alt="<%= game.title %> banner" />
+      <% if(game.banner_image_url) { %>
+      <img src="<%= game.banner_image_url %>" alt="<%= game.title %> banner" />
       <% } %>
 
       <h1><%= game.title %></h1>
