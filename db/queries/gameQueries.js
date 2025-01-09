@@ -1,5 +1,4 @@
 const pool = require("../../config/pool.js");
-const { deleteGameById } = require("../../controllers/gamesController.js");
 
 module.exports = {
   getAllGames: async () => {
@@ -186,7 +185,6 @@ module.exports = {
         ]
       );
       const gameId = gameResult.rows[0].id;
-
 
       // Ensure inputs are arrays
       // We make sure that inputs are arrays so that we can iterate over them, even if they only have one item.
