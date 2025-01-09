@@ -228,6 +228,9 @@ module.exports = {
       return res.status(404).send("Game not found");
     }
     
+    await deleteImage("covers", gameToDelete.cover_image_url);
+    await deleteImage("banners", gameToDelete.banner_image_url);
+
     const deletionSuccessful = await gameQueries.deleteGameById(id);
     deletionSuccessful
       ? res.status(204).send("Game deleted successfully!")
