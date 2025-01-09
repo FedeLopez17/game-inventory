@@ -8,12 +8,26 @@ const validateAtLeastOneChecked = (name) => {
     `input[type="checkbox"][name="${name}"]`
   );
 
+  // Force DOM refresh
+  checkboxes.forEach((checkbox) => {
+    checkbox.checked = checkbox.checked; // Re-assert DOM state
+  });
+
   const atLeastOneChecked = Array.from(checkboxes).some(
     (checkbox) => checkbox.checked
   );
 
   checkboxes.forEach((checkbox) => (checkbox.required = !atLeastOneChecked));
 };
+
+const initializeCheckboxValidation = () => {
+  ["platforms", "genre", "studio", "publisher"].forEach(
+    validateAtLeastOneChecked
+  );
+};
+
+// Use pageshow to ensure this runs even on back navigation
+window.addEventListener("pageshow", initializeCheckboxValidation);
 
 const addEntity = async (entityName, fetchUrl) => {
   const name = document.querySelector(`#${entityName}-name`).value;
