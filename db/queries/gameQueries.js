@@ -1,4 +1,5 @@
 const pool = require("../../config/pool.js");
+const { deleteGameById } = require("../../controllers/gamesController.js");
 
 module.exports = {
   getAllGames: async () => {
@@ -185,6 +186,15 @@ module.exports = {
         ]
       );
       const gameId = gameResult.rows[0].id;
+
+
+      // Ensure inputs are arrays
+      // We make sure that inputs are arrays so that we can iterate over them, even if they only have one item.
+      // Otherwise, if the inputs were strings, we would iterate over each character.
+      if (!Array.isArray(genre)) genre = [genre];
+      if (!Array.isArray(platforms)) platforms = [platforms];
+      if (!Array.isArray(studio)) studio = [studio];
+      if (!Array.isArray(publisher)) publisher = [publisher];
 
       for (let genreId of genre) {
         await client.query(
