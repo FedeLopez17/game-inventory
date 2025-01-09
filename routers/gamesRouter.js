@@ -18,4 +18,6 @@ gamesRouter.post(
 
 gamesRouter.get("/:id", gamesController.getGameById);
 
+gamesRouter.delete("/delete/:id", gamesController.deleteGameById);
+
 module.exports = gamesRouter;

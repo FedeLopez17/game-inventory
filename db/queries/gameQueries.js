@@ -232,4 +232,43 @@ module.exports = {
       client.release();
     }
   },
+
+  deleteGameById: async (id) => {
+    const client = await pool.connect();
+    try {
+      await client.query("BEGIN");
+
+      await client.query(
+        "DELETE FROM videogames_genres WHERE videogame_id = $1",
+        [id]
+      );
+      await client.query(
+        "DELETE FROM videogames_platforms WHERE videogame_id = $1",
+        [id]
+      );
+      await client.query(
+        "DELETE FROM videogames_publishers WHERE videogame_id = $1",
+        [id]
+      );
+      await client.query(
+        "DELETE FROM videogames_studios WHERE videogame_id = $1",
+        [id]
+      );
+      await client.query("DELETE FROM images WHERE videogame_id = $1", [id]);
+
+      const deletionResult = await client.query(
+        "DELETE FROM videogames WHERE id = $1",
+        [id]
+      );
+
+      await client.query("COMMIT");
+      return deletionResult.rowCount > 0;
+    } catch (error) {
+      await client.query("ROLLBACK");
+      console.error("Error deleting videogame:", error);
+      return false;
+    } finally {
+      client.release();
+    }
+  },
 };

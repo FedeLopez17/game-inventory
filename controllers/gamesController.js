@@ -214,4 +214,23 @@ module.exports = {
       }
     },
   ],
+
+  deleteGameById: async (req, res) => {
+    const { id } = req.params;
+    const { password } = req.body;
+
+    if (password !== process.env.ADMIN_PASSWORD) {
+      return res.status(401).send("Wrong password");
+    }
+
+    const gameToDelete = await gameQueries.getGameById(id);
+    if (!gameToDelete) {
+      return res.status(404).send("Game not found");
+    }
+    
+    const deletionSuccessful = await gameQueries.deleteGameById(id);
+    deletionSuccessful
+      ? res.status(204).send("Game deleted successfully!")
+      : res.status(500).send("Game couldn't be deleted!");
+  },
 };
