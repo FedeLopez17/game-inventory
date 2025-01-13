@@ -263,9 +263,9 @@ function deleteEntity(entity, id, fetchUrl, redirect) {
     .catch((error) => console.error("Error:", error));
 }
 
-document
-  .getElementById("cover-image")
-  .addEventListener("change", function (event) {
+const coverImage = document.getElementById("cover-image");
+if (coverImage) {
+  coverImage.addEventListener("change", function (event) {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -275,6 +275,7 @@ document
       reader.readAsDataURL(file);
     }
   });
+}
 
 const bannerInput = document.getElementById("banner-image");
 if (bannerInput) {
