@@ -254,6 +254,26 @@ module.exports = {
         goty,
       } = req.body;
 
+      console.log("VALUES: ");
+      console.log(
+        JSON.stringify({
+          title,
+          release,
+          description,
+          website,
+          goty,
+          platforms,
+          pegi,
+          esrb,
+          ign,
+          opencritic,
+          metacritic,
+          genre,
+          studio,
+          publisher,
+        })
+      );
+
       const coverImageBuffer = req.files.cover[0].buffer;
       const bannerImageBuffer = req.files.banner
         ? req.files.banner[0].buffer
@@ -385,16 +405,17 @@ module.exports = {
         description,
         website,
         goty,
-        platforms,
         pegi,
         esrb,
         ign,
         opencritic,
         metacritic,
-        genre,
-        studio,
-        publisher,
       } = req.body;
+
+      const platforms = req.body.platforms.split(",");
+      const genre = req.body.genre.split(",");
+      const studio = req.body.studio.split(",");
+      const publisher = req.body.publisher.split(",");
 
       console.log("VALUES: ");
       console.log(
@@ -417,6 +438,8 @@ module.exports = {
           publisher,
         })
       );
+
+      console.log(typeof genre);
 
       const errors = validationResult(req);
 
