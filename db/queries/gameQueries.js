@@ -269,4 +269,108 @@ module.exports = {
       client.release();
     }
   },
+
+  updateGame: async (
+    id,
+    title,
+    coverImage,
+    bannerImage,
+    releaseDate,
+    description,
+    website,
+    platforms,
+    pegiRating,
+    esrbRating,
+    metacriticRating,
+    opencriticRating,
+    ignRating,
+    genre,
+    studio,
+    publisher,
+    goty
+  ) => {
+    const client = await pool.connect();
+
+    try {
+      await client.query("BEGIN");
+
+      await client.query(
+        "UPDATE videogames SET title = $1, release_date = $2, cover_image_url = $3, banner_image_url = $4, description = $5, website = $6, pegi_rating_id = $7, esrb_rating_id = $8, metacritic_rating = $9, opencritic_rating = $10, ign_rating = $11, goty = $12 WHERE id = $13",
+        [
+          title,
+          releaseDate,
+          coverImage,
+          bannerImage,
+          description,
+          website,
+          pegiRating,
+          esrbRating,
+          metacriticRating,
+          opencriticRating,
+          ignRating,
+          goty,
+          id,
+        ]
+      );
+
+      // Ensure inputs are arrays
+      if (!Array.isArray(genre)) genre = [genre];
+      if (!Array.isArray(platforms)) platforms = [platforms];
+      if (!Array.isArray(studio)) studio = [studio];
+      if (!Array.isArray(publisher)) publisher = [publisher];
+
+      // Clear and reinsert related data
+      await client.query(
+        "DELETE FROM videogames_genres WHERE videogame_id = $1",
+        [id]
+      );
+      await client.query(
+        "DELETE FROM videogames_platforms WHERE videogame_id = $1",
+        [id]
+      );
+      await client.query(
+        "DELETE FROM videogames_studios WHERE videogame_id = $1",
+        [id]
+      );
+      await client.query(
+        "DELETE FROM videogames_publishers WHERE videogame_id = $1",
+        [id]
+      );
+
+      for (let genreId of genre) {
+        await client.query(
+          "INSERT INTO videogames_genres (videogame_id, genre_id) VALUES ($1, $2)",
+          [id, genreId]
+        );
+      }
+
+      for (let platformId of platforms) {
+        await client.query(
+          "INSERT INTO videogames_platforms (videogame_id, platform_id) VALUES ($1, $2)",
+          [id, platformId]
+        );
+      }
+
+      for (let studioId of studio) {
+        await client.query(
+          "INSERT INTO videogames_studios (videogame_id, studio_id) VALUES ($1, $2)",
+          [id, studioId]
+        );
+      }
+
+      for (let publisherId of publisher) {
+        await client.query(
+          "INSERT INTO videogames_publishers (videogame_id, publisher_id) VALUES ($1, $2)",
+          [id, publisherId]
+        );
+      }
+
+      await client.query("COMMIT");
+    } catch (err) {
+      await client.query("ROLLBACK");
+      throw err;
+    } finally {
+      client.release();
+    }
+  },
 };

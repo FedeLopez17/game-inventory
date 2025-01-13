@@ -17,6 +17,7 @@
       <h1><%= game.title %></h1>
 
       <button type="button" onClick="deleteEntity('game', <%= game.videogame_id %>, '/games/delete', '/games')">Delete</button>
+      <a href="/games/update/<%= game.videogame_id %>">Update</a>
 
       <!-- [IMAGES AND VIDEOS HERE] -->
 

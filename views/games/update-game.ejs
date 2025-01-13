@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="/scripts/script.js" defer></script>
+    <link rel="stylesheet" href="/styles/style.css">
+    <title>Add Game</title>
+  </head>
+  <body>
+    <%- include("../partials/header", { activeEntity: "games" }) %>
+
+    <form id="add-genre" onsubmit="addEntity('genre', '/genres/add'); return false;"></form>
+    <form id="add-studio" onsubmit="addEntity('studio', '/studios/add'); return false;"></form>
+    <form id="add-publisher" onsubmit="addEntity('publisher', '/publishers/add'); return false;"></form>
+    <form id="update-game">
+      <section>
+        <label for="title">Title: <%- include("../partials/required-symbol") %></label>
+        <input type="text" id="title" name="title" value="<%= formData.title %>" required/>
+        <%- include("../partials/error", { fieldName: 'title', visible: true }) %>
+      </section>
+
+      <section>
+        <label for="cover-image">Cover image: <%- include("../partials/required-symbol") %></label>
+        <input type="file" accept="image/*" id="cover-image" name="cover" required/>
+        <%- include("../partials/error", { fieldName: 'cover', visible: true }) %>
+        <img src="<%= formData.cover_image_url %>" alt="<%= formData.title %> cover image" id="cover-preview">
+      </section>
+
+      <% if(formData.banner_image_url) { %>
+        <section>
+            <label for="banner-image">Banner image</label>
+            <input type="file" accept="image/*" id="banner-image" name="banner"/>
+            <%- include("../partials/error", { fieldName: 'banner', visible: true }) %>
+            <img src="<%= formData.banner_image_url %>" alt="<%= formData.title %> banner image" id="banner-preview">
+          </section>
+      <% } %>
+    
+
+      <section>
+        <label for="release-date">Release date: <%- include("../partials/required-symbol") %></label>
+        <input type="date" id="release-date" name="release" value="<%= formData.release_date %>" required/>
+        <%- include("../partials/error", { fieldName: 'release', visible: true }) %>
+      </section>
+
+      <section>
+        <label for="description">Description: <%- include("../partials/required-symbol") %></label>
+        <textarea name="description" id="description" rows="4" required><%= formData.description %></textarea>
+        <%- include("../partials/error", { fieldName: 'description', visible: true }) %>
+      </section>
+
+      <section>
+        <label for="website">Website</label>
+        <input type="url" id="website" name="website" value="<%= formData.website %>"/>
+      </section>
+
+      <section>
+        <label for="goty">Did this game win Game of The Year Award?</label>
+        <input type="checkbox" name="goty" id="goty" checked="<%= formData.goty %>"/>
+      </section>
+
+      <fieldset>
+        <legend>Plaforms: <%- include("../partials/required-symbol") %></legend>
+
+        <% platforms.forEach(platform => { %>
+          <label>
+            <input type="checkbox" name="platforms" value=<%= platform.id %> <%= formData.platforms.includes(platform.name) ? "checked" : "" %> required onClick="validateAtLeastOneChecked('platforms')"/> <%= platform.name %>
+          </label>
+        <% }) %>
+
+        <%- include("../partials/error", { fieldName: 'title', visible: platforms }) %>
+      </fieldset>
+
+      <fieldset>
+        <legend>PEGI Rating</legend>
+
+        <% pegiRatings.forEach(rating => { %>
+          <label>
+            <input type="radio" name="pegi" value=<%= rating.id %> <%= formData.pegi_rating == rating.rating ? "checked" : "" %>  /> <%= rating.rating %>
+          </label>
+        <% }) %>
+      </fieldset>
+
+      <fieldset>
+        <legend>ESRB Rating</legend>
+
+
+        <% esrbRatings.forEach(rating => { %>
+          <label>
+            <input type="radio" name="esrb" value=<%= rating.id %> <%= formData.esrb_rating == rating.rating ? "checked" : "" %> /> <%= rating.rating %>
+          </label>
+        <% }) %>
+
+      </fieldset>
+
+      <fieldset>
+        <legend>Critic Scores</legend>
+        <label for="ign">IGN Score (0-10):</label>
+        <input
+          type="number"
+          id="ign"
+          name="ign"
+          min="0"
+          max="10"
+          step="0.1"
+          placeholder="IGN Score"
+          value="<%= formData.ign_rating || '' %>"
+        />
+        <%- include("../partials/error", { fieldName: 'ign', visible: true }) %>
+
+        <label for="opencritic">OpenCritic Score (0-100):</label>
+        <input
+          type="number"
+          id="opencritic"
+          name="opencritic"
+          min="0"
+          max="100"
+          step="1"
+          placeholder="OpenCritic Score"
+          value="<%= formData.opencritic_rating || '' %>"
+        />
+        <<%- include("../partials/error", { fieldName: 'opencritic', visible: true }) %>
+
+        <label for="metacritic">Metacritic Score (0-100):</label>
+        <input
+          type="number"
+          id="metacritic"
+          name="metacritic"
+          min="0"
+          max="100"
+          step="1"
+          placeholder="Metacritic Score"
+          value="<%= formData.metacritic_rating || '' %>"
+        />
+        <%- include("../partials/error", { fieldName: 'metacritic', visible: true }) %>
+      </fieldset>
+
+      <fieldset>
+        <legend>Genre(s): <%- include("../partials/required-symbol") %></legend>
+        <section class="genre-wrapper">
+          <% genres.forEach(genre => { %>
+            <label>
+              <input type="checkbox" name="genre" value=<%= genre.id %> <%= formData.genres.includes(genre.name) ? "checked" : "" %> required onClick="validateAtLeastOneChecked('genre')"/> <%= genre.name %>
+            </label>
+          <% }) %>
+          <%- include("../partials/error", { fieldName: 'genre', visible: true }) %>
+        </section>
+
+        <section><p>Don't see the genre?</p> <button type="button" onclick="toggleForm('genre-form')">Add Genre</button></section>
+      <section class="toggle-form" id="genre-form">
+        <%- include("../partials/entity-inputs", { isAdd: true, form: "add-genre", entity: "genre", formData: null}) %>
+        <button type="submit" form="add-genre">Add</button>
+       </section>
+      </fieldset>
+
+      <fieldset>
+        <legend>Studio(s): <%- include("../partials/required-symbol") %></legend>
+        <section class="studio-wrapper">
+          <% studios.forEach(studio => { %>
+            <label>
+              <input type="checkbox" name="studio" value=<%= studio.id %> <%= formData.studios.includes(studio.name) ? "checked" : "" %> required onClick="validateAtLeastOneChecked('studio')"/> <%= studio.name %>
+            </label>
+          <% }) %>
+          <%- include("../partials/error", { fieldName: 'studio', visible: true }) %>
+        </section>
+
+        <section><p>Don't see the studio?</p> <button type="button" onclick="toggleForm('studio-form')">Add Studio</button></section>
+      <section class="toggle-form" id="studio-form">
+        <%- include("../partials/entity-inputs", { isAdd: true, form: "add-studio", entity: "studio", formData: null }) %>
+        <button type="submit" form="add-studio">Add</button>
+       </section>
+      </fieldset>
+
+      <fieldset>
+        <legend>Publisher(s): <%- include("../partials/required-symbol") %></legend>
+        <section class="publisher-wrapper">
+          <% publishers.forEach(publisher => { %>
+            <label>
+              <input type="checkbox" name="publisher" value=<%= publisher.id %> <%= formData.publishers.includes(publisher.name) ? "checked" : "" %> required onClick="validateAtLeastOneChecked('publisher')"/> <%= publisher.name %>
+            </label>
+          <% }) %>
+          <%- include("../partials/error", { fieldName: 'publisher', visible: true }) %>
+        </section>
+
+        <section><p>Don't see the publisher?</p> <button type="button" onclick="toggleForm('publisher-form')">Add Publisher</button></section>
+      <section class="toggle-form" id="publisher-form">
+        <%- include("../partials/entity-inputs", { isAdd: true, form: "add-publisher", entity: "publisher", formData: null }) %>
+        <button type="submit" form="add-publisher">Add</button>
+       </section>
+      </fieldset>
+
+      <!-- [MULTIPLE IMAGE INPUT GOES HERE] -->
+
+      <button type="button" form="update-game" onclick="updateGame(<%= formData.videogame_id %>)">Update Game</button>
+      
+
+    </form>
+  </body>
+</html>

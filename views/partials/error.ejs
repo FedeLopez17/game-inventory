@@ -1,4 +1,5 @@
-<% const fieldError = errors && errors.find(err => err.path === fieldName); %>
-<% if (fieldError) { %>
-<span class="error"><%= fieldError.msg %></span>
+<% const fieldError = locals.errors && errors.find(err => err.path === fieldName); %>
+
+<% if (fieldError || locals.visible) { %>
+<span class="error" data-path="<%= locals.fieldName %>"><%= fieldError && fieldError.msg %></span>
 <% } %>

@@ -103,6 +103,101 @@ const addEntity = async (entityName, fetchUrl) => {
   }
 };
 
+const getCheckedInputs = (name) => {
+  const checkedCheckboxes = document.querySelectorAll(
+    `input[name="${name}"]:checked`
+  );
+
+  const selectedValues = Array.from(checkedCheckboxes).map(
+    (checkbox) => checkbox.value
+  );
+
+  return selectedValues;
+};
+
+function updateGame(id) {
+  const password = prompt("Please enter your password to confirm update:");
+  if (!password) {
+    alert(`Password is required to update the game.`);
+    return;
+  }
+
+  const title = document.querySelector("#title").value;
+  const coverInput = document.querySelector("#cover-image");
+  const bannerInput = document.querySelector("#banner-image");
+  const releaseDate = document.querySelector("#release-date").value;
+  const description = document.querySelector("#description").value;
+  const website = document.querySelector("#website").value;
+  const goty = document.querySelector("#goty").checked;
+  const platforms = getCheckedInputs("platforms");
+  const pegiRating = document.querySelector("[name='pegi']").value;
+  const esrbRating = document.querySelector("[name='esrb']").value;
+  const ign = document.querySelector("#ign").value;
+  const opencritic = document.querySelector("#opencritic").value;
+  const metacritic = document.querySelector("#metacritic").value;
+  const genres = getCheckedInputs("genre");
+  const studios = getCheckedInputs("studio");
+  const publishers = getCheckedInputs("publisher");
+
+  const formData = new FormData();
+
+  if (coverInput.files.length > 0) {
+    formData.append("cover", coverInput.files[0]);
+  }
+
+  if (bannerInput.files.length > 0) {
+    formData.append("banner", bannerInput.files[0]);
+  }
+
+  formData.append("title", title);
+  formData.append("release", releaseDate);
+  formData.append("description", description);
+  formData.append("website", website);
+  formData.append("goty", goty);
+  formData.append("platforms", platforms);
+  formData.append("pegi", pegiRating);
+  formData.append("esrb", esrbRating);
+  formData.append("ign", ign);
+  formData.append("opencritic", opencritic);
+  formData.append("metacritic", metacritic);
+  formData.append("genre", genres);
+  formData.append("studio", studios);
+  formData.append("publisher", publishers);
+  formData.append("password", password);
+
+  console.log(id);
+
+  fetch(`/games/update/${id}`, {
+    method: "PUT",
+    body: formData,
+  })
+    .then(async (response) => {
+      if (response.ok) {
+        window.location.href = "/games";
+      } else if (response.status === 401) {
+        alert("Wrong password");
+      } else if (response.status === 400) {
+        const { errors } = await response.json();
+        displayErrors(errors);
+      } else {
+        console.error("Failed to update game");
+      }
+    })
+    .catch((error) => console.error("Error:", error));
+}
+
+function displayErrors(errors) {
+  console.log(errors);
+
+  errors.forEach((error) => {
+    const errorElement = document.querySelector(
+      `.error[data-path='${error.path}']`
+    );
+    console.log(error.path);
+    errorElement.textContent = error.msg;
+  });
+}
+
 function updateEntity(entity, id, fetchUrl, redirect) {
   const password = prompt("Please enter your password to confirm update:");
   if (!password) {
@@ -166,4 +261,31 @@ function deleteEntity(entity, id, fetchUrl, redirect) {
       }
     })
     .catch((error) => console.error("Error:", error));
+}
+
+document
+  .getElementById("cover-image")
+  .addEventListener("change", function (event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        document.getElementById("cover-preview").src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+const bannerInput = document.getElementById("banner-image");
+if (bannerInput) {
+  bannerInput.addEventListener("change", function (event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        document.getElementById("banner-preview").src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
 }
