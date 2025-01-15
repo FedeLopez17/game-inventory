@@ -5,6 +5,7 @@ const upload = require("../config/multerConfig");
 const gamesRouter = express.Router();
 
 gamesRouter.get("/", gamesController.getGames);
+gamesRouter.get("/genre/:genre", gamesController.getGamesByGenre);
 
 gamesRouter.get("/add", gamesController.getAddGame);
 gamesRouter.post(

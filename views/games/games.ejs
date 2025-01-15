@@ -3,11 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/styles/style.css" />
     <title>Games</title>
   </head>
   <body>
-    <%- include("../partials/header", { activeEntity: "games", addButtonText: "Add Game" }) %>
+    <%- include("../partials/header", { activeEntity: "games", addButtonText:
+    "Add Game" }) %>
+
+    <section class="genre-selector">
+      <a href="/games"><p class="genre-bubble">All</p></a>
+      <% genres.forEach((genre)=> {%>
+      <a href="/games/genre/<%= genre.name %>"><p class="genre-bubble"><%= genre.name %></p></a>
+      <%})%>
+    </section>
+
     <section class="card-wrapper">
       <% games.forEach((game)=> {%> <%- include("./game-card", {game}) %> <%})%>
     </section>

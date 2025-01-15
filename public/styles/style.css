@@ -103,3 +103,21 @@ header a.active {
   text-overflow: ellipsis;
   overflow: hidden;
 }
+
+a.card-anchor,
+a.card-anchor:active,
+a.card-anchor:hover {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Genre selector */
+
+.genre-selector {
+  display: flex;
+  gap: 4px;
+}
+
+.genre-selector .genre-bubble {
+  background-color: lightgray;
+}

@@ -170,7 +170,16 @@ const validateGameUpdate = [
 module.exports = {
   getGames: async (req, res) => {
     const games = await gameQueries.getAllGames();
-    res.render("games/games", { games });
+    const genres = await genreQueries.getAllGenres();
+    res.render("games/games", { games, genres });
+  },
+
+  getGamesByGenre: async (req, res) => {
+    const { genre } = req.params;
+
+    const games = await gameQueries.getGamesByGenre(genre);
+    const genres = await genreQueries.getAllGenres();
+    res.render("games/games", { games, genres });
   },
 
   getGameById: async (req, res) => {
