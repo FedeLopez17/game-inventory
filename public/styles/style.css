@@ -73,6 +73,10 @@ header a.active {
   object-fit: cover;
 }
 
+.card-wrapper.studios .card img.cover {
+  object-fit: contain;
+}
+
 .card > .card-data {
   box-sizing: border-box;
   padding: 8px 0;
@@ -98,7 +102,7 @@ header a.active {
   width: 22px;
 }
 
-.card .game-title {
+.card .game-title, .name {
   color: white;
   text-overflow: ellipsis;
   overflow: hidden;

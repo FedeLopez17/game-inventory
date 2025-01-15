@@ -3,13 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="/scripts/script.js" defer></script>
     <link rel="stylesheet" href="/styles/style.css">
+    
     <title><%= studio.name %></title>
   </head>
   <body>
     <%- include("../partials/header", { activeEntity: "studios" }) %>
 
-    <p><%= studio.name %></p>
+    <h1><%= studio.name %></h1>
     <p><%= studio.description %></p>
+
+    <button type="button" onClick="deleteEntity('studio', <%= studio.id %>, '/studios/delete', '/studios')">
+      Delete Studio
+    </button>
+    
+    <% if(games.length) { %>
+      <h2>Games by <%= studio.name %></h2>
+      <section class="card-wrapper">
+        <% games.forEach((game)=> {%> <%- include("../games/game-card", {game}) %> <%})%>
+      </section>
+    <% } else { %>
+      <p>No games associated with this studio</p>
+    <% } %>
+
   </body>
 </html>

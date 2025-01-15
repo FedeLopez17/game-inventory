@@ -1,4 +1,5 @@
 const studioQueries = require("../db/queries/studioQueries");
+const gameQueries = require("../db/queries/gameQueries");
 const { streamUpload, deleteImage } = require("../config/cloudinaryConfig");
 const { body, validationResult } = require("express-validator");
 
@@ -64,7 +65,10 @@ module.exports = {
       if (!studio) {
         return res.status(404).send("Studio not found");
       }
-      res.render("studios/studio", { studio });
+
+      const games = await gameQueries.getGamesByStudio(id);
+
+      res.render("studios/studio", { studio, games });
     } catch (err) {
       console.error(err);
       res.status(500).send("Error fetching studio");
