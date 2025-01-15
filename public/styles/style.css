@@ -120,4 +120,14 @@ a.card-anchor:hover {
 
 .genre-selector .genre-bubble {
   background-color: lightgray;
+  display: flex;
+  gap: 4px;
+}
+
+.genre-selector .genre-bubble.active {
+  background-color: lightblue;
+}
+
+.genre-bubble img {
+  width: 16px;
 }

@@ -179,7 +179,7 @@ module.exports = {
 
     const games = await gameQueries.getGamesByGenre(genre);
     const genres = await genreQueries.getAllGenres();
-    res.render("games/games", { games, genres });
+    res.render("games/games", { games, genres, currentGenre: genre });
   },
 
   getGameById: async (req, res) => {

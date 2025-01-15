@@ -11,14 +11,30 @@
     "Add Game" }) %>
 
     <section class="genre-selector">
-      <a href="/games"><p class="genre-bubble">All</p></a>
+      <a href="/games">
+        <section class="genre-bubble genre-bubble <%= !locals.currentGenre ? 'active' : '' %>">
+          <img src="/assets/images/icons/all.svg" alt="All genres icon">
+          <p>All</p>
+        </section>
+      </a>
+
       <% genres.forEach((genre)=> {%>
-      <a href="/games/genre/<%= genre.name %>"><p class="genre-bubble"><%= genre.name %></p></a>
+      <a href="/games/genre/<%= genre.name %>">
+        <section class="genre-bubble <%= genre.name == locals.currentGenre ? 'active' : '' %>">
+          <img src="<%= genre.icon_url %>" alt="<%= genre.name %> genre icon">
+          <p><%= genre.name %></p>
+        </section>
+      </a>
       <%})%>
     </section>
 
-    <section class="card-wrapper">
-      <% games.forEach((game)=> {%> <%- include("./game-card", {game}) %> <%})%>
-    </section>
+    <% if(games.length) { %>
+      <section class="card-wrapper">
+        <% games.forEach((game)=> {%> <%- include("./game-card", {game}) %> <%})%>
+      </section>
+    <% } else { %>
+      <p>No games found</p>
+    <% } %>
+    
   </body>
 </html>
