@@ -3,23 +3,33 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="/scripts/script.js" defer></script>
     <link rel="stylesheet" href="/styles/style.css">
     <title>Publishers</title>
   </head>
   <body>
     <%- include("../partials/header", { activeEntity: "publishers", addButtonText: "Add Publisher"  }) %>
-
-    <h1>Publishers:</h1>
-    <ul>
-      <% publishers.forEach(publisher => { %>
-      <li>
-        <%= publisher.name %>
-        <button type="button" onClick="deleteEntity('publisher', <%= publisher.id %>, '/publishers/delete', '/publishers')">
-          Delete
-        </button>
-      </li>
-      <% }) %>
-    </ul>
+    
+    <% if(publishers.length) { %>
+      <section class="card-wrapper publishers">
+        <% publishers.forEach((publisher)=> {%> 
+          <a class="card-anchor" href="/publishers/<%= publisher.id %>">
+            <article class="card">
+              <section class="cover-wrapper">
+                <img
+                  src="<%= publisher.logo_image_url %>"
+                  alt="<%= publisher.name %> logo"
+                  class="cover"
+                />
+              </section>
+              <section class="card-data">   
+                <p class="name"><%= publisher.name %></p>
+              </section>
+            </article>
+          </a>
+        <%})%>
+      </section>
+    <% } else { %>
+      <p>No publishers found</p>
+    <% } %>
   </body>
 </html>

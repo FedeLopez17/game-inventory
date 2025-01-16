@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="/scripts/script.js" defer></script>
     <link rel="stylesheet" href="/styles/style.css" />
     <title><%= publisher.name %></title>
   </head>
@@ -11,5 +12,18 @@
 
     <p><%= publisher.name %></p>
     <p><%= publisher.description %></p>
+
+    <button type="button" onClick="deleteEntity('publisher', <%= publisher.id %>, '/publishers/delete', '/publishers')">
+      Delete
+    </button>
+
+    <% if(games.length) { %>
+      <h2>Games by <%= publisher.name %></h2>
+      <section class="card-wrapper">
+        <% games.forEach((game)=> {%> <%- include("../games/game-card", {game}) %> <%})%>
+      </section>
+    <% } else { %>
+      <p>No games associated with this publisher</p>
+    <% } %>
   </body>
 </html>

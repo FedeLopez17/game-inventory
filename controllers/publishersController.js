@@ -1,4 +1,5 @@
 const publisherQueries = require("../db/queries/publisherQueries");
+const gameQueries = require("../db/queries/gameQueries");
 const { streamUpload, deleteImage } = require("../config/cloudinaryConfig");
 const { body, validationResult } = require("express-validator");
 
@@ -64,7 +65,10 @@ module.exports = {
       if (!publisher) {
         return res.status(404).send("Publisher not found");
       }
-      res.render("publishers/publisher", { publisher });
+
+      const games = await gameQueries.getGamesByPublisher(id);
+
+      res.render("publishers/publisher", { publisher, games });
     } catch (err) {
       console.error(err);
       res.status(500).send("Error fetching publisher");

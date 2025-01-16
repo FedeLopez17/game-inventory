@@ -146,6 +146,55 @@ module.exports = {
     return rows;
   },
 
+  getGamesByPublisher: async (publisherId) => {
+    const { rows } = await pool.query(
+      `
+    SELECT
+        v.id AS videogame_id,
+        v.title,
+        v.release_date,
+        v.cover_image_url,
+        v.banner_image_url,
+        v.description,
+        v.website,
+        v.added_at,
+        v.metacritic_rating,
+        v.opencritic_rating,
+        v.ign_rating,
+        v.goty,
+        er.rating AS esrb_rating,
+        er.description AS esrb_description,
+        er.image_url AS esrb_image_url,
+        pr.rating AS pegi_rating,
+        pr.description AS pegi_description,
+        pr.image_url AS pegi_image_url,
+        ARRAY_AGG(DISTINCT g.name) AS genres,
+        ARRAY_AGG(DISTINCT p.name) AS platforms,
+        ARRAY_AGG(DISTINCT pub.name) AS publishers,
+        ARRAY_AGG(DISTINCT s.name) AS studios,
+        ARRAY_AGG(DISTINCT i.image_url) AS images
+    FROM
+        public.videogames v
+    LEFT JOIN public.esrb_ratings er ON v.esrb_rating_id = er.id
+    LEFT JOIN public.pegi_ratings pr ON v.pegi_rating_id = pr.id
+    LEFT JOIN public.videogames_genres vg ON v.id = vg.videogame_id
+    LEFT JOIN public.genres g ON vg.genre_id = g.id
+    LEFT JOIN public.videogames_platforms vp ON v.id = vp.videogame_id
+    LEFT JOIN public.platforms p ON vp.platform_id = p.id
+    LEFT JOIN public.videogames_publishers vpub ON v.id = vpub.videogame_id
+    LEFT JOIN public.publishers pub ON vpub.publisher_id = pub.id
+    LEFT JOIN public.videogames_studios vs ON v.id = vs.videogame_id
+    LEFT JOIN public.studios s ON vs.studio_id = s.id
+    LEFT JOIN public.images i ON v.id = i.videogame_id
+    WHERE pub.id = $1
+    GROUP BY
+        v.id, er.id, pr.id
+    `,
+      [publisherId]
+    );
+    return rows;
+  },
+
   getGameByName: async (name) => {
     const { rows } = await pool.query(
       `
