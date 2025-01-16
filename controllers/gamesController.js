@@ -353,7 +353,9 @@ module.exports = {
     }
 
     await deleteImage("covers", gameToDelete.cover_image_url);
-    await deleteImage("banners", gameToDelete.banner_image_url);
+    if (gameToDelete.banner_image_url) {
+      await deleteImage("banners", gameToDelete.banner_image_url);
+    }
 
     const deletionSuccessful = await gameQueries.deleteGameById(id);
     deletionSuccessful
