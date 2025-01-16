@@ -132,3 +132,36 @@ a.card-anchor:hover {
 .genre-bubble img {
   width: 16px;
 }
+
+/* Page Selector */
+
+.page-selector {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.page-selector a,
+.page-selector a:active,
+.page-selector a:visited,
+.page-selector a:hover {
+  text-decoration: none;
+  padding: 4px;
+  border-radius: 4px;
+  background-color: lightgray;
+  color: black;
+  font-weight: bold;
+}
+
+.page-selector a.active {
+  background-color: pink;
+}
+
+.page-selector .previous,
+.page-selector .next {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+}

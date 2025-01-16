@@ -7,8 +7,7 @@
     <title>Games</title>
   </head>
   <body>
-    <%- include("../partials/header", { activeEntity: "games", addButtonText:
-    "Add Game" }) %>
+    <%- include("../partials/header", { activeEntity: "games", addButtonText:"Add Game" }) %>
 
     <section class="genre-selector">
       <a href="/games">
@@ -35,6 +34,8 @@
     <% } else { %>
       <p>No games found</p>
     <% } %>
+
+    <%- include("../partials/page-selector", { ...page}) %>
     
   </body>
 </html>

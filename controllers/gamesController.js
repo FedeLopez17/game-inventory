@@ -7,6 +7,8 @@ const publisherQueries = require("../db/queries/publisherQueries");
 const { body, validationResult } = require("express-validator");
 const { streamUpload, deleteImage } = require("../config/cloudinaryConfig");
 
+const GAMES_PER_PAGE = 4;
+
 const validateGame = [
   body("title")
     .trim()
@@ -169,17 +171,51 @@ const validateGameUpdate = [
 
 module.exports = {
   getGames: async (req, res) => {
-    const games = await gameQueries.getAllGames();
+    const { page = 1, limit = GAMES_PER_PAGE } = req.query;
+    const pageNumber = parseInt(page, 10);
+    const gamesPerPage = parseInt(limit, 10);
+    const offset = (pageNumber - 1) * gamesPerPage;
+
+    const pageGames = await gameQueries.getAllGames(gamesPerPage, offset);
+    const totalGames = await gameQueries.getGamesCount();
     const genres = await genreQueries.getAllGenres();
-    res.render("games/games", { games, genres });
+
+    res.render("games/games", {
+      games: pageGames,
+      genres,
+      page: {
+        number: pageNumber,
+        total: Math.ceil(totalGames / gamesPerPage),
+        gamesPerPage,
+      },
+    });
   },
 
   getGamesByGenre: async (req, res) => {
     const { genre } = req.params;
+    const { page = 1, limit = GAMES_PER_PAGE } = req.query;
+    const pageNumber = parseInt(page, 10);
+    const gamesPerPage = parseInt(limit, 10);
+    const offset = (pageNumber - 1) * gamesPerPage;
 
-    const games = await gameQueries.getGamesByGenre(genre);
+    const pageGames = await gameQueries.getGamesByGenre(
+      genre,
+      gamesPerPage,
+      offset
+    );
+    const totalGames = await gameQueries.getGamesByGenreCount(genre);
     const genres = await genreQueries.getAllGenres();
-    res.render("games/games", { games, genres, currentGenre: genre });
+
+    res.render("games/games", {
+      games: pageGames,
+      genres,
+      currentGenre: genre,
+      page: {
+        number: pageNumber,
+        total: Math.ceil(totalGames / gamesPerPage),
+        gamesPerPage,
+      },
+    });
   },
 
   getGameById: async (req, res) => {

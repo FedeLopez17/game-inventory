@@ -1,7 +1,25 @@
 const pool = require("../../config/pool.js");
 
 module.exports = {
-  getAllGames: async () => {
+  getGamesCount: async () => {
+    const { rows } = await pool.query(
+      `SELECT COUNT(*) AS total FROM videogames`
+    );
+    return parseInt(rows[0].total, 10);
+  },
+
+  getGamesByGenreCount: async (genre) => {
+    const { rows } = await pool.query(
+      `SELECT COUNT(*) AS total FROM public.videogames v
+      LEFT JOIN public.videogames_genres vg ON v.id = vg.videogame_id
+      LEFT JOIN public.genres g ON vg.genre_id = g.id
+      WHERE g.name = $1`,
+      [genre]
+    );
+    return parseInt(rows[0].total, 10);
+  },
+
+  getAllGames: async (limit, offset) => {
     const { rows } = await pool.query(
       `
     SELECT
@@ -43,12 +61,14 @@ module.exports = {
     LEFT JOIN public.images i ON v.id = i.videogame_id
     GROUP BY
         v.id, er.id, pr.id
-    `
+    LIMIT $1 OFFSET $2
+    `,
+      [limit, offset]
     );
     return rows;
   },
 
-  getGamesByGenre: async (genre) => {
+  getGamesByGenre: async (genre, limit, offset) => {
     const { rows } = await pool.query(
       `
     SELECT
@@ -91,8 +111,9 @@ module.exports = {
     WHERE g.name = $1
     GROUP BY
         v.id, er.id, pr.id
+    LIMIT $2 OFFSET $3
     `,
-      [genre]
+      [genre, limit, offset]
     );
     return rows;
   },
