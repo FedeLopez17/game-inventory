@@ -186,7 +186,6 @@ module.exports = {
       page: {
         number: pageNumber,
         total: Math.ceil(totalGames / gamesPerPage),
-        gamesPerPage,
       },
     });
   },
