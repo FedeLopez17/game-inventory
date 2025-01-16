@@ -27,15 +27,13 @@
         <img src="<%= formData.cover_image_url %>" alt="<%= formData.title %> cover image" id="cover-preview">
       </section>
 
-      <% if(formData.banner_image_url) { %>
-        <section>
-            <label for="banner-image">Banner image</label>
-            <input type="file" accept="image/*" id="banner-image" name="banner"/>
-            <%- include("../partials/error", { fieldName: 'banner', visible: true }) %>
-            <img src="<%= formData.banner_image_url %>" alt="<%= formData.title %> banner image" id="banner-preview">
-          </section>
-      <% } %>
-    
+      
+      <section>
+        <label for="banner-image">Banner image</label>
+        <input type="file" accept="image/*" id="banner-image" name="banner"/>
+        <%- include("../partials/error", { fieldName: 'banner', visible: true }) %>
+        <img src="<%= formData.banner_image_url %>" alt="<%= formData.title %> banner image" id="banner-preview">
+      </section>
 
       <section>
         <label for="release-date">Release date: <%- include("../partials/required-symbol") %></label>
