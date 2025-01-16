@@ -3,6 +3,8 @@ const gameQueries = require("../db/queries/gameQueries");
 const { streamUpload, deleteImage } = require("../config/cloudinaryConfig");
 const { body, validationResult } = require("express-validator");
 
+const PUBLISHERS_PER_PAGE = 4;
+
 const validatePublisher = [
   body("name")
     .trim()
@@ -53,8 +55,24 @@ const validatePublisherUpdate = [
 
 module.exports = {
   getPublishers: async (req, res) => {
-    const publishers = await publisherQueries.getAllPublishers();
-    res.render("publishers/publishers", { publishers });
+    const { page = 1, limit = PUBLISHERS_PER_PAGE } = req.query;
+    const pageNumber = parseInt(page, 10);
+    const publishersPerPage = parseInt(limit, 10);
+    const offset = (pageNumber - 1) * publishersPerPage;
+
+    const publishers = await publisherQueries.getAllPublishers(
+      publishersPerPage,
+      offset
+    );
+    const totalPublishers = await publisherQueries.getPublishersCount();
+
+    res.render("publishers/publishers", {
+      publishers,
+      page: {
+        number: pageNumber,
+        total: Math.ceil(totalPublishers / publishersPerPage),
+      },
+    });
   },
 
   getPublisherById: async (req, res) => {

@@ -1,9 +1,19 @@
 const pool = require("../../config/pool.js");
 
 module.exports = {
-  getAllPublishers: async () => {
-    const { rows } = await pool.query("SELECT * FROM publishers");
+  getAllPublishers: async (limit, offset) => {
+    const { rows } = await pool.query(
+      "SELECT * FROM publishers LIMIT $1 OFFSET $2",
+      [limit, offset]
+    );
     return rows;
+  },
+
+  getPublishersCount: async () => {
+    const { rows } = await pool.query(
+      "SELECT COUNT(*) AS total FROM publishers"
+    );
+    return parseInt(rows[0].total, 10);
   },
 
   getPublisherById: async (id) => {
