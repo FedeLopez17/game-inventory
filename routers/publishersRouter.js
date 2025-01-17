@@ -10,6 +10,8 @@ publishersRouter.put(
 );
 publishersRouter.get("/update/:id", publishersController.getUpdatePublisher);
 
+publishersRouter.post("/search", publishersController.searchPublishers);
+
 publishersRouter.delete(
   "/delete/:id",
   publishersController.deletePublisherById

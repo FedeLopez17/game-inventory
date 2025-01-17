@@ -290,3 +290,65 @@ if (bannerInput) {
     }
   });
 }
+
+let searchTimeout;
+
+const searchbar = document.querySelector("#searchbar input");
+const searchDomain = document.querySelector("#searchbar select");
+const searchResultElement = document.querySelector("#searchbar-result");
+
+if (searchbar) {
+  searchbar.addEventListener("input", () => {
+    clearTimeout(searchTimeout);
+    clearSearchResults();
+
+    if (!searchbar.value) return;
+
+    searchTimeout = setTimeout(() => {
+      search(searchbar.value, searchDomain.value);
+    }, 500);
+  });
+}
+
+const clearSearchResults = () => {
+  while (searchResultElement.firstChild) {
+    searchResultElement.removeChild(searchResultElement.firstChild);
+  }
+};
+
+const search = async (search, domain) => {
+  if (domain === "all") {
+    console.log("TO DO");
+    return;
+  }
+
+  console.log(search, domain);
+
+  const res = await fetch(`/${domain}/search`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ search }),
+  });
+
+  const searchResult = await res.json();
+  console.log(searchResult);
+
+  searchResult.forEach((item) => {
+    console.log(item);
+    const wrapperAnchor = document.createElement("a");
+    wrapperAnchor.href = `${domain}/${item.videogame_id || item.id}`;
+
+    const resultItem = document.createElement("section");
+    resultItem.classList.add("result-item");
+
+    const title = document.createElement("p");
+    title.classList.add("title");
+    title.innerText = item.title || item.name;
+
+    wrapperAnchor.appendChild(resultItem);
+    resultItem.appendChild(title);
+    searchResultElement.appendChild(wrapperAnchor);
+  });
+};

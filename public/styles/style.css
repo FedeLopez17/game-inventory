@@ -165,3 +165,30 @@ a.card-anchor:hover {
   align-items: center;
   gap: 2px;
 }
+
+/* Search bar */
+
+#searchbar {
+  display: flex;
+  border: 1px solid gray;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: 16px;
+  width: fit-content;
+  margin: 12px auto;
+}
+
+#searchbar:focus-within {
+  border-color: blue;
+}
+
+#searchbar input,
+#searchbar input:focus-visible {
+  border: none;
+  outline: none;
+}
+
+#searchbar img {
+  width: 14px;
+  object-fit: contain;
+}

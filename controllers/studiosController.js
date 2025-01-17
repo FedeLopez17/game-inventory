@@ -72,6 +72,17 @@ module.exports = {
     });
   },
 
+  searchStudios: async (req, res) => {
+    const { search } = req.body;
+
+    const matchingStudios = await studioQueries.search(search);
+    if (!matchingStudios) {
+      return res.status(404).send("No studios found");
+    }
+
+    return res.status(200).send(matchingStudios);
+  },
+
   getStudioById: async (req, res) => {
     const { id } = req.params;
 

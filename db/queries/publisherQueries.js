@@ -1,6 +1,14 @@
 const pool = require("../../config/pool.js");
 
 module.exports = {
+  search: async (search) => {
+    const { rows } = await pool.query(
+      "SELECT * FROM publishers WHERE name ILIKE $1 LIMIT 3",
+      [`${search}%`]
+    );
+    return rows;
+  },
+
   getAllPublishers: async (limit, offset) => {
     const { rows } = await pool.query(
       "SELECT * FROM publishers LIMIT $1 OFFSET $2",

@@ -75,6 +75,17 @@ module.exports = {
     });
   },
 
+  searchPublishers: async (req, res) => {
+    const { search } = req.body;
+
+    const matchingPublishers = await publisherQueries.search(search);
+    if (!matchingPublishers) {
+      return res.status(404).send("No publishers found");
+    }
+
+    return res.status(200).send(matchingPublishers);
+  },
+
   getPublisherById: async (req, res) => {
     const { id } = req.params;
 

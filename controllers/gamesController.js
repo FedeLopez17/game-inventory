@@ -190,6 +190,17 @@ module.exports = {
     });
   },
 
+  searchGames: async (req, res) => {
+    const { search } = req.body;
+
+    const matchingGames = await gameQueries.search(search);
+    if (!matchingGames) {
+      return res.status(404).send("No games found");
+    }
+
+    return res.status(200).send(matchingGames);
+  },
+
   getGamesByGenre: async (req, res) => {
     const { genre } = req.params;
     const { page = 1, limit = GAMES_PER_PAGE } = req.query;

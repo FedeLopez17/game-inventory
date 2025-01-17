@@ -7,6 +7,8 @@ const gamesRouter = express.Router();
 gamesRouter.get("/", gamesController.getGames);
 gamesRouter.get("/genre/:genre", gamesController.getGamesByGenre);
 
+gamesRouter.post("/search", gamesController.searchGames);
+
 gamesRouter.get("/add", gamesController.getAddGame);
 gamesRouter.post(
   "/add",

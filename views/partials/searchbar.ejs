@@ -1,0 +1,18 @@
+<section class="searchbar-wrapper">
+  <section id="searchbar">
+    <img
+      src="/assets/images/icons/magnifying-glass.png"
+      alt="magnifying glass icon"
+    />
+    <input type="text" placeholder="Search..." />
+    <select name="search-in">
+      <% if(locals.entity){ %>
+      <option value="<%= entity %>"><%= entity %></option>
+      <% } %>
+      <option value="<%= entityType.toLowerCase() %>"><%= entityType %></option>
+      <option value="all">All</option>
+    </select>
+  </section>
+
+  <section id="searchbar-result"></section>
+</section>

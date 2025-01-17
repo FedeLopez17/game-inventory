@@ -10,6 +10,8 @@ studiosRouter.put(
 );
 studiosRouter.get("/update/:id", studiosController.getUpdateStudio);
 
+studiosRouter.post("/search", studiosController.searchStudios);
+
 studiosRouter.delete("/delete/:id", studiosController.deleteStudioById);
 
 studiosRouter.get("/add", studiosController.getAddStudio);
