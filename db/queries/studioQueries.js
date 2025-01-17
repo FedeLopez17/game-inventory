@@ -1,9 +1,17 @@
 const pool = require("../../config/pool.js");
 
 module.exports = {
-  getAllStudios: async () => {
-    const { rows } = await pool.query("SELECT * FROM studios");
+  getAllStudios: async (limit, offset) => {
+    const { rows } = await pool.query(
+      "SELECT * FROM studios LIMIT $1 OFFSET $2",
+      [limit, offset]
+    );
     return rows;
+  },
+
+  getStudiosCount: async () => {
+    const { rows } = await pool.query("SELECT COUNT(*) AS total FROM studios");
+    return parseInt(rows[0].total, 10);
   },
 
   getStudioById: async (id) => {

@@ -3,6 +3,8 @@ const gameQueries = require("../db/queries/gameQueries");
 const { streamUpload, deleteImage } = require("../config/cloudinaryConfig");
 const { body, validationResult } = require("express-validator");
 
+const STUDIOS_PER_PAGE = 4;
+
 const validateStudio = [
   body("name")
     .trim()
@@ -53,8 +55,21 @@ const validateStudioUpdate = [
 
 module.exports = {
   getStudios: async (req, res) => {
-    const studios = await studioQueries.getAllStudios();
-    res.render("studios/studios", { studios });
+    const { page = 1, limit = STUDIOS_PER_PAGE } = req.query;
+    const pageNumber = parseInt(page, 10);
+    const studiosPerPage = parseInt(limit, 10);
+    const offset = (pageNumber - 1) * studiosPerPage;
+
+    const studios = await studioQueries.getAllStudios(studiosPerPage, offset);
+    const totalStudios = await studioQueries.getStudiosCount();
+
+    res.render("studios/studios", {
+      studios,
+      page: {
+        number: pageNumber,
+        total: Math.ceil(totalStudios / studiosPerPage),
+      },
+    });
   },
 
   getStudioById: async (req, res) => {
