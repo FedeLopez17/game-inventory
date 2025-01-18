@@ -168,14 +168,20 @@ a.card-anchor:hover {
 
 /* Search bar */
 
+/* .searchbar-wrapper {
+  width: fit-content;
+  margin: 0 auto;
+} */
+
 #searchbar {
   display: flex;
   border: 1px solid gray;
   gap: 8px;
   padding: 4px 8px;
-  border-radius: 16px;
-  width: fit-content;
-  margin: 12px auto;
+  box-sizing: border-box;
+  width: min(300px, 90%);
+  margin: 12px auto 0;
+  justify-content: space-between;
 }
 
 #searchbar:focus-within {
@@ -191,4 +197,39 @@ a.card-anchor:hover {
 #searchbar img {
   width: 14px;
   object-fit: contain;
+}
+
+#search-results {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: min(300px, 90%);
+  margin: 4px auto 4px;
+}
+
+#search-results.active {
+  border: 1px solid gray;
+}
+
+.result-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.result-item img {
+  width: 60px;
+}
+
+.result-item p {
+  flex: 1;
+}
+
+.entity-title {
+  background-color: lightgray;
+  padding: 4px 0;
+}
+
+.entity-title:not(:first-child) {
+  margin-top: 10px;
 }

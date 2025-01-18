@@ -295,7 +295,14 @@ let searchTimeout;
 
 const searchbar = document.querySelector("#searchbar input");
 const searchDomain = document.querySelector("#searchbar select");
-const searchResultElement = document.querySelector("#searchbar-result");
+const searchResultElement = document.querySelector("#search-results");
+
+if (searchDomain) {
+  searchDomain.addEventListener("change", () => {
+    if (!searchbar.value) return;
+    search(searchbar.value, searchDomain.value);
+  });
+}
 
 if (searchbar) {
   searchbar.addEventListener("input", () => {
@@ -311,44 +318,110 @@ if (searchbar) {
 }
 
 const clearSearchResults = () => {
-  while (searchResultElement.firstChild) {
-    searchResultElement.removeChild(searchResultElement.firstChild);
-  }
+  searchResultElement.innerHTML = "";
+  searchResultElement.classList.remove("active");
 };
 
 const search = async (search, domain) => {
+  clearSearchResults();
+
   if (domain === "all") {
-    console.log("TO DO");
+    const data = { games: [], publishers: [], studios: [] };
+    const domains = ["games", "publishers", "studios"];
+
+    const promises = domains.map(async (domain) => {
+      data[domain] = await fetchSearchResults(domain, search);
+    });
+
+    await Promise.all(promises);
+
+    searchResultElement.classList.add("active");
+
+    if (!data.games.length && !data.studios.length && !data.publishers.length) {
+      displayNoResultsMessage();
+      return;
+    }
+
+    domains.forEach((domain) => {
+      if (!data[domain].length) return;
+
+      const title = document.createElement("h3");
+      title.classList.add("entity-title");
+      title.innerText = capitalize(domain);
+      searchResultElement.appendChild(title);
+
+      data[domain].forEach((item) => {
+        populateSearchResults(item, domain);
+      });
+    });
+
     return;
   }
 
-  console.log(search, domain);
+  const searchResult = await fetchSearchResults(domain, search);
 
-  const res = await fetch(`/${domain}/search`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ search }),
-  });
+  searchResultElement.classList.add("active");
 
-  const searchResult = await res.json();
-  console.log(searchResult);
+  if (!searchResult.length) {
+    displayNoResultsMessage();
+    return;
+  }
 
   searchResult.forEach((item) => {
-    console.log(item);
-    const wrapperAnchor = document.createElement("a");
-    wrapperAnchor.href = `${domain}/${item.videogame_id || item.id}`;
-
-    const resultItem = document.createElement("section");
-    resultItem.classList.add("result-item");
-
-    const title = document.createElement("p");
-    title.classList.add("title");
-    title.innerText = item.title || item.name;
-
-    wrapperAnchor.appendChild(resultItem);
-    resultItem.appendChild(title);
-    searchResultElement.appendChild(wrapperAnchor);
+    populateSearchResults(item, domain);
   });
 };
+
+const populateSearchResults = (item, domain) => {
+  const wrapperAnchor = document.createElement("a");
+  wrapperAnchor.href = `${domain}/${item.videogame_id || item.id}`;
+
+  const resultItem = document.createElement("section");
+  resultItem.classList.add("result-item");
+
+  const resultImage = document.createElement("img");
+  resultImage.src = item.cover_image_url || item.logo_image_url;
+  resultImage.alt = item.title || item.name;
+
+  const title = document.createElement("p");
+  title.classList.add("title");
+  title.innerText = item.title || item.name;
+
+  wrapperAnchor.appendChild(resultItem);
+  resultItem.appendChild(resultImage);
+  resultItem.appendChild(title);
+  searchResultElement.appendChild(wrapperAnchor);
+};
+
+const displayNoResultsMessage = () => {
+  const resultItem = document.createElement("section");
+  resultItem.classList.add("result-item");
+  const message = document.createElement("p");
+  message.classList.add("title");
+  message.innerText = "Nothing found";
+  resultItem.appendChild(message);
+  searchResultElement.appendChild(resultItem);
+};
+
+const fetchSearchResults = async (domain, search) => {
+  try {
+    const res = await fetch(`/${domain}/search`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ search }),
+    });
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch results for ${domain}`);
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
