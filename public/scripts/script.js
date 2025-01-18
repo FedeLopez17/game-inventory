@@ -306,7 +306,7 @@ if (searchbar) {
 
     searchTimeout = setTimeout(() => {
       search(searchbar.value, searchDomain.value);
-    }, 500);
+    }, 250);
   });
 }
 
