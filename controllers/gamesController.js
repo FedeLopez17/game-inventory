@@ -191,9 +191,20 @@ module.exports = {
   },
 
   searchGames: async (req, res) => {
-    const { search } = req.body;
+    const { search, domain, entityId } = req.body;
 
-    const matchingGames = await gameQueries.search(search);
+    let matchingGames;
+    const searchByEntity =
+      domain == "studios"
+        ? gameQueries.searchByStudio
+        : gameQueries.searchByPublisher;
+
+    if (domain && entityId) {
+      matchingGames = await searchByEntity(search, entityId);
+    } else {
+      matchingGames = await gameQueries.search(search);
+    }
+
     if (!matchingGames) {
       return res.status(404).send("No games found");
     }

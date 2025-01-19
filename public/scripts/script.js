@@ -358,7 +358,16 @@ const search = async (search, domain) => {
     return;
   }
 
-  const searchResult = await fetchSearchResults(domain, search);
+  let searchResult;
+
+  if (domain === "specific-entity") {
+    domain = searchDomain.getAttribute("data-entity");
+    const entityId = searchDomain.getAttribute("data-entity-id");
+
+    searchResult = await fetchGamesByEntity(domain, search, entityId);
+  } else {
+    searchResult = await fetchSearchResults(domain, search);
+  }
 
   searchResultElement.classList.add("active");
 
@@ -374,7 +383,7 @@ const search = async (search, domain) => {
 
 const populateSearchResults = (item, domain) => {
   const wrapperAnchor = document.createElement("a");
-  wrapperAnchor.href = `${domain}/${item.videogame_id || item.id}`;
+  wrapperAnchor.href = `/${domain}/${item.videogame_id || item.id}`;
 
   const resultItem = document.createElement("section");
   resultItem.classList.add("result-item");
@@ -415,6 +424,27 @@ const fetchSearchResults = async (domain, search) => {
 
     if (!res.ok) {
       throw new Error(`Failed to fetch results for ${domain}`);
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+const fetchGamesByEntity = async (domain, search, entityId) => {
+  try {
+    const res = await fetch("/games/search", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ search, domain, entityId }),
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch results");
     }
 
     return await res.json();

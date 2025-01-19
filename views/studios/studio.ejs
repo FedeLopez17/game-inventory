@@ -11,6 +11,8 @@
   <body>
     <%- include("../partials/header", { activeEntity: "studios" }) %>
 
+    <%- include("../partials/searchbar", {entityType: 'Studios', entity: studio }) %>
+
     <h1><%= studio.name %></h1>
     <p><%= studio.description %></p>
 

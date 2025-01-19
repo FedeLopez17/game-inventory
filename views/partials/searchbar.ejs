@@ -5,9 +5,9 @@
       alt="magnifying glass icon"
     />
     <input type="text" placeholder="Search..." />
-    <select name="search-in">
+    <select name="search-in" data-entity="<%= entityType.toLowerCase() %>" data-entity-id="<%= locals.entity && entity.id %>">
       <% if(locals.entity){ %>
-      <option value="<%= entity %>"><%= entity %></option>
+      <option value="specific-entity"><%= entity.name %></option>
       <% } %>
       <option value="<%= entityType.toLowerCase() %>"><%= entityType %></option>
       <option value="all">All</option>

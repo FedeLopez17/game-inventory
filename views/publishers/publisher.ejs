@@ -10,6 +10,8 @@
   <body>
     <%- include("../partials/header", { activeEntity: "publisher" }) %>
 
+    <%- include("../partials/searchbar", {entityType: 'Publishers', entity: publisher }) %>
+
     <p><%= publisher.name %></p>
     <p><%= publisher.description %></p>
 

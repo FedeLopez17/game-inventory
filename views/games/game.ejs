@@ -9,6 +9,9 @@
   </head>
   <body>
     <%- include("../partials/header", { activeEntity: "games" }) %>
+
+    <%- include("../partials/searchbar", {entityType: 'Games', }) %>
+
     <article>
       <% if(game.banner_image_url) { %>
       <img src="<%= game.banner_image_url %>" alt="<%= game.title %> banner" />
