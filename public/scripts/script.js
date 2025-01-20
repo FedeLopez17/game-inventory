@@ -331,6 +331,8 @@ const search = async (search, domain) => {
 
     const promises = domains.map(async (domain) => {
       data[domain] = await fetchSearchResults(domain, search);
+      const { total } = await fetchTotal(domain, search);
+      data[domain].total = total;
     });
 
     await Promise.all(promises);
@@ -345,10 +347,22 @@ const search = async (search, domain) => {
     domains.forEach((domain) => {
       if (!data[domain].length) return;
 
+      const titleWrapper = document.createElement("section");
+      titleWrapper.classList.add("tittle-wrapper");
+
       const title = document.createElement("h3");
       title.classList.add("entity-title");
       title.innerText = capitalize(domain);
-      searchResultElement.appendChild(title);
+      titleWrapper.appendChild(title);
+
+      if (data[domain].total > 3) {
+        const anchor = document.createElement("a");
+        anchor.href = "x";
+        anchor.innerText = `See all - (${data[domain].total})`;
+        titleWrapper.appendChild(anchor);
+      }
+
+      searchResultElement.appendChild(titleWrapper);
 
       data[domain].forEach((item) => {
         populateSearchResults(item, domain);
@@ -359,14 +373,17 @@ const search = async (search, domain) => {
   }
 
   let searchResult;
+  let total;
 
   if (domain === "specific-entity") {
     domain = searchDomain.getAttribute("data-entity");
     const entityId = searchDomain.getAttribute("data-entity-id");
 
     searchResult = await fetchGamesByEntity(domain, search, entityId);
+    total = (await fetchGamesTotalByEntity(domain, search, entityId)).total;
   } else {
     searchResult = await fetchSearchResults(domain, search);
+    total = (await fetchTotal(domain, search)).total;
   }
 
   searchResultElement.classList.add("active");
@@ -379,6 +396,13 @@ const search = async (search, domain) => {
   searchResult.forEach((item) => {
     populateSearchResults(item, domain);
   });
+
+  if (total > 3) {
+    const anchor = document.createElement("a");
+    anchor.href = "x";
+    anchor.innerText = `See all - (${total})`;
+    searchResultElement.appendChild(anchor);
+  }
 };
 
 const populateSearchResults = (item, domain) => {
@@ -424,6 +448,48 @@ const fetchSearchResults = async (domain, search) => {
 
     if (!res.ok) {
       throw new Error(`Failed to fetch results for ${domain}`);
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+const fetchTotal = async (domain, search) => {
+  try {
+    const res = await fetch(`/${domain}/search/total`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ search }),
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch results");
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+const fetchGamesTotalByEntity = async (domain, search, entityId) => {
+  try {
+    const res = await fetch("/games/search/total", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ search, domain, entityId }),
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch results");
     }
 
     return await res.json();

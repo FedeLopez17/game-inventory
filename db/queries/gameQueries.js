@@ -158,6 +158,40 @@ module.exports = {
     return parseInt(rows[0].total, 10);
   },
 
+  getSearchCount: async (search) => {
+    const { rows } = await pool.query(
+      `SELECT COUNT(*) AS total FROM videogames where title ILIKE $1`,
+      [`${search}%`]
+    );
+    return parseInt(rows[0].total, 10);
+  },
+
+  searchTotalByStudio: async (search, studioId) => {
+    const { rows } = await pool.query(
+      `
+      SELECT COUNT(*) AS total
+      FROM public.videogames v
+      INNER JOIN public.videogames_studios vs ON v.id = vs.videogame_id
+      WHERE v.title ILIKE $1 AND vs.studio_id = $2
+      `,
+      [`${search}%`, studioId]
+    );
+    return rows[0]?.total || 0;
+  },
+
+  searchTotalByPublisher: async (search, publisherId) => {
+    const { rows } = await pool.query(
+      `
+      SELECT COUNT(*) AS total
+      FROM public.videogames v
+      INNER JOIN public.videogames_publishers vp ON v.id = vp.videogame_id
+      WHERE v.title ILIKE $1 AND vp.publisher_id = $2
+      `,
+      [`${search}%`, publisherId]
+    );
+    return rows[0]?.total || 0;
+  },
+
   getGamesByGenreCount: async (genre) => {
     const { rows } = await pool.query(
       `SELECT COUNT(*) AS total FROM public.videogames v

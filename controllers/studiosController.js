@@ -83,6 +83,12 @@ module.exports = {
     return res.status(200).send(matchingStudios);
   },
 
+  getSearchTotal: async (req, res) => {
+    const { search } = req.body;
+    const total = await studioQueries.getSearchCount(search);
+    return res.send({ total });
+  },
+
   getStudioById: async (req, res) => {
     const { id } = req.params;
 

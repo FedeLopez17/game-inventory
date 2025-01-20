@@ -8,6 +8,7 @@ gamesRouter.get("/", gamesController.getGames);
 gamesRouter.get("/genre/:genre", gamesController.getGamesByGenre);
 
 gamesRouter.post("/search", gamesController.searchGames);
+gamesRouter.post("/search/total", gamesController.getSearchTotal);
 
 gamesRouter.get("/add", gamesController.getAddGame);
 gamesRouter.post(

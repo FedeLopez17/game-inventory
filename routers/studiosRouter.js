@@ -11,6 +11,7 @@ studiosRouter.put(
 studiosRouter.get("/update/:id", studiosController.getUpdateStudio);
 
 studiosRouter.post("/search", studiosController.searchStudios);
+studiosRouter.post("/search/total", studiosController.getSearchTotal);
 
 studiosRouter.delete("/delete/:id", studiosController.deleteStudioById);
 

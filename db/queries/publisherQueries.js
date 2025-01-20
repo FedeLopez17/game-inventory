@@ -24,6 +24,14 @@ module.exports = {
     return parseInt(rows[0].total, 10);
   },
 
+  getSearchCount: async (search) => {
+    const { rows } = await pool.query(
+      `SELECT COUNT(*) AS total FROM publishers where name ILIKE $1`,
+      [`${search}%`]
+    );
+    return parseInt(rows[0].total, 10);
+  },
+
   getPublisherById: async (id) => {
     const { rows } = await pool.query(
       "SELECT * FROM publishers WHERE id = $1",

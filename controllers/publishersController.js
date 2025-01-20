@@ -86,6 +86,12 @@ module.exports = {
     return res.status(200).send(matchingPublishers);
   },
 
+  getSearchTotal: async (req, res) => {
+    const { search } = req.body;
+    const total = await publisherQueries.getSearchCount(search);
+    return res.send({ total });
+  },
+
   getPublisherById: async (req, res) => {
     const { id } = req.params;
 

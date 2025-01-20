@@ -212,6 +212,23 @@ module.exports = {
     return res.status(200).send(matchingGames);
   },
 
+  getSearchTotal: async (req, res) => {
+    const { search, domain, entityId } = req.body;
+    let total;
+    const searchTotalByEntity =
+      domain == "studios"
+        ? gameQueries.searchTotalByStudio
+        : gameQueries.searchTotalByPublisher;
+
+    if (domain && entityId) {
+      total = await searchTotalByEntity(search, entityId);
+    } else {
+      total = await gameQueries.getSearchCount(search);
+    }
+
+    return res.send({ total });
+  },
+
   getGamesByGenre: async (req, res) => {
     const { genre } = req.params;
     const { page = 1, limit = GAMES_PER_PAGE } = req.query;
