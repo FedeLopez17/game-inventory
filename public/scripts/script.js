@@ -305,6 +305,28 @@ if (searchDomain) {
 }
 
 if (searchbar) {
+  searchbar.addEventListener("keydown", async (e) => {
+    if (e.key != "Enter" || !searchbar.value) return;
+
+    let entityId;
+    let domain = searchDomain.value;
+    let domainToSearchIn;
+    console.log(domain);
+
+    if (domain == "specific-entity") {
+      domain = "games";
+      domainToSearchIn = searchDomain.getAttribute("data-entity");
+      entityId = searchDomain.getAttribute("data-entity-id");
+    }
+
+    redirectToSearchResults(
+      domain,
+      searchbar.value,
+      entityId,
+      domainToSearchIn
+    );
+  });
+
   searchbar.addEventListener("input", () => {
     clearTimeout(searchTimeout);
     clearSearchResults();
@@ -454,6 +476,26 @@ const fetchSearchResults = async (domain, search) => {
   } catch (error) {
     console.error(error);
     return [];
+  }
+};
+
+const redirectToSearchResults = (
+  domain,
+  search,
+  entityId,
+  domainToSearchIn
+) => {
+  try {
+    const params = new URLSearchParams({
+      domain,
+      search,
+      ...(entityId && { entityId }),
+      ...(domainToSearchIn && { domainToSearchIn }),
+    });
+
+    window.location.href = `/${domain}/search?${params.toString()}`;
+  } catch (error) {
+    console.error(error);
   }
 };
 

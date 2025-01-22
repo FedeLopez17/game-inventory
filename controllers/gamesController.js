@@ -190,6 +190,47 @@ module.exports = {
     });
   },
 
+  getGamesBySearch: async (req, res) => {
+    const {
+      search,
+      domain,
+      domainToSearchIn,
+      page = 1,
+      limit = GAMES_PER_PAGE,
+    } = req.query;
+
+    let entityId;
+    if (req.query.entityId != undefined) {
+      entityId = parseInt(req.query.entityId, 10);
+    }
+
+    const pageNumber = parseInt(page, 10);
+    const gamesPerPage = parseInt(limit, 10);
+    const offset = (pageNumber - 1) * gamesPerPage;
+
+    let games;
+    if (domainToSearchIn && entityId) {
+      const searchByEntity =
+        domainToSearchIn == "studios"
+          ? gameQueries.searchByStudio
+          : gameQueries.searchByPublisher;
+      games = await searchByEntity(search, entityId, gamesPerPage, offset);
+    } else {
+      games = await gameQueries.search(search, gamesPerPage, offset);
+    }
+
+    const totalGames = await gameQueries.getSearchCount(search);
+
+    res.render("search-result", {
+      games,
+      query: req.query,
+      page: {
+        number: pageNumber,
+        total: Math.ceil(totalGames / gamesPerPage),
+      },
+    });
+  },
+
   searchGames: async (req, res) => {
     const { search, domain, entityId } = req.body;
 

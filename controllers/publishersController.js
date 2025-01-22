@@ -75,6 +75,29 @@ module.exports = {
     });
   },
 
+  getPublishersBySearch: async (req, res) => {
+    const { search, page = 1, limit = PUBLISHERS_PER_PAGE } = req.query;
+    const pageNumber = parseInt(page, 10);
+    const publishersPerPage = parseInt(limit, 10);
+    const offset = (pageNumber - 1) * publishersPerPage;
+
+    const publishers = await publisherQueries.search(
+      search,
+      publishersPerPage,
+      offset
+    );
+    const totalPublishers = await publisherQueries.getSearchCount(search);
+
+    res.render("search-result", {
+      publishers,
+      query: req.query,
+      page: {
+        number: pageNumber,
+        total: Math.ceil(totalPublishers / publishersPerPage),
+      },
+    });
+  },
+
   searchPublishers: async (req, res) => {
     const { search } = req.body;
 

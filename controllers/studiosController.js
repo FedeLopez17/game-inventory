@@ -72,6 +72,25 @@ module.exports = {
     });
   },
 
+  getStudiosBySearch: async (req, res) => {
+    const { search, page = 1, limit = STUDIOS_PER_PAGE } = req.query;
+    const pageNumber = parseInt(page, 10);
+    const studiosPerPage = parseInt(limit, 10);
+    const offset = (pageNumber - 1) * studiosPerPage;
+
+    const studios = await studioQueries.search(search, studiosPerPage, offset);
+    const totalStudios = await studioQueries.getSearchCount(search);
+
+    res.render("search-result", {
+      studios,
+      query: req.query,
+      page: {
+        number: pageNumber,
+        total: Math.ceil(totalStudios / studiosPerPage),
+      },
+    });
+  },
+
   searchStudios: async (req, res) => {
     const { search } = req.body;
 

@@ -11,6 +11,7 @@ publishersRouter.put(
 publishersRouter.get("/update/:id", publishersController.getUpdatePublisher);
 
 publishersRouter.post("/search", publishersController.searchPublishers);
+publishersRouter.get("/search", publishersController.getPublishersBySearch);
 publishersRouter.post("/search/total", publishersController.getSearchTotal);
 
 publishersRouter.delete(

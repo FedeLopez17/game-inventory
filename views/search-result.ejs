@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="/scripts/script.js" defer></script>
+    <link rel="stylesheet" href="/styles/style.css" />
+    <title>Search Result</title>
+  </head>
+  <body>
+    <% entityType = query.domain.charAt(0).toUpperCase() + query.domain.slice(1) %>
+
+    <%- include("./partials/header", { activeEntity: query.domain  }) %>
+
+    <% entityType = query.domain.charAt(0).toUpperCase() + query.domain.slice(1) %>
+    <%- include("./partials/searchbar", {entityType, search: query.search }) %>
+
+    <% if(locals.games && games.length) { %>
+        <h3>Games</h3>
+        <section class="card-wrapper">
+          <% games.forEach((game)=> {%> <%- include("./games/game-card", {game}) %> <%})%>
+        </section>
+    <% } %>
+
+    <% if(locals.publishers && publishers.length) { %>
+        <h3>Publishers</h3>
+        <section class="card-wrapper publishers">
+          <% publishers.forEach((publisher)=> { %> 
+            <a class="card-anchor" href="/publishers/<%= publisher.id %>">
+              <article class="card">
+                <section class="cover-wrapper">
+                  <img
+                    src="<%= publisher.logo_image_url %>"
+                    alt="<%= publisher.name %> logo"
+                    class="cover"
+                  />
+                </section>
+                <section class="card-data">   
+                  <p class="name"><%= publisher.name %></p>
+                </section>
+              </article>
+            </a>
+          <% }) %>
+        </section>
+    <% } %>
+
+
+    <% if(locals.studios && studios.length) { %>
+      <h3>Studios</h3>
+      <section class="card-wrapper studios">
+        <% studios.forEach((studio)=> {%> 
+          <a class="card-anchor" href="/studios/<%= studio.id %>">
+            <article class="card">
+              <section class="cover-wrapper">
+                <img
+                  src="<%= studio.logo_image_url %>"
+                  alt="<%= studio.name %> logo"
+                  class="cover"
+                />
+              </section>
+              <section class="card-data">   
+                <p class="name"><%= studio.name %></p>
+              </section>
+            </article>
+          </a>
+        <%})%>
+      </section>
+    <% } %>
+
+
+    <%- include("./partials/page-selector", { ...page, query}) %>
+  </body>
+</html>

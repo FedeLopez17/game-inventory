@@ -1,16 +1,16 @@
 <% if(total > 1) { %>
     <section class="page-selector">
         <% if(number > 1) { %>
-            <a href="?page=<%= number - 1 %>" class="previous"><img src="/assets/images/icons/angle-left.svg" alt="Left-facing arrow icon"><span>Previous</span></a>
+            <a href="?<%= new URLSearchParams({ ...locals.query, page: number - 1 }) %>" class="previous"><img src="/assets/images/icons/angle-left.svg" alt="Left-facing arrow icon"><span>Previous</span></a>
         <% } %>
 
         <% const startingIndex = number - 5 > 0 ? number - 5 : 1; %>
         <% for (let i = startingIndex; i < number + 5 && i <= total; i++) { %>
-            <a href="?page=<%= i %>" class="<%= number == i ? 'active' : '' %>"><%= i %></a>
+            <a href="?<%= new URLSearchParams({ ...locals.query, page: i }) %>" class="<%= number == i ? 'active' : '' %>"><%= i %></a>
         <% } %>
 
         <% if(number < total) { %>
-            <a href="?page=<%= number + 1 %>" class="next"><span>Next</span><img src="/assets/images/icons/angle-right.svg" alt="Right-facing arrow icon"></a>
+            <a href="?<%= new URLSearchParams({ ...locals.query, page: number + 1 }) %>" class="next"><span>Next</span><img src="/assets/images/icons/angle-right.svg" alt="Right-facing arrow icon"></a>
         <% } %>
     </section>
 <% } %>

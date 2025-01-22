@@ -4,12 +4,15 @@
       src="/assets/images/icons/magnifying-glass.png"
       alt="magnifying glass icon"
     />
-    <input type="text" placeholder="Search..." />
-    <select name="search-in" data-entity="<%= entityType.toLowerCase() %>" data-entity-id="<%= locals.entity && entity.id %>">
+    <input type="text" placeholder="Search..." value="<%= locals.search || ''  %>"/>
+    
+    <select name="search-in" data-entity="<%= entityType.toLowerCase() %>" data-entity-id="<%= locals.entity && entity.id %>" <%= entityType === "All" ? "disabled" : "" %>>
       <% if(locals.entity){ %>
       <option value="specific-entity"><%= entity.name %></option>
       <% } %>
-      <option value="<%= entityType.toLowerCase() %>"><%= entityType %></option>
+      <% if(entityType != "All"){ %>
+        <option value="<%= entityType.toLowerCase() %>"><%= entityType %></option>
+      <% } %>
       <option value="all">All</option>
     </select>
   </section>

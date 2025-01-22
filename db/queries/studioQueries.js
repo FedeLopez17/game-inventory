@@ -1,11 +1,18 @@
 const pool = require("../../config/pool.js");
 
 module.exports = {
-  search: async (search) => {
-    const { rows } = await pool.query(
-      "SELECT * FROM studios WHERE name ILIKE $1 LIMIT 3",
-      [`${search}%`]
-    );
+  search: async (search, studiosPerPage, offset) => {
+    let query = "SELECT * FROM studios WHERE name ILIKE $1";
+    const params = [`${search}%`];
+
+    if (studiosPerPage != undefined && offset != undefined) {
+      query += " LIMIT $2 OFFSET $3";
+      params.push(studiosPerPage, offset);
+    } else {
+      query += " LIMIT 3";
+    }
+
+    const { rows } = await pool.query(query, params);
     return rows;
   },
 

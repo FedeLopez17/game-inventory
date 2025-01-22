@@ -1,9 +1,8 @@
 const pool = require("../../config/pool.js");
 
 module.exports = {
-  searchByStudio: async (search, studioId) => {
-    const { rows } = await pool.query(
-      `
+  searchByStudio: async (search, studioId, gamesPerPage, offset) => {
+    let query = `
     SELECT
         v.id AS videogame_id,
         v.title,
@@ -44,16 +43,24 @@ module.exports = {
     WHERE v.title ILIKE $1 AND s.id = $2
     GROUP BY
         v.id, er.id, pr.id
-    LIMIT 3
-    `,
-      [`${search}%`, studioId]
-    );
+
+    `;
+
+    const params = [`${search}%`, studioId];
+
+    if (gamesPerPage != undefined && offset != undefined) {
+      query += " LIMIT $3 OFFSET $4";
+      params.push(gamesPerPage, offset);
+    } else {
+      query += " LIMIT 3";
+    }
+
+    const { rows } = await pool.query(query, params);
     return rows;
   },
 
-  searchByPublisher: async (search, publisherId) => {
-    const { rows } = await pool.query(
-      `
+  searchByPublisher: async (search, publisherId, gamesPerPage, offset) => {
+    let query = `
     SELECT
         v.id AS videogame_id,
         v.title,
@@ -94,16 +101,24 @@ module.exports = {
     WHERE v.title ILIKE $1 AND pub.id = $2
     GROUP BY
         v.id, er.id, pr.id
-    LIMIT 3
-    `,
-      [`${search}%`, publisherId]
-    );
+
+    `;
+
+    const params = [`${search}%`, publisherId];
+
+    if (gamesPerPage != undefined && offset != undefined) {
+      query += " LIMIT $3 OFFSET $4";
+      params.push(gamesPerPage, offset);
+    } else {
+      query += " LIMIT 3";
+    }
+
+    const { rows } = await pool.query(query, params);
     return rows;
   },
 
-  search: async (search) => {
-    const { rows } = await pool.query(
-      `
+  search: async (search, gamesPerPage, offset) => {
+    let query = `
     SELECT
         v.id AS videogame_id,
         v.title,
@@ -144,10 +159,17 @@ module.exports = {
     WHERE v.title ILIKE $1
     GROUP BY
         v.id, er.id, pr.id
-    LIMIT 3
-    `,
-      [`${search}%`]
-    );
+    `;
+    const params = [`${search}%`];
+
+    if (gamesPerPage != undefined && offset != undefined) {
+      query += " LIMIT $2 OFFSET $3";
+      params.push(gamesPerPage, offset);
+    } else {
+      query += " LIMIT 3";
+    }
+
+    const { rows } = await pool.query(query, params);
     return rows;
   },
 
