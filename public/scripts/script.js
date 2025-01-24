@@ -379,7 +379,11 @@ const search = async (search, domain) => {
 
       if (data[domain].total > 3) {
         const anchor = document.createElement("a");
-        anchor.href = "x";
+        const params = new URLSearchParams({
+          domain,
+          search,
+        });
+        anchor.href = `/${domain}/search?${params.toString()}`;
         anchor.innerText = `See all - (${data[domain].total})`;
         titleWrapper.appendChild(anchor);
       }
@@ -396,13 +400,18 @@ const search = async (search, domain) => {
 
   let searchResult;
   let total;
+  let entityId;
+  let domainToSearchIn;
 
   if (domain === "specific-entity") {
     domain = searchDomain.getAttribute("data-entity");
-    const entityId = searchDomain.getAttribute("data-entity-id");
+    entityId = searchDomain.getAttribute("data-entity-id");
 
     searchResult = await fetchGamesByEntity(domain, search, entityId);
     total = (await fetchGamesTotalByEntity(domain, search, entityId)).total;
+
+    domainToSearchIn = domain;
+    domain = "games";
   } else {
     searchResult = await fetchSearchResults(domain, search);
     total = (await fetchTotal(domain, search)).total;
@@ -421,7 +430,15 @@ const search = async (search, domain) => {
 
   if (total > 3) {
     const anchor = document.createElement("a");
-    anchor.href = "x";
+    const params = new URLSearchParams({
+      domain,
+      search,
+      ...(entityId && { entityId }),
+      ...(domainToSearchIn && { domainToSearchIn }),
+    });
+
+    anchor.href = `/${domain}/search?${params.toString()}`;
+
     anchor.innerText = `See all - (${total})`;
     searchResultElement.appendChild(anchor);
   }
