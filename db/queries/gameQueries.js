@@ -189,6 +189,8 @@ module.exports = {
   },
 
   searchTotalByStudio: async (search, studioId) => {
+    console.log(search, studioId);
+
     const { rows } = await pool.query(
       `
       SELECT COUNT(*) AS total
@@ -324,7 +326,7 @@ module.exports = {
     return rows;
   },
 
-  getGamesByStudio: async (studioId) => {
+  getGamesByStudio: async (studioId, limit, offset) => {
     const { rows } = await pool.query(
       `
     SELECT
@@ -367,13 +369,27 @@ module.exports = {
     WHERE s.id = $1
     GROUP BY
         v.id, er.id, pr.id
+    LIMIT $2 OFFSET $3
     `,
-      [studioId]
+      [studioId, limit, offset]
     );
     return rows;
   },
 
-  getGamesByPublisher: async (publisherId) => {
+  getTotalByStudio: async (studioId) => {
+    const { rows } = await pool.query(
+      `
+      SELECT COUNT(*) AS total
+      FROM public.videogames v
+      INNER JOIN public.videogames_studios vs ON v.id = vs.videogame_id
+      WHERE vs.studio_id = $1
+      `,
+      [studioId]
+    );
+    return rows[0]?.total || 0;
+  },
+
+  getGamesByPublisher: async (publisherId, limit, offset) => {
     const { rows } = await pool.query(
       `
     SELECT
@@ -416,10 +432,24 @@ module.exports = {
     WHERE pub.id = $1
     GROUP BY
         v.id, er.id, pr.id
+    LIMIT $2 OFFSET $3
     `,
-      [publisherId]
+      [publisherId, limit, offset]
     );
     return rows;
+  },
+
+  getTotalByPublisher: async (publisherId) => {
+    const { rows } = await pool.query(
+      `
+      SELECT COUNT(*) AS total
+      FROM public.videogames v
+      INNER JOIN public.videogames_publishers vp ON v.id = vp.videogame_id
+      WHERE vp.publisher_id = $1
+      `,
+      [publisherId]
+    );
+    return rows[0]?.total || 0;
   },
 
   getGameByName: async (name) => {

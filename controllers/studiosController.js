@@ -4,6 +4,7 @@ const { streamUpload, deleteImage } = require("../config/cloudinaryConfig");
 const { body, validationResult } = require("express-validator");
 
 const STUDIOS_PER_PAGE = 4;
+const GAMES_PER_PAGE = 4;
 
 const validateStudio = [
   body("name")
@@ -110,6 +111,10 @@ module.exports = {
 
   getStudioById: async (req, res) => {
     const { id } = req.params;
+    const { page = 1, limit = GAMES_PER_PAGE } = req.query;
+    const pageNumber = parseInt(page, 10);
+    const gamesPerPage = parseInt(limit, 10);
+    const offset = (pageNumber - 1) * gamesPerPage;
 
     try {
       const studio = await studioQueries.getStudioById(id);
@@ -117,9 +122,22 @@ module.exports = {
         return res.status(404).send("Studio not found");
       }
 
-      const games = await gameQueries.getGamesByStudio(id);
+      const games = await gameQueries.getGamesByStudio(
+        id,
+        gamesPerPage,
+        offset
+      );
+      const totalGames = await gameQueries.getTotalByStudio(id);
 
-      res.render("studios/studio", { studio, games });
+      res.render("studios/studio", {
+        studio,
+        games,
+        query: req.query,
+        page: {
+          number: pageNumber,
+          total: Math.ceil(totalGames / gamesPerPage),
+        },
+      });
     } catch (err) {
       console.error(err);
       res.status(500).send("Error fetching studio");

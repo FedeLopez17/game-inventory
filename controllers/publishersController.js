@@ -4,6 +4,7 @@ const { streamUpload, deleteImage } = require("../config/cloudinaryConfig");
 const { body, validationResult } = require("express-validator");
 
 const PUBLISHERS_PER_PAGE = 4;
+const GAMES_PER_PAGE = 4;
 
 const validatePublisher = [
   body("name")
@@ -117,16 +118,34 @@ module.exports = {
 
   getPublisherById: async (req, res) => {
     const { id } = req.params;
+    const { page = 1, limit = GAMES_PER_PAGE } = req.query;
+    const pageNumber = parseInt(page, 10);
+    const gamesPerPage = parseInt(limit, 10);
+    const offset = (pageNumber - 1) * gamesPerPage;
 
     try {
       const publisher = await publisherQueries.getPublisherById(id);
+
       if (!publisher) {
         return res.status(404).send("Publisher not found");
       }
 
-      const games = await gameQueries.getGamesByPublisher(id);
+      const games = await gameQueries.getGamesByPublisher(
+        id,
+        gamesPerPage,
+        offset
+      );
+      const totalGames = await gameQueries.getTotalByPublisher(id);
 
-      res.render("publishers/publisher", { publisher, games });
+      res.render("publishers/publisher", {
+        publisher,
+        games,
+        query: req.query,
+        page: {
+          number: pageNumber,
+          total: Math.ceil(totalGames / gamesPerPage),
+        },
+      });
     } catch (err) {
       console.error(err);
       res.status(500).send("Error fetching publisher");

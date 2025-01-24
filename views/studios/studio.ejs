@@ -11,7 +11,7 @@
   <body>
     <%- include("../partials/header", { activeEntity: "studios" }) %>
 
-    <%- include("../partials/searchbar", {entityType: 'Studios', entity: studio }) %>
+    <%- include("../partials/searchbar", {entityType: 'Studios', entity: studio, search: locals.query && query.search || ""  }) %>
 
     <h1><%= studio.name %></h1>
     <p><%= studio.description %></p>
@@ -29,5 +29,6 @@
       <p>No games associated with this studio</p>
     <% } %>
 
+    <%- include("../partials/page-selector", { ...page, query}) %>
   </body>
 </html>
