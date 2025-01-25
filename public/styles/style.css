@@ -23,6 +23,7 @@ header {
   gap: 12px;
   box-sizing: border-box;
   padding: 0 12px;
+  height: 48px;
 }
 
 header > .add-button {
@@ -168,10 +169,13 @@ a.card-anchor:hover {
 
 /* Search bar */
 
-/* .searchbar-wrapper {
-  width: fit-content;
-  margin: 0 auto;
-} */
+#search-results.active + .search-backdrop {
+  background-color: #0000004b;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+}
 
 #searchbar {
   display: flex;
@@ -182,6 +186,9 @@ a.card-anchor:hover {
   width: min(300px, 90%);
   margin: 12px auto 0;
   justify-content: space-between;
+  background-color: white;
+  position: relative;
+  z-index: 1;
 }
 
 #searchbar:focus-within {
@@ -192,6 +199,7 @@ a.card-anchor:hover {
 #searchbar input:focus-visible {
   border: none;
   outline: none;
+  background-color: white;
 }
 
 #searchbar img {
@@ -204,11 +212,18 @@ a.card-anchor:hover {
   flex-direction: column;
   box-sizing: border-box;
   width: min(300px, 90%);
-  margin: 4px auto 4px;
+  background-color: white;
+  position: absolute;
+  z-index: 1;
+  left: calc(50% - min(150px, 45%));
 }
 
 #search-results.active {
   border: 1px solid gray;
+}
+
+#search-results:not(.active) {
+  display: none;
 }
 
 .result-item {

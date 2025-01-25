@@ -291,11 +291,25 @@ if (bannerInput) {
   });
 }
 
-let searchTimeout;
-
 const searchbar = document.querySelector("#searchbar input");
 const searchDomain = document.querySelector("#searchbar select");
 const searchResultElement = document.querySelector("#search-results");
+const searchBackdrop = document.querySelector(".search-backdrop");
+let searchTimeout;
+
+if (searchBackdrop && searchResultElement) {
+  searchBackdrop.addEventListener("click", () => {
+    searchResultElement.classList.remove("active");
+  });
+}
+
+if (searchbar && searchResultElement) {
+  searchbar.addEventListener("click", () => {
+    if (!document.querySelector(".result-item")) return;
+
+    searchResultElement.classList.add("active");
+  });
+}
 
 if (searchDomain) {
   searchDomain.addEventListener("change", () => {
