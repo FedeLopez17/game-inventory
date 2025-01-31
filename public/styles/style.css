@@ -1,6 +1,13 @@
 * {
   margin: 0;
 }
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 /* Toggleable Forms */
 
 .toggle-form {
@@ -118,6 +125,8 @@ a.card-anchor:hover {
 .genre-selector {
   display: flex;
   gap: 4px;
+  justify-content: center;
+  margin: 20px;
 }
 
 .genre-selector .genre-bubble {
@@ -141,6 +150,7 @@ a.card-anchor:hover {
   justify-content: center;
   align-items: center;
   gap: 4px;
+  margin: auto 0 24px;
 }
 
 .page-selector a,
@@ -169,6 +179,10 @@ a.card-anchor:hover {
 
 /* Search bar */
 
+.searchbar-wrapper {
+  margin: 20px 0;
+}
+
 #search-results.active + .search-backdrop {
   background-color: #0000004b;
   width: 100%;
@@ -184,7 +198,7 @@ a.card-anchor:hover {
   padding: 4px 8px;
   box-sizing: border-box;
   width: min(300px, 90%);
-  margin: 12px auto 0;
+  margin: 0 auto;
   justify-content: space-between;
   background-color: white;
   position: relative;
