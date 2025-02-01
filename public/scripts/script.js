@@ -263,33 +263,21 @@ function deleteEntity(entity, id, fetchUrl, redirect) {
     .catch((error) => console.error("Error:", error));
 }
 
-const coverImage = document.getElementById("cover-image");
-if (coverImage) {
-  coverImage.addEventListener("change", function (event) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        document.getElementById("cover-preview").src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-  });
-}
+["cover", "banner", "logo"].forEach((imageType) => {
+  const input = document.getElementById(`${imageType}-image`);
+  if (!input) return;
 
-const bannerInput = document.getElementById("banner-image");
-if (bannerInput) {
-  bannerInput.addEventListener("change", function (event) {
+  input.addEventListener("change", function (event) {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = function (e) {
-        document.getElementById("banner-preview").src = e.target.result;
+        document.getElementById(`${imageType}-preview`).src = e.target.result;
       };
       reader.readAsDataURL(file);
     }
   });
-}
+});
 
 const searchbar = document.querySelector("#searchbar input");
 const searchDomain = document.querySelector("#searchbar select");

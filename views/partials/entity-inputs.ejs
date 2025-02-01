@@ -32,11 +32,14 @@
     </section>
     
     <section>
-      <label for="<%= entity %>-image">Image: <%- include("required-symbol") %></label>
+      <% if(locals.formData && formData.logo_image_url){ %>
+        <img src="<%= formData.logo_image_url %>" alt="<%= formData.name %> logo" id="logo-preview">
+      <% } %> 
+      <label for="logo-image">Image: <%- include("required-symbol") %></label>
       <input 
       type="file" 
-      id="<%= entity %>-image" 
-      name="<%= entity %>-image" 
+      name="<%= entity %>-image"
+      id="logo-image"
       accept="image/*" 
       <%= locals.isAdd && "required" %>
       form=<%= locals.form || "" %>
