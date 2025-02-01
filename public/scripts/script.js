@@ -236,7 +236,9 @@ function updateEntity(entity, id, fetchUrl, redirect) {
 
 function deleteEntity(entity, id, fetchUrl, redirect) {
   const confirmDelete = confirm(
-    `Are you sure you want to delete this ${entity}?`
+    `Are you sure you want to delete this ${entity} ${
+      entity != "game" && "and all related games"
+    }?`
   );
   if (!confirmDelete) return;
 

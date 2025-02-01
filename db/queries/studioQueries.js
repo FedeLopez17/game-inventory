@@ -1,4 +1,5 @@
 const pool = require("../../config/pool.js");
+const gameQueries = require("./gameQueries");
 
 module.exports = {
   search: async (search, studiosPerPage, offset) => {
@@ -62,6 +63,17 @@ module.exports = {
   },
 
   deleteStudioById: async (id) => {
+    const games = await gameQueries.getGamesByStudio(id);
+    if (!games.length) return;
+
+    games.forEach(
+      async (game) => await gameQueries.deleteGameById(game.videogame_id)
+    );
+
+    await pool.query("DELETE FROM videogames_studios WHERE studio_id = $1", [
+      id,
+    ]);
+
     await pool.query("DELETE FROM studios WHERE id = $1", [id]);
   },
 
