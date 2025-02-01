@@ -22,13 +22,15 @@
 
       <section>
         <label for="cover-image">Cover image: <%- include("../partials/required-symbol") %></label>
-        <input type="file" accept="image/*" id="cover-image" name="cover" required/>
+        <input type="file" accept="image/*" id="cover-image" class="cover-image" name="cover" required data-type="cover"/>
+        <img src="" alt="Cover image" class="cover-preview">
         <%- include("../partials/error", { errors: locals.errors, fieldName: 'cover' }) %>
       </section>
 
       <section>
         <label for="banner-image">Banner image</label>
-        <input type="file" accept="image/*" id="banner-image" name="banner"/>
+        <input type="file" accept="image/*" id="banner-image" class="banner-image" name="banner" data-type="banner"/>
+        <img src="" alt="Banner image" class="banner-preview">
       </section>
 
       <section>

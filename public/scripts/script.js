@@ -30,6 +30,8 @@ const initializeCheckboxValidation = () => {
 window.addEventListener("pageshow", initializeCheckboxValidation);
 
 const addEntity = async (entityName, fetchUrl) => {
+  console.log("ADD: " + entityName + " " + fetchUrl);
+
   const name = document.querySelector(`#${entityName}-name`).value;
   const description = document.querySelector(
     `#${entityName}-description`
@@ -265,16 +267,19 @@ function deleteEntity(entity, id, fetchUrl, redirect) {
     .catch((error) => console.error("Error:", error));
 }
 
-["cover", "banner", "logo"].forEach((imageType) => {
-  const input = document.getElementById(`${imageType}-image`);
-  if (!input) return;
+const imageInputs = document.querySelectorAll(
+  ".banner-image, .cover-image, .logo-image"
+);
+imageInputs.forEach((input) => {
+  const imageType = input.getAttribute("data-type");
+  const previewQuery = `.${imageType}-preview`;
 
   input.addEventListener("change", function (event) {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = function (e) {
-        document.getElementById(`${imageType}-preview`).src = e.target.result;
+        document.querySelector(previewQuery).src = e.target.result;
       };
       reader.readAsDataURL(file);
     }

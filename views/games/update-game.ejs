@@ -22,17 +22,17 @@
 
       <section>
         <label for="cover-image">Cover image: <%- include("../partials/required-symbol") %></label>
-        <input type="file" accept="image/*" id="cover-image" name="cover" required/>
+        <input type="file" accept="image/*" id="cover-image" class="cover-image" name="cover" required data-type="cover"/>
         <%- include("../partials/error", { fieldName: 'cover', visible: true }) %>
-        <img src="<%= formData.cover_image_url %>" alt="<%= formData.title %> cover image" id="cover-preview">
+        <img src="<%= formData.cover_image_url %>" alt="<%= formData.title %> cover image" class="cover-preview">
       </section>
 
       
       <section>
         <label for="banner-image">Banner image</label>
-        <input type="file" accept="image/*" id="banner-image" name="banner"/>
+        <input type="file" accept="image/*" id="banner-image" class="banner-image" name="banner" data-type="banner"/>
         <%- include("../partials/error", { fieldName: 'banner', visible: true }) %>
-        <img src="<%= formData.banner_image_url %>" alt="<%= formData.title %> banner image" id="banner-preview">
+        <img src="<%= formData.banner_image_url %>" alt="<%= formData.title %> banner image" class="banner-preview">
       </section>
 
       <section>
