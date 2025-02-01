@@ -13,6 +13,8 @@
 
     <%- include("../partials/searchbar", {entityType: 'Publishers', entity: publisher, search: locals.query && query.search || "" }) %>
 
+    <img src="<%= publisher.logo_image_url %>" alt="<%= publisher.name %> logo">
+
     <p><%= publisher.name %></p>
     <p><%= publisher.description %></p>
 

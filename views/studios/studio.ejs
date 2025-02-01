@@ -13,6 +13,8 @@
 
     <%- include("../partials/searchbar", {entityType: 'Studios', entity: studio, search: locals.query && query.search || ""  }) %>
 
+    <img src="<%= studio.logo_image_url %>" alt="<%= studio.name %> logo">
+    
     <h1><%= studio.name %></h1>
     <p><%= studio.description %></p>
 
