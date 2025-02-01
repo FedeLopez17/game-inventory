@@ -64,8 +64,6 @@ module.exports = {
 
   deleteStudioById: async (id) => {
     const games = await gameQueries.getGamesByStudio(id);
-    if (!games.length) return;
-
     games.forEach(
       async (game) => await gameQueries.deleteGameById(game.videogame_id)
     );

@@ -67,8 +67,6 @@ module.exports = {
 
   deletePublisherById: async (id) => {
     const games = await gameQueries.getGamesByPublisher(id);
-    if (!games.length) return;
-
     games.forEach(
       async (game) => await gameQueries.deleteGameById(game.videogame_id)
     );

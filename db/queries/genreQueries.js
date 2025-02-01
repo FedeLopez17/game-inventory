@@ -29,20 +29,10 @@ const addGenre = async (name, description, image) => {
 };
 
 const deleteGenreById = async (id) => {
-  console.log("DELETE GENRE: " + id);
-  // NOMBREEE
-
   const genre = await getGenreById(id);
-
-  console.log(genre);
-
   if (!genre) return;
 
   const games = await gameQueries.getGamesByGenre(genre.name);
-  console.log(games.length);
-
-  if (!games.length) return;
-
   games.forEach(
     async (game) => await gameQueries.deleteGameById(game.videogame_id)
   );
