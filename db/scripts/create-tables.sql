@@ -38,7 +38,7 @@ CREATE TABLE images (
 CREATE TABLE genres (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL,
     name VARCHAR(255) UNIQUE NOT NULL,
-    description TEXT NOT NULL,
+    description TEXT,
     icon_url VARCHAR(2048) NOT NULL
 );
 

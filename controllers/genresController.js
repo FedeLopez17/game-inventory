@@ -18,9 +18,6 @@ const validateGenre = [
     }),
 
   body("description")
-    .trim()
-    .notEmpty()
-    .withMessage("Description cannot be empty.")
     .isLength({ max: 500 })
     .withMessage("Description must be at most 500 characters."),
 
@@ -46,9 +43,6 @@ const validateGenreUpdate = [
     .withMessage("Name must be at most 255 characters."),
 
   body("description")
-    .trim()
-    .notEmpty()
-    .withMessage("Description cannot be empty.")
     .isLength({ max: 500 })
     .withMessage("Description must be at most 500 characters."),
 
