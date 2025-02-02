@@ -589,3 +589,15 @@ const fetchGamesByEntity = async (domain, search, entityId) => {
 };
 
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+
+// Prevent multiple form submissions
+document.body.addEventListener("submit", function (event) {
+  const form = event.target;
+
+  if (form.dataset.submitted) {
+    event.preventDefault();
+    return false;
+  }
+
+  form.dataset.submitted = true;
+});
