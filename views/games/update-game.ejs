@@ -13,7 +13,7 @@
     <form id="add-genre" onsubmit="addEntity('genre', '/genres/add'); return false;"></form>
     <form id="add-studio" onsubmit="addEntity('studio', '/studios/add'); return false;"></form>
     <form id="add-publisher" onsubmit="addEntity('publisher', '/publishers/add'); return false;"></form>
-    <form id="update-game">
+    <form id="update-game" onsubmit="updateGame(<%= formData.videogame_id %>); return false;">
       <section>
         <label for="title">Title: <%- include("../partials/required-symbol") %></label>
         <input type="text" id="title" name="title" value="<%= formData.title %>" required/>
@@ -22,7 +22,7 @@
 
       <section>
         <label for="cover-image">Cover image: <%- include("../partials/required-symbol") %></label>
-        <input type="file" accept="image/*" id="cover-image" class="cover-image" name="cover" required data-type="cover"/>
+        <input type="file" accept="image/*" id="cover-image" class="cover-image" name="cover" <%= formData.cover_image_url ? "" : "required" %> data-type="cover"/>
         <%- include("../partials/error", { fieldName: 'cover', visible: true }) %>
         <img src="<%= formData.cover_image_url %>" alt="<%= formData.title %> cover image" class="cover-preview">
       </section>
@@ -189,7 +189,7 @@
 
       <!-- [MULTIPLE IMAGE INPUT GOES HERE] -->
 
-      <button type="button" form="update-game" onclick="updateGame(<%= formData.videogame_id %>)">Update Game</button>
+      <button type="submit" form="update-game">Update Game</button>
       
 
     </form>

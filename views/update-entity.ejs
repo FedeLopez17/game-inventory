@@ -14,7 +14,9 @@
   <body>
       <%- include("./partials/header", { activeEntity: "studios" }) %>
 
-      <%- include("partials/entity-inputs", { errors: locals.errors, formData: locals.formData, form: formId, entity, capitalizedEntity}) %>
-      <button type="button" onclick="updateEntity('<%= entity %>', <%= id %>, '<%= fetchUrl %>', '<%= redirect %>')" form="<%= formId %>">Update <%= capitalizedEntity %></button>
+      <form id="<%= formId %>" onsubmit="updateEntity('<%= entity %>', <%= id %>, '<%= fetchUrl %>', '<%= redirect %>'); return false;">
+        <%- include("partials/entity-inputs", { errors: locals.errors, formData: locals.formData, form: formId, entity, capitalizedEntity}) %>
+        <button type="submit" form="<%= formId %>">Update <%= capitalizedEntity %></button>
+      </form>
   </body>
 </html>
