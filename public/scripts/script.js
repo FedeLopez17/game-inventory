@@ -356,6 +356,8 @@ const clearSearchResults = () => {
 const search = async (search, domain) => {
   clearSearchResults();
 
+  search = search.trim();
+
   if (domain === "all") {
     const data = { games: [], publishers: [], studios: [] };
     const domains = ["games", "publishers", "studios"];
