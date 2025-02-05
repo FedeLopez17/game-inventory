@@ -217,7 +217,7 @@ function updateEntity(entity, id, fetchUrl, redirect) {
   formData.append("password", password);
 
   if (fileInput.files.length > 0) {
-    formData.append(`#${entity}-image`, fileInput.files[0]);
+    formData.append(`${entity}-image`, fileInput.files[0]);
   }
 
   fetch(`${fetchUrl}/${id}`, {
