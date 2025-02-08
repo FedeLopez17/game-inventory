@@ -33,6 +33,16 @@
         <img src="" alt="Banner image" class="banner-preview">
       </section>
 
+      <fieldset>
+        <legend>Gallery</legend>
+
+        <section class="gallery-images">
+          <label for="gallery-images">Images</label>
+          <section class="images-wrapper"></section>
+          <input type="file" accept="image/*" id="gallery-images" class="gallery-images" name="gallery-images" multiple/>
+        </section>
+       </fieldset>
+
       <section>
         <label for="release-date">Release date: <%- include("../partials/required-symbol") %></label>
         <input type="date" id="release-date" name="release" required/>
@@ -181,8 +191,6 @@
         <button type="submit" form="add-publisher">Add</button>
        </section>
       </fieldset>
-
-      <!-- [MULTIPLE IMAGE INPUT GOES HERE] -->
 
       <button type="submit" form="add-game">Add Game</button>
 
