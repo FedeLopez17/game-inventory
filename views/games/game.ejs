@@ -22,7 +22,13 @@
       <button type="button" onClick="deleteEntity('game', <%= game.videogame_id %>, '/games/delete', '/games')">Delete</button>
       <a href="/games/update/<%= game.videogame_id %>">Update</a>
 
-      <!-- [IMAGES AND VIDEOS HERE] -->
+      <% if(game.images.length) { %>
+        <section class="gallery">
+          <% game.images.forEach(imageUrl =>  { %>
+            <img src="<%= imageUrl %>" alt="<%= game.title %> image" />
+          <% })%>
+        </section>
+      <% } %>
 
       <h2>Description</h2>
       <p><%= game.description %></p>
