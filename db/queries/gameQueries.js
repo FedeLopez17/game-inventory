@@ -269,6 +269,7 @@ module.exports = {
     title,
     coverImage,
     bannerImage,
+    galleryImageUrls,
     releaseDate,
     description,
     website,
@@ -340,6 +341,13 @@ module.exports = {
         await client.query(
           "INSERT INTO videogames_publishers (videogame_id, publisher_id) VALUES ($1, $2)",
           [gameId, publisherId]
+        );
+      }
+
+      for (let imageUrl of galleryImageUrls) {
+        await client.query(
+          "INSERT INTO images (videogame_id, image_url) VALUES ($1, $2)",
+          [gameId, imageUrl]
         );
       }
 
