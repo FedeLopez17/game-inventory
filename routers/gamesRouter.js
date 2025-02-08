@@ -17,6 +17,7 @@ gamesRouter.post(
   upload.fields([
     { name: "cover", maxCount: 1 },
     { name: "banner", maxCount: 1 },
+    { name: "gallery-images", maxCount: 8},
   ]),
   gamesController.addGame
 );
