@@ -432,6 +432,9 @@ module.exports = {
       const bannerImageBuffer = req.files.banner
         ? req.files.banner[0].buffer
         : null;
+      const galleryImages = req.files["gallery-images"]
+        ? req.files["gallery-images"].map((image) => image.buffer)
+        : null;
 
       try {
         const coverUploadResult = await streamUpload(
@@ -449,6 +452,16 @@ module.exports = {
           bannerUrl = bannerUploadResult.secure_url;
         }
 
+        let galleryImageUrls = [];
+        if (galleryImages) {
+          galleryImageUrls = await Promise.all(
+            galleryImages.map(async (imageBuffer) => {
+              const imageUploadResult = await streamUpload(imageBuffer, title);
+              return imageUploadResult.secure_url;
+            })
+          );
+        }
+
         const sanitizeEmptyToNull = (number) => (number === "" ? null : number);
 
         const ignRating = sanitizeEmptyToNull(ign);
@@ -461,6 +474,7 @@ module.exports = {
           title,
           coverUrl,
           bannerUrl,
+          galleryImageUrls,
           release,
           description,
           website,
