@@ -604,8 +604,9 @@ document.body.addEventListener("submit", function (event) {
   form.dataset.submitted = true;
 });
 
+const galleryImagesInput = document.getElementById("gallery-images");
+
 if (galleryImagesInput) {
-  const galleryImagesInput = document.getElementById("gallery-images");
   const imagesWrapper = document.querySelector(".images-wrapper");
   const dt = new DataTransfer(); // Stores selected files
 
