@@ -603,3 +603,56 @@ document.body.addEventListener("submit", function (event) {
 
   form.dataset.submitted = true;
 });
+
+if (galleryImagesInput) {
+  const galleryImagesInput = document.getElementById("gallery-images");
+  const imagesWrapper = document.querySelector(".images-wrapper");
+  const dt = new DataTransfer(); // Stores selected files
+
+  galleryImagesInput.addEventListener("change", (event) => {
+    imagesWrapper.innerHTML = "";
+
+    const files = Array.from(galleryImagesInput.files);
+    for (const file of files) {
+      dt.items.add(file);
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const imageWrapper = document.createElement("section");
+        imageWrapper.classList.add("image-wrapper");
+
+        const removeButton = document.createElement("img");
+        removeButton.classList.add("remove-button");
+        removeButton.src = "/assets/images/icons/x-mark.svg";
+        removeButton.title = "Remove";
+        imageWrapper.appendChild(removeButton);
+
+        const image = document.createElement("img");
+        image.alt = "Game image";
+        image.src = e.target.result;
+        imageWrapper.appendChild(image);
+        imagesWrapper.append(imageWrapper);
+
+        removeButton.addEventListener("click", () => {
+          imageWrapper.remove();
+
+          for (let i = 0; i < dt.items.length; i++) {
+            if (
+              dt.files[i].name === file.name &&
+              dt.files[i].size === file.size
+            ) {
+              dt.items.remove(i);
+              break;
+            }
+          }
+
+          galleryImagesInput.files = dt.files;
+        });
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+    galleryImagesInput.files = dt.files;
+  });
+}
