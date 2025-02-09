@@ -274,14 +274,27 @@ imageInputs.forEach((input) => {
   const imageType = input.getAttribute("data-type");
   const previewQuery = `.${imageType}-preview`;
 
-  input.addEventListener("change", function (event) {
-    const file = event.target.files[0];
+  const renderImage = (file) => {
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      document.querySelector(previewQuery).src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  input.addEventListener("change", (event) => {
+    renderImage(input.files[0]);
+  });
+
+  // If navigating back or forward, clear the UI if no files are present
+  window.addEventListener("pageshow", () => {
+    const file = input.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        document.querySelector(previewQuery).src = e.target.result;
-      };
-      reader.readAsDataURL(file);
+      renderImage(file);
+    } else {
+      document.querySelector(previewQuery).src = "";
     }
   });
 });
@@ -610,10 +623,9 @@ if (galleryImagesInput) {
   const imagesWrapper = document.querySelector(".images-wrapper");
   const dt = new DataTransfer(); // Stores selected files
 
-  galleryImagesInput.addEventListener("change", (event) => {
+  const renderImages = (files) => {
     imagesWrapper.innerHTML = "";
 
-    const files = Array.from(galleryImagesInput.files);
     for (const file of files) {
       dt.items.add(file);
 
@@ -655,5 +667,19 @@ if (galleryImagesInput) {
     }
 
     galleryImagesInput.files = dt.files;
+  };
+
+  galleryImagesInput.addEventListener("change", () => {
+    renderImages(Array.from(galleryImagesInput.files));
+  });
+
+  // If navigating back or forward, clear the UI if no files are present
+  window.addEventListener("pageshow", () => {
+    const files = Array.from(galleryImagesInput.files);
+    if (files.length > 0) {
+      renderImages(files);
+    } else {
+      imagesWrapper.innerHTML = "";
+    }
   });
 }
