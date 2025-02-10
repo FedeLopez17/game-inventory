@@ -272,14 +272,36 @@ const imageInputs = document.querySelectorAll(
 );
 imageInputs.forEach((input) => {
   const imageType = input.getAttribute("data-type");
-  const previewQuery = `.${imageType}-preview`;
+  const previewWrapper = document.querySelector(
+    `.${imageType}-preview-wrapper`
+  );
 
   const renderImage = (file) => {
+    previewWrapper.innerHTML = "";
+
     if (!file) return;
 
     const reader = new FileReader();
     reader.onload = function (e) {
-      document.querySelector(previewQuery).src = e.target.result;
+      const imageWrapper = document.createElement("section");
+      imageWrapper.classList.add("image-wrapper");
+
+      const removeButton = document.createElement("img");
+      removeButton.classList.add("remove-button");
+      removeButton.src = "/assets/images/icons/x-mark.svg";
+      removeButton.title = "Remove";
+      imageWrapper.appendChild(removeButton);
+      removeButton.addEventListener("click", () => {
+        previewWrapper.innerHTML = "";
+        input.files = new DataTransfer().files;
+      });
+
+      const image = document.createElement("img");
+      image.alt = `${imageType} image`;
+      image.src = e.target.result;
+      imageWrapper.appendChild(image);
+
+      previewWrapper.appendChild(imageWrapper);
     };
     reader.readAsDataURL(file);
   };
@@ -294,7 +316,7 @@ imageInputs.forEach((input) => {
     if (file) {
       renderImage(file);
     } else {
-      document.querySelector(previewQuery).src = "";
+      previewWrapper.innerHTML = "";
     }
   });
 });
