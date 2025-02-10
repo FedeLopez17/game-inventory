@@ -124,7 +124,7 @@ const validateGameUpdate = [
       return true;
     }
 
-    const fileSize = req.files.cover[0].size; // Size in bytes
+    const fileSize = req.files.banner[0].size; // Size in bytes
 
     if (fileSize > 2 * 1024 * 1024) {
       // 2MB
@@ -571,6 +571,7 @@ module.exports = {
         title,
         cover,
         banner,
+        deleteBanner,
         release,
         description,
         website,
@@ -606,6 +607,7 @@ module.exports = {
           genre,
           studio,
           publisher,
+          deleteBanner,
         })
       );
 
@@ -651,6 +653,9 @@ module.exports = {
             "banners"
           );
           bannerUrl = bannerUploadResult.secure_url;
+        }
+
+        if (game.banner_image_url && (bannerImageBuffer || deleteBanner)) {
           await deleteImage("banners", game.banner_image_url);
         }
 
@@ -666,7 +671,7 @@ module.exports = {
           id,
           title,
           coverUrl || game.cover_image_url,
-          bannerUrl || game.banner_image_url,
+          deleteBanner == "true" ? null : bannerUrl || game.banner_image_url,
           release,
           description,
           website,

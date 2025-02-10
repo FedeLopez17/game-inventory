@@ -127,6 +127,7 @@ function updateGame(id) {
   const title = document.querySelector("#title").value;
   const coverInput = document.querySelector("#cover-image");
   const bannerInput = document.querySelector("#banner-image");
+  const deleteBanner = document.querySelector("#delete-banner").checked;
   const releaseDate = document.querySelector("#release-date").value;
   const description = document.querySelector("#description").value;
   const website = document.querySelector("#website").value;
@@ -152,6 +153,7 @@ function updateGame(id) {
   }
 
   formData.append("title", title);
+  formData.append("deleteBanner", deleteBanner);
   formData.append("release", releaseDate);
   formData.append("description", description);
   formData.append("website", website);
@@ -278,6 +280,10 @@ imageInputs.forEach((input) => {
 
   const renderImage = (file) => {
     previewWrapper.innerHTML = "";
+    const initialImage = document.querySelector(
+      `.${imageType}-preview.initial`
+    );
+    if (initialImage) initialImage.remove();
 
     if (!file) return;
 
@@ -316,6 +322,11 @@ imageInputs.forEach((input) => {
     if (file) {
       renderImage(file);
     } else {
+      const initialImage = document.querySelector(
+        `.${imageType}-preview.initial`
+      );
+      if (initialImage) return;
+
       previewWrapper.innerHTML = "";
     }
   });
@@ -703,5 +714,17 @@ if (galleryImagesInput) {
     } else {
       imagesWrapper.innerHTML = "";
     }
+  });
+}
+
+const deleteBannerCheckbox = document.getElementById("delete-banner");
+
+if (deleteBannerCheckbox) {
+  const bannerPreview = document.querySelector(".banner-preview");
+  const previewWrapper = document.querySelector(".banner-preview-wrapper");
+  deleteBannerCheckbox.addEventListener("change", () => {
+    const displayStyle = deleteBannerCheckbox.checked ? "none" : "block";
+    bannerPreview.style.display = displayStyle;
+    previewWrapper.style.display = displayStyle;
   });
 }
