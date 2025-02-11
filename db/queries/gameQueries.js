@@ -404,6 +404,8 @@ module.exports = {
     title,
     coverImage,
     bannerImage,
+    galleryImageUrls,
+    galleryImagesToDelete,
     releaseDate,
     description,
     website,
@@ -492,6 +494,22 @@ module.exports = {
           "INSERT INTO videogames_publishers (videogame_id, publisher_id) VALUES ($1, $2)",
           [id, publisherId]
         );
+      }
+
+      for (let imageUrl of galleryImageUrls) {
+        await client.query(
+          "INSERT INTO images (videogame_id, image_url) VALUES ($1, $2)",
+          [id, imageUrl]
+        );
+      }
+
+      if (galleryImagesToDelete) {
+        for (let imageUrl of JSON.parse(galleryImagesToDelete)) {
+          await client.query(
+            "DELETE FROM images WHERE videogame_id = $1 AND image_url = $2",
+            [id, imageUrl]
+          );
+        }
       }
 
       await client.query("COMMIT");

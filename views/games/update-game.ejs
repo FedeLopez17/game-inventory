@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="/scripts/script.js" defer></script>
     <link rel="stylesheet" href="/styles/style.css">
-    <title>Add Game</title>
+    <title>Update Game</title>
   </head>
   <body>
     <%- include("../partials/header", { activeEntity: "games" }) %>
@@ -29,7 +29,6 @@
         <%- include("../partials/error", { fieldName: 'cover', visible: true }) %>
       </section>
 
-      
       <section>
         <section class="banner-preview-wrapper">
           <% if(formData.banner_image_url) { %>
@@ -42,6 +41,23 @@
         <input type="checkbox" name="delete-banner" id="delete-banner">
         <%- include("../partials/error", { fieldName: 'banner', visible: true }) %>
       </section>
+
+      <fieldset>
+        <legend>Gallery</legend>
+
+        <section class="gallery-images">
+          <label for="gallery-images">Images</label>
+          <section class="images-wrapper">
+            <% formData.images[0] && formData.images.forEach(image => { %>
+              <section class="image-wrapper not-in-input" data-image="<%= image %>">
+                <img src="/assets/images/icons/x-mark.svg" alt="Delete image button" class="remove-button" title="Remove" onclick="removeImageNotInInput('<%= image %>')">
+                <img src="<%= image %>" alt="<%= formData.title %> image">
+              </section>
+            <% }) %>
+          </section>
+          <input type="file" accept="image/*" id="gallery-images" class="gallery-images" name="gallery-images" multiple/>
+        </section>
+      </fieldset>
 
       <section>
         <label for="release-date">Release date: <%- include("../partials/required-symbol") %></label>

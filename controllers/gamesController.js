@@ -456,7 +456,10 @@ module.exports = {
         if (galleryImages) {
           galleryImageUrls = await Promise.all(
             galleryImages.map(async (imageBuffer) => {
-              const imageUploadResult = await streamUpload(imageBuffer, title);
+              const imageUploadResult = await streamUpload(
+                imageBuffer,
+                "gallery"
+              );
               return imageUploadResult.secure_url;
             })
           );
@@ -571,6 +574,7 @@ module.exports = {
         title,
         cover,
         banner,
+        imagesToDelete,
         deleteBanner,
         release,
         description,
@@ -594,6 +598,7 @@ module.exports = {
           title,
           cover,
           banner,
+          imagesToDelete,
           release,
           description,
           website,
@@ -633,6 +638,9 @@ module.exports = {
       const bannerImageBuffer = req.files.banner
         ? req.files.banner[0].buffer
         : null;
+      const galleryImages = req.files["gallery-images"]
+        ? req.files["gallery-images"].map((image) => image.buffer)
+        : null;
 
       let coverUrl,
         bannerUrl = null;
@@ -655,8 +663,27 @@ module.exports = {
           bannerUrl = bannerUploadResult.secure_url;
         }
 
+        let galleryImageUrls = [];
+        if (galleryImages) {
+          galleryImageUrls = await Promise.all(
+            galleryImages.map(async (imageBuffer) => {
+              const imageUploadResult = await streamUpload(
+                imageBuffer,
+                "gallery"
+              );
+              return imageUploadResult.secure_url;
+            })
+          );
+        }
+
         if (game.banner_image_url && (bannerImageBuffer || deleteBanner)) {
           await deleteImage("banners", game.banner_image_url);
+        }
+
+        if (imagesToDelete) {
+          for (const imageUrl of JSON.parse(imagesToDelete)) {
+            await deleteImage("gallery", imageUrl);
+          }
         }
 
         const sanitizeEmptyToNull = (number) => (number === "" ? null : number);
@@ -672,6 +699,8 @@ module.exports = {
           title,
           coverUrl || game.cover_image_url,
           deleteBanner == "true" ? null : bannerUrl || game.banner_image_url,
+          galleryImageUrls,
+          imagesToDelete,
           release,
           description,
           website,

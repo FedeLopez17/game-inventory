@@ -141,15 +141,36 @@ function updateGame(id) {
   const genres = getCheckedInputs("genre");
   const studios = getCheckedInputs("studio");
   const publishers = getCheckedInputs("publisher");
+  const galleryInput = document.getElementById("gallery-images");
+
+  const imagesWrapper = document.querySelector(".images-wrapper");
+  const dataImagesToDelete = imagesWrapper.getAttribute(
+    "data-images-to-delete"
+  );
+  const imagesToDelete = dataImagesToDelete
+    ? JSON.parse(dataImagesToDelete)
+    : [];
+
+  console.log("IMAGES TO DELETE: " + imagesToDelete);
 
   const formData = new FormData();
 
-  if (coverInput.files.length > 0) {
+  if (coverInput.files.length) {
     formData.append("cover", coverInput.files[0]);
   }
 
-  if (bannerInput.files.length > 0) {
+  if (bannerInput.files.length) {
     formData.append("banner", bannerInput.files[0]);
+  }
+
+  if (galleryInput.files.length) {
+    for (const file of galleryInput.files) {
+      formData.append("gallery-images", file);
+    }
+  }
+
+  if (imagesToDelete.length) {
+    formData.append("imagesToDelete", JSON.stringify(imagesToDelete));
   }
 
   formData.append("title", title);
@@ -177,7 +198,7 @@ function updateGame(id) {
   })
     .then(async (response) => {
       if (response.ok) {
-        window.location.href = "/games";
+        window.location.href = `/games/${id}`;
       } else if (response.status === 401) {
         alert("Wrong password");
       } else if (response.status === 400) {
@@ -241,7 +262,7 @@ function updateEntity(entity, id, fetchUrl, redirect) {
 function deleteEntity(entity, id, fetchUrl, redirect) {
   const confirmDelete = confirm(
     `Are you sure you want to delete this ${entity} ${
-      entity != "game" && "and all related games"
+      entity != "game" ? "and all related games" : ""
     }?`
   );
   if (!confirmDelete) return;
@@ -656,12 +677,14 @@ if (galleryImagesInput) {
   const imagesWrapper = document.querySelector(".images-wrapper");
   const dt = new DataTransfer(); // Stores selected files
 
-  const renderImages = (files) => {
-    imagesWrapper.innerHTML = "";
+  const renderImages = () => {
+    Array.from(imagesWrapper.children).forEach((childElement) => {
+      if (!childElement.classList.contains("not-in-input")) {
+        childElement.remove();
+      }
+    });
 
-    for (const file of files) {
-      dt.items.add(file);
-
+    for (const file of dt.files) {
       const reader = new FileReader();
       reader.onload = function (e) {
         const imageWrapper = document.createElement("section");
@@ -703,16 +726,40 @@ if (galleryImagesInput) {
   };
 
   galleryImagesInput.addEventListener("change", () => {
-    renderImages(Array.from(galleryImagesInput.files));
+    const newFiles = Array.from(galleryImagesInput.files);
+    for (const file of newFiles) {
+      let exists = false;
+      for (const existingFile of dt.files) {
+        if (
+          existingFile.name === file.name &&
+          existingFile.size === file.size
+        ) {
+          exists = true;
+          break;
+        }
+      }
+      if (!exists) {
+        dt.items.add(file);
+      }
+    }
+    renderImages();
   });
 
   // If navigating back or forward, clear the UI if no files are present
   window.addEventListener("pageshow", () => {
-    const files = Array.from(galleryImagesInput.files);
-    if (files.length > 0) {
-      renderImages(files);
+    if (galleryImagesInput.files.length > 0) {
+      console.log("RENDER");
+      const newFiles = Array.from(galleryImagesInput.files);
+      for (const file of newFiles) {
+        dt.items.add(file);
+      }
+      renderImages();
     } else {
-      imagesWrapper.innerHTML = "";
+      Array.from(imagesWrapper.children).forEach((childElement) => {
+        if (!childElement.classList.contains("not-in-input")) {
+          childElement.remove();
+        }
+      });
     }
   });
 }
@@ -728,3 +775,23 @@ if (deleteBannerCheckbox) {
     previewWrapper.style.display = displayStyle;
   });
 }
+
+const removeImageNotInInput = (imgUrl) => {
+  document.querySelector(`.image-wrapper[data-image='${imgUrl}']`).remove();
+
+  const imagesWrapper = document.querySelector(".images-wrapper");
+
+  const dataImagesToDelete = imagesWrapper.getAttribute(
+    "data-images-to-delete"
+  );
+
+  const imagesToDelete = dataImagesToDelete
+    ? JSON.parse(dataImagesToDelete)
+    : [];
+  imagesToDelete.push(imgUrl);
+
+  imagesWrapper.setAttribute(
+    "data-images-to-delete",
+    JSON.stringify(imagesToDelete)
+  );
+};
