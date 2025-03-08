@@ -44,6 +44,7 @@
 
       <fieldset>
         <legend>Gallery</legend>
+        <p class="gallery-max-warning hidden">Up to 8 images allowed in gallery</p>
 
         <section class="gallery-images">
           <label for="gallery-images">Images</label>
@@ -57,6 +58,7 @@
           </section>
           <input type="file" accept="image/*" id="gallery-images" class="gallery-images" name="gallery-images" multiple/>
         </section>
+        <%- include("../partials/error", { errors: locals.errors, fieldName: 'gallery', visible: true }) %>
       </fieldset>
 
       <section>
