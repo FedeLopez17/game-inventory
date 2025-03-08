@@ -41,6 +41,13 @@ const validateGame = [
 
   body("publisher").notEmpty().withMessage("Publisher/s cannot be empty."),
 
+  body("gallery").custom((_, { req }) => {
+    if (req.files["gallery-images"] && req.files["gallery-images"].length > 8) {
+      throw new Error("Up to 8 images allowed in gallery");
+    }
+    return true;
+  }),
+
   body("cover").custom((_, { req }) => {
     if (!req.files.cover) {
       throw new Error("Cover image is required.");
@@ -104,6 +111,13 @@ const validateGameUpdate = [
       }
       return true;
     }),
+
+  body("gallery").custom((_, { req }) => {
+    if (req.files["gallery-images"] && req.files["gallery-images"].length > 8) {
+      throw new Error("Up to 8 images allowed in gallery");
+    }
+    return true;
+  }),
 
   body("cover").custom((_, { req }) => {
     if (!req.files.cover) {
