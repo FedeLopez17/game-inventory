@@ -290,3 +290,11 @@ a.card-anchor:hover {
   align-items: center;
   overflow: auto;
 }
+
+.gallery-max-warning {
+  color: red;
+}
+
+.gallery-max-warning.hidden {
+  display: none;
+}
