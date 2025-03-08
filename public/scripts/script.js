@@ -716,6 +716,19 @@ if (galleryImagesInput) {
           }
 
           galleryImagesInput.files = dt.files;
+
+          if (galleryImagesInput.files.length <= 8) {
+            const galleryWarning = document.querySelector(
+              ".gallery-max-warning"
+            );
+            galleryWarning.classList.add("hidden");
+
+            const submitButton = document.querySelector(
+              "button[form='add-game']",
+              "button[form='update-game']"
+            );
+            submitButton.disabled = false;
+          }
         });
       };
 
@@ -760,6 +773,18 @@ if (galleryImagesInput) {
           childElement.remove();
         }
       });
+    }
+  });
+
+  galleryImagesInput.addEventListener("change", () => {
+    if (galleryImagesInput.files.length > 8) {
+      const galleryWarning = document.querySelector(".gallery-max-warning");
+      galleryWarning.classList.remove("hidden");
+
+      const submitButton = document.querySelector(
+        "button[form='add-game'], button[form='update-game']"
+      );
+      submitButton.disabled = true;
     }
   });
 }
