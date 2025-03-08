@@ -17,7 +17,7 @@ gamesRouter.post(
   upload.fields([
     { name: "cover", maxCount: 1 },
     { name: "banner", maxCount: 1 },
-    { name: "gallery-images", maxCount: 8},
+    { name: "gallery-images"}, // max count is validated in the controller
   ]),
   gamesController.addGame
 );
@@ -32,7 +32,7 @@ gamesRouter.put(
   upload.fields([
     { name: "cover", maxCount: 1 },
     { name: "banner", maxCount: 1 },
-    { name: "gallery-images", maxCount: 8},
+    { name: "gallery-images"}, // max count is validated in the controller
   ]),
   gamesController.updateGame
 );
