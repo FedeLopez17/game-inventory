@@ -59,6 +59,16 @@
           <input type="file" accept="image/*" id="gallery-images" class="gallery-images" name="gallery-images" multiple/>
         </section>
         <%- include("../partials/error", { errors: locals.errors, fieldName: 'gallery', visible: true }) %>
+
+        <section class="gallery-videos">
+          <label for="gallery-videos">YouTube Videos</label>
+          <section class="videos-wrapper"></section>
+          <input type="text" id="gallery-videos" class="gallery-videos" />
+          <button type="button" class="add-video">Add Video</button>
+          <%- include("../partials/error", { errors: locals.errors, fieldName: 'videos' }) %>
+          <p class="gallery-video-warning hidden">Only YouTube videos allowed!</p>
+          <input type="text" id="hidden-videos-input" name="videos" value="<%= JSON.stringify([...formData.videos]) %>">
+        </section>
       </fieldset>
 
       <section>

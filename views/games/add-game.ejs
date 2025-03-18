@@ -10,8 +10,6 @@
   <body>
     <%- include("../partials/header", { activeEntity: "games" }) %>
 
-    <%= JSON.stringify(locals.formData) %>
-
     <form id="add-genre" onsubmit="addEntity('genre', '/genres/add'); return false;"></form>
     <form id="add-studio" onsubmit="addEntity('studio', '/studios/add'); return false;"></form>
     <form id="add-publisher" onsubmit="addEntity('publisher', '/publishers/add'); return false;"></form>
@@ -45,6 +43,16 @@
           <input type="file" accept="image/*" id="gallery-images" class="gallery-images" name="gallery-images" multiple/>
         </section>
         <%- include("../partials/error", { errors: locals.errors, fieldName: 'gallery' }) %>
+
+        <section class="gallery-videos">
+          <label for="gallery-videos">YouTube Videos</label>
+          <section class="videos-wrapper"></section>
+          <input type="text" id="gallery-videos" class="gallery-videos" />
+          <button type="button" class="add-video">Add Video</button>
+          <%- include("../partials/error", { errors: locals.errors, fieldName: 'videos' }) %>
+          <p class="gallery-video-warning hidden">Only YouTube videos allowed!</p>
+          <input type="text" id="hidden-videos-input" name="videos" value="<%= locals.formData && locals.formData.videos || '[]'  %>">
+        </section>
        </fieldset>
 
       <section>
