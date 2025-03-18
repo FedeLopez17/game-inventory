@@ -142,6 +142,7 @@ function updateGame(id) {
   const studios = getCheckedInputs("studio");
   const publishers = getCheckedInputs("publisher");
   const galleryInput = document.getElementById("gallery-images");
+  const videos = document.getElementById("hidden-videos-input").value;
 
   const imagesWrapper = document.querySelector(".images-wrapper");
   const dataImagesToDelete = imagesWrapper.getAttribute(
@@ -177,6 +178,7 @@ function updateGame(id) {
   formData.append("deleteBanner", deleteBanner);
   formData.append("release", releaseDate);
   formData.append("description", description);
+  formData.append("videos", videos);
   formData.append("website", website);
   formData.append("goty", goty);
   formData.append("platforms", platforms);
@@ -675,7 +677,7 @@ const galleryImagesInput = document.getElementById("gallery-images");
 
 if (galleryImagesInput) {
   const imagesWrapper = document.querySelector(".images-wrapper");
-  const dt = new DataTransfer(); // Stores selected files
+  let dt = new DataTransfer(); // Stores selected files
 
   const renderImages = () => {
     Array.from(imagesWrapper.children).forEach((childElement) => {
@@ -762,10 +764,17 @@ if (galleryImagesInput) {
   window.addEventListener("pageshow", () => {
     if (galleryImagesInput.files.length > 0) {
       console.log("RENDER");
+
+      dt = new DataTransfer();
+
       const newFiles = Array.from(galleryImagesInput.files);
       for (const file of newFiles) {
         dt.items.add(file);
       }
+
+      galleryImagesInput.files = dt.files;
+      imagesWrapper.innerHTML = "";
+
       renderImages();
     } else {
       Array.from(imagesWrapper.children).forEach((childElement) => {
@@ -820,3 +829,113 @@ const removeImageNotInInput = (imgUrl) => {
     JSON.stringify(imagesToDelete)
   );
 };
+
+const validateVideoURLGetEmbed = (url) => {
+  if (!url) return false;
+
+  const regExpYouTubeURL =
+    /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
+  const match = url.match(regExpYouTubeURL);
+  if (match && match[2].length == 11) {
+    return `https://www.youtube.com/embed/${match[2]}?autoplay=0`;
+  }
+
+  return false;
+};
+
+const renderVideo = (embedURL, noAddition) => {
+  const videosWrapper = document.querySelector(".videos-wrapper");
+
+  const videoWrapper = document.createElement("section");
+  videoWrapper.classList.add("video-wrapper");
+
+  const removeButton = document.createElement("img");
+  removeButton.classList.add("remove-button");
+  removeButton.src = "/assets/images/icons/x-mark.svg";
+  removeButton.title = "Remove";
+  videoWrapper.appendChild(removeButton);
+
+  const iframe = document.createElement("iframe");
+  iframe.id = embedURL;
+  iframe.type = "text/html";
+  iframe.width = "400";
+  iframe.height = "225";
+  iframe.setAttribute("allowfullscreen", "true");
+  iframe.src = embedURL;
+  videoWrapper.append(iframe);
+  removeButton.addEventListener("click", () => {
+    const previousVideoUrls = JSON.parse(hiddenVideosInput.value);
+    const index = previousVideoUrls.findIndex((url) => url == embedURL);
+
+    const updatedVideoUrls = previousVideoUrls;
+    updatedVideoUrls.splice(index, 1);
+    hiddenVideosInput.value = JSON.stringify(updatedVideoUrls);
+    videoWrapper.remove();
+
+    if (updatedVideoUrls.length < 3) {
+      galleryVideosInput.disabled = false;
+      addVideoButton.disabled = false;
+    }
+  });
+  videosWrapper.append(videoWrapper);
+
+  const hiddenVideosInput = document.getElementById("hidden-videos-input");
+
+  const previousVideoUrls = JSON.parse(hiddenVideosInput.value);
+
+  if (noAddition) {
+    if (previousVideoUrls.length == 3) {
+      galleryVideosInput.disabled = true;
+      document.querySelector("button.add-video").disabled = true;
+    }
+    return;
+  }
+
+  const updatedVideoUrls = [...previousVideoUrls, embedURL];
+  hiddenVideosInput.value = JSON.stringify(updatedVideoUrls);
+  galleryVideosInput.value = "";
+
+  if (updatedVideoUrls.length == 3) {
+    galleryVideosInput.disabled = true;
+    document.querySelector("button.add-video").disabled = true;
+  }
+};
+
+const galleryVideosInput = document.getElementById("gallery-videos");
+if (galleryVideosInput) {
+  galleryVideosInput.addEventListener("input", () => {
+    const warning = document.querySelector(".gallery-video-warning");
+    warning.classList.add("hidden");
+  });
+
+  const addVideoButton = document.querySelector("button.add-video");
+  addVideoButton.addEventListener("click", () => {
+    const videoUrl = galleryVideosInput.value;
+    if (!videoUrl) return;
+
+    const embedURL = validateVideoURLGetEmbed(videoUrl);
+    if (embedURL) {
+      renderVideo(embedURL);
+    } else {
+      const warning = document.querySelector(".gallery-video-warning");
+      warning.classList.remove("hidden");
+    }
+  });
+
+  window.addEventListener("pageshow", () => {
+    const hiddenVideosInput = document.getElementById("hidden-videos-input");
+    console.log(hiddenVideosInput.value);
+
+    const videoUrls = JSON.parse(hiddenVideosInput.value);
+    if (videoUrls.length > 0) {
+      console.log("RENDER VIDEO");
+      const videosWrapper = document.querySelector(".videos-wrapper");
+      videosWrapper.innerHTML = "";
+
+      videoUrls.forEach((url) => {
+        const embedURL = validateVideoURLGetEmbed(url);
+        if (embedURL) renderVideo(embedURL, true);
+      });
+    }
+  });
+}

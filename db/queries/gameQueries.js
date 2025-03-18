@@ -24,7 +24,8 @@ SELECT
         ARRAY_AGG(DISTINCT p.name) AS platforms,
         ARRAY_AGG(DISTINCT pub.name) AS publishers,
         ARRAY_AGG(DISTINCT s.name) AS studios,
-        ARRAY_AGG(DISTINCT i.image_url) AS images
+        ARRAY_AGG(DISTINCT i.image_url) AS images,
+        ARRAY_AGG(DISTINCT vi.video_url) AS videos
     FROM
         public.videogames v
     LEFT JOIN public.esrb_ratings er ON v.esrb_rating_id = er.id
@@ -38,6 +39,7 @@ SELECT
     LEFT JOIN public.videogames_studios vs ON v.id = vs.videogame_id
     LEFT JOIN public.studios s ON vs.studio_id = s.id
     LEFT JOIN public.images i ON v.id = i.videogame_id
+    LEFT JOIN public.videos vi ON v.id = vi.videogame_id
 `;
 
 module.exports = {
@@ -282,7 +284,8 @@ module.exports = {
     genre,
     studio,
     publisher,
-    goty
+    goty,
+    videos
   ) => {
     const client = await pool.connect();
 
@@ -349,6 +352,15 @@ module.exports = {
           "INSERT INTO images (videogame_id, image_url) VALUES ($1, $2)",
           [gameId, imageUrl]
         );
+      }
+
+      if (videos) {
+        for (videoUrl of JSON.parse(videos)) {
+          await client.query(
+            "INSERT INTO videos (videogame_id, video_url) VALUES ($1, $2)",
+            [gameId, videoUrl]
+          );
+        }
       }
 
       await client.query("COMMIT");
@@ -418,7 +430,8 @@ module.exports = {
     genre,
     studio,
     publisher,
-    goty
+    goty,
+    videos
   ) => {
     const client = await pool.connect();
 
@@ -508,6 +521,17 @@ module.exports = {
           await client.query(
             "DELETE FROM images WHERE videogame_id = $1 AND image_url = $2",
             [id, imageUrl]
+          );
+        }
+      }
+
+      if (videos) {
+        await client.query("DELETE FROM videos WHERE videogame_id = $1", [id]);
+
+        for (videoUrl of JSON.parse(videos)) {
+          await client.query(
+            "INSERT INTO videos (videogame_id, video_url) VALUES ($1, $2)",
+            [id, videoUrl]
           );
         }
       }

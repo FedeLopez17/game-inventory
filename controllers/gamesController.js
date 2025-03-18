@@ -48,6 +48,13 @@ const validateGame = [
     return true;
   }),
 
+  body("videos").custom((_, { req }) => {
+    const videos = JSON.parse(req.body.videos);
+    if (!videos || videos.length <= 3) return true;
+
+    throw new Error("Up to 3 videos allowed in gallery");
+  }),
+
   body("cover").custom((_, { req }) => {
     if (!req.files.cover) {
       throw new Error("Cover image is required.");
@@ -117,6 +124,13 @@ const validateGameUpdate = [
       throw new Error("Up to 8 images allowed in gallery");
     }
     return true;
+  }),
+
+  body("videos").custom((_, { req }) => {
+    const videos = JSON.parse(req.body.videos);
+    if (!videos || videos.length <= 3) return true;
+
+    throw new Error("Up to 3 videos allowed in gallery");
   }),
 
   body("cover").custom((_, { req }) => {
@@ -420,6 +434,7 @@ module.exports = {
         studio,
         publisher,
         goty,
+        videos,
       } = req.body;
 
       console.log("VALUES: ");
@@ -439,6 +454,7 @@ module.exports = {
           genre,
           studio,
           publisher,
+          videos,
         })
       );
 
@@ -504,7 +520,8 @@ module.exports = {
           genre,
           studio,
           publisher,
-          goty
+          goty,
+          videos
         );
 
         res.redirect("/games");
@@ -599,6 +616,7 @@ module.exports = {
         ign,
         opencritic,
         metacritic,
+        videos,
       } = req.body;
 
       const platforms = req.body.platforms.split(",");
@@ -627,6 +645,7 @@ module.exports = {
           studio,
           publisher,
           deleteBanner,
+          videos,
         })
       );
 
@@ -727,7 +746,8 @@ module.exports = {
           genre,
           studio,
           publisher,
-          goty
+          goty,
+          videos
         );
 
         res.status(200).send("Game updated successfully");
