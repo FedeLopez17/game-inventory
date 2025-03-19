@@ -24,6 +24,10 @@
 
       <% if(game.images.length) { %>
         <section class="gallery">
+          <% game.videos.forEach(videoUrl =>  { %>
+            <iframe src="<%= videoUrl %>" id="<%= videoUrl %>" type="text/html" width="400" height="225" frameborder="0" allowfullscreen></iframe>
+          <% })%>
+
           <% game.images.forEach(imageUrl =>  { %>
             <img src="<%= imageUrl %>" alt="<%= game.title %> image" />
           <% })%>
