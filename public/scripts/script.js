@@ -872,6 +872,9 @@ const renderVideo = (embedURL, noAddition) => {
     hiddenVideosInput.value = JSON.stringify(updatedVideoUrls);
     videoWrapper.remove();
 
+    const errorMessage = document.querySelector(".error[data-path='videos']");
+    if (errorMessage) errorMessage.remove();
+
     if (updatedVideoUrls.length < 3) {
       galleryVideosInput.disabled = false;
       addVideoButton.disabled = false;
@@ -939,3 +942,8 @@ if (galleryVideosInput) {
     }
   });
 }
+
+const removeWarning = (errorPath) => {
+  const error = document.querySelector(`.error[data-path=${errorPath}]`);
+  if (error) error.remove();
+};

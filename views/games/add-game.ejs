@@ -16,13 +16,13 @@
     <form id="add-game" action="/games/add" method="post" enctype="multipart/form-data">
       <section>
         <label for="title">Title: <%- include("../partials/required-symbol") %></label>
-        <input type="text" id="title" name="title" value="<%= locals.formData && formData.title %>" required/>
+        <input type="text" id="title" name="title" value="<%= locals.formData && formData.title %>" onInput="removeWarning('title')" required/>
         <%- include("../partials/error", { errors: locals.errors, fieldName: 'title' }) %>
       </section>
 
       <section>
         <label for="cover-image">Cover image: <%- include("../partials/required-symbol") %></label>
-        <input type="file" accept="image/*" id="cover-image" class="cover-image" name="cover" required data-type="cover"/>
+        <input type="file" accept="image/*" id="cover-image" class="cover-image" name="cover" required data-type="cover" onInput="removeWarning('cover')"/>
         <section class="cover-preview-wrapper"></section>
         <%- include("../partials/error", { errors: locals.errors, fieldName: 'cover' }) %>
       </section>
@@ -40,7 +40,7 @@
         <section class="gallery-images">
           <label for="gallery-images">Images</label>
           <section class="images-wrapper"></section>
-          <input type="file" accept="image/*" id="gallery-images" class="gallery-images" name="gallery-images" multiple/>
+          <input type="file" accept="image/*" id="gallery-images" class="gallery-images" name="gallery-images" onInput="removeWarning('gallery')" multiple/>
         </section>
         <%- include("../partials/error", { errors: locals.errors, fieldName: 'gallery' }) %>
 
@@ -57,13 +57,13 @@
 
       <section>
         <label for="release-date">Release date: <%- include("../partials/required-symbol") %></label>
-        <input type="date" id="release-date" name="release" value="<%= locals.formData && formData.release %>" required/>
+        <input type="date" id="release-date" name="release" value="<%= locals.formData && formData.release %>" onInput="removeWarning('release')" required/>
         <%- include("../partials/error", { errors: locals.errors, fieldName: 'release' }) %>
       </section>
 
       <section>
         <label for="description">Description: <%- include("../partials/required-symbol") %></label>
-        <textarea name="description" id="description" rows="4" required><%= locals.formData && formData.description %></textarea>
+        <textarea name="description" id="description" rows="4" onInput="removeWarning('description')" required><%= locals.formData && formData.description %></textarea>
         <%- include("../partials/error", { errors: locals.errors, fieldName: 'description' }) %>
       </section>
 
@@ -82,7 +82,8 @@
 
         <% platforms.forEach(platform => { %>
           <label>
-            <input type="checkbox" name="platforms" value=<%= platform.id %> required onClick="validateAtLeastOneChecked('platforms')" 
+            <input type="checkbox" name="platforms" value=<%= platform.id %> required onClick="validateAtLeastOneChecked('platforms')"
+              onInput="removeWarning('platforms')" 
               <%= locals.formData && (Array.isArray(locals.formData.platforms) 
               ? locals.formData.platforms.includes(String(platform.id)) 
               : locals.formData.platforms == platform.id) 
@@ -132,6 +133,7 @@
           step="0.1"
           placeholder="IGN Score"
           value="<%= locals.formData && formData.ign_rating || '' %>"
+          onInput="removeWarning('ign')"
         />
         <%- include("../partials/error", { errors: locals.errors, fieldName: 'ign' }) %>
 
@@ -145,6 +147,7 @@
           step="1"
           placeholder="OpenCritic Score"
           value="<%= locals.formData && formData.opencritic_rating || '' %>"
+          onInput="removeWarning('opencritic')"
         />
         <%- include("../partials/error", { errors: locals.errors, fieldName: 'opencritic' }) %>
 
@@ -158,6 +161,7 @@
           step="1"
           placeholder="Metacritic Score"
           value="<%= locals.formData && formData.metacritic_rating || '' %>"
+          onInput="removeWarning('metacritic')"
         />
         <%- include("../partials/error", { errors: locals.errors, fieldName: 'metacritic' }) %>
       </fieldset>
@@ -168,6 +172,7 @@
           <% genres.forEach(genre => { %>
             <label>
               <input type="checkbox" name="genre" value=<%= genre.id %> required onClick="validateAtLeastOneChecked('genre')"
+                onInput="removeWarning('genre')"
                 <%= locals.formData && (Array.isArray(locals.formData.genre) 
                 ? locals.formData.genre.includes(String(genre.id)) 
                 : locals.formData.genre == genre.id) 
@@ -192,6 +197,7 @@
           <% studios.forEach(studio => { %>
             <label>
               <input type="checkbox" name="studio" value=<%= studio.id %> required onClick="validateAtLeastOneChecked('studio')"
+                onInput="removeWarning('studio')"
                 <%= locals.formData && (Array.isArray(locals.formData.studio) 
                 ? locals.formData.studio.includes(String(studio.id)) 
                 : locals.formData.studio == studio.id) 
@@ -216,6 +222,7 @@
           <% publishers.forEach(publisher => { %>
             <label>
               <input type="checkbox" name="publisher" value=<%= publisher.id %> required onClick="validateAtLeastOneChecked('publisher')"
+                onInput="removeWarning('publisher')"
                 <%= locals.formData && (Array.isArray(locals.formData.publisher) 
                 ? locals.formData.publisher.includes(String(publisher.id)) 
                 : locals.formData.publisher == publisher.id) 
