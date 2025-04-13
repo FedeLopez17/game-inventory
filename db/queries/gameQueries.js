@@ -395,6 +395,8 @@ module.exports = {
       );
       await client.query("DELETE FROM images WHERE videogame_id = $1", [id]);
 
+      await client.query("DELETE FROM videos WHERE videogame_id = $1", [id]);
+
       const deletionResult = await client.query(
         "DELETE FROM videogames WHERE id = $1",
         [id]
