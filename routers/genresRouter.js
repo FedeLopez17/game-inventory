@@ -19,7 +19,4 @@ genresRouter.post(
   genresController.addGenre
 );
 
-genresRouter.get("/", genresController.getGenres);
-genresRouter.get("/:id", genresController.getGenreById);
-
 module.exports = genresRouter;

@@ -59,27 +59,6 @@ const validateGenreUpdate = [
 ];
 
 module.exports = {
-  getGenres: async (req, res) => {
-    const genres = await genreQueries.getAllGenres();
-    res.render("genres/genres", { genres });
-  },
-
-  //TODO: this should return related games
-  getGenreById: async (req, res) => {
-    const { id } = req.params;
-
-    try {
-      const genre = await genreQueries.getGenreById(id);
-      if (!genre) {
-        return res.status(404).send("Genre not found");
-      }
-      res.render("genres/genre", { genre });
-    } catch (err) {
-      console.error(err);
-      res.status(500).send("Error fetching genre");
-    }
-  },
-
   getAddGenre: async (req, res) =>
     res.render("add-entity", { entity: "genre", formAction: "/genres/add" }),
 
@@ -114,7 +93,7 @@ module.exports = {
         if (response === "JSON") {
           res.status(201).json(genre);
         } else {
-          res.redirect("/genres");
+          res.redirect("/games");
         }
       } catch (err) {
         console.error(err);
