@@ -284,7 +284,11 @@ function deleteEntity(entity, id, fetchUrl, redirect) {
   })
     .then((response) => {
       if (response.status === 204) {
-        window.location.href = redirect;
+        if (redirect === "reload") {
+          window.location.reload();
+        } else {
+          window.location.href = redirect;
+        }
       } else if (response.status === 401) {
         alert("Wrong password");
       }

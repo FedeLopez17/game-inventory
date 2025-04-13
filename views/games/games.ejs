@@ -10,35 +10,54 @@
   <body>
     <%- include("../partials/header", { activeEntity: "games", addButtonText:"Add Game" }) %>
 
-    <%- include("../partials/searchbar", {entityType: 'Games', }) %>
-
-    <section class="genre-selector">
-      <a href="/games">
-        <section class="genre-bubble genre-bubble <%= !locals.currentGenre ? 'active' : '' %>">
-          <img src="/assets/images/icons/all.svg" alt="All genres icon">
-          <p>All</p>
-        </section>
-      </a>
-
-      <% genres.forEach((genre)=> {%>
-      <a href="/games/genre/<%= genre.name %>">
-        <section class="genre-bubble <%= genre.name == locals.currentGenre ? 'active' : '' %>">
-          <img src="<%= genre.icon_url %>" alt="<%= genre.name %> genre icon">
-          <p><%= genre.name %></p>
-        </section>
-      </a>
-      <%})%>
-    </section>
-
-    <% if(games.length) { %>
-      <section class="card-wrapper">
-        <% games.forEach((game)=> {%> <%- include("./game-card", {game}) %> <%})%>
-      </section>
-    <% } else { %>
-      <p>No games found</p>
-    <% } %>
-
-    <%- include("../partials/page-selector", { ...page}) %>
+    <section class="outer-container">
+      <aside>
+        <section class="genre-selector">
+          <h3>Genres</h3>
+          <a href="/games">
+            <section class="genre-bubble genre-bubble <%= !locals.currentGenre ? 'active' : '' %>">
+              <img src="/assets/images/icons/all.svg" alt="All genres icon">
+              <p>All</p>
+            </section>
+          </a>
     
+          <% genres.forEach((genre)=> {%>
+            <section class="genre-bubble <%= genre.name == locals.currentGenre ? 'active' : '' %>">
+              <a href="/games/genre/<%= genre.name %>" class="genre-anchor">
+                <section>
+                  <img src="<%= genre.icon_url %>" alt="<%= genre.name %> genre icon">
+                  <p><%= genre.name %></p>
+                  
+                </section>
+              </a>
+              <a href="/genres/update/<%= genre.id %>">Update</a>
+              <button type="button" onClick="deleteEntity('genre', <%= genre.id %>, '/genres/delete', 'reload')">
+                Delete
+              </button>
+            </section>
+          <%})%>
+
+          <section class="add-genre">
+            <a href="genres/add">
+              Add Genre
+            </a>
+          </section>
+        </section>
+      </aside>
+
+      <main>
+        <%- include("../partials/searchbar", {entityType: 'Games', }) %>
+
+        <% if(games.length) { %>
+          <section class="card-wrapper">
+            <% games.forEach((game)=> {%> <%- include("./game-card", {game}) %> <%})%>
+          </section>
+        <% } else { %>
+          <p>No games found</p>
+        <% } %>
+
+        <%- include("../partials/page-selector", { ...page}) %>
+      </main>
+    </section>
   </body>
 </html>

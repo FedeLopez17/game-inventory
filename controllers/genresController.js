@@ -139,7 +139,7 @@ module.exports = {
       id,
       entity: "genre",
       fetchUrl: "/genres/update",
-      redirect: "/genres",
+      redirect: "/games",
     });
   },
 

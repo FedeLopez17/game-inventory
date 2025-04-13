@@ -120,19 +120,47 @@ a.card-anchor:hover {
   cursor: pointer;
 }
 
+/* Games Page Layout */
+.outer-container {
+  display: flex;
+  min-height: calc(100vh - 48px);
+}
+
+.outer-container aside {
+  background-color: red;
+}
+
+.outer-container main {
+  background-color: blue;
+  flex: 1;
+}
+
 /* Genre selector */
 
 .genre-selector {
   display: flex;
+  flex-direction: column;
   gap: 4px;
   justify-content: center;
   margin: 20px;
 }
 
-.genre-selector .genre-bubble {
+.genre-selector .genre-bubble,
+.add-genre {
   background-color: lightgray;
   display: flex;
   gap: 4px;
+  align-items: center;
+}
+
+.genre-selector .genre-anchor {
+  flex: 1;
+}
+
+.genre-selector .genre-anchor section {
+  display: flex;
+  gap: 2px;
+  align-items: center;
 }
 
 .genre-selector .genre-bubble.active {
