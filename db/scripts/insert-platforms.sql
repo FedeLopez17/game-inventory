@@ -2,7 +2,7 @@ INSERT INTO platforms (name, description, logo_image_url) VALUES
 ('Microsoft Xbox', 'The original Xbox console that launched Microsoft into the gaming industry.', 'microsoft-xbox.png'),
 ('Microsoft Xbox 360', 'A seventh-generation home video game console known for its online gaming service, Xbox Live, and a diverse library of games.', 'microsoft-xbox-360.png'),
 ('Microsoft Xbox One', 'The third console in the Xbox series, known for its multimedia capabilities.', 'microsoft-xbox-one.png'),
-('Microsoft Xbox Series', 'The latest generation of Xbox consoles offering advanced graphics and performance.', 'microsoft-xbox-series.png'),
+('Microsoft Xbox Series X|S', 'The latest generation of Xbox consoles offering advanced graphics and performance.', 'microsoft-xbox-series.png'),
 ('Nintendo Switch', 'A hybrid video game console developed by Nintendo, allowing both handheld and docked play.', 'nintendo-switch.png'),
 ('Nintendo Wii U', 'A home console that features a unique gamepad with a touchscreen.', 'nintendo-wii-u.png'),
 ('Nintendo Wii', 'A revolutionary console that popularized motion control gaming.', 'nintendo-wii.png'),
