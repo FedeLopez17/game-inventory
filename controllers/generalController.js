@@ -2,12 +2,11 @@ const gameQueries = require("../db/queries/gameQueries");
 const studioQueries = require("../db/queries/studioQueries");
 const publisherQueries = require("../db/queries/publisherQueries");
 
-CARDS_PER_PAGE = 4;
+CARDS_PER_PAGE = 12;
 
 module.exports = {
   searchAll: async (req, res) => {
-    const { search, domain, page = 1, limit = CARDS_PER_PAGE } = req.query;
-    // entityId = parseInt(entityId, 10);
+    const { search, page = 1, limit = CARDS_PER_PAGE } = req.query;
     const pageNumber = parseInt(page, 10);
     const cardsPerPage = parseInt(limit, 10);
     const offset = (pageNumber - 1) * cardsPerPage;

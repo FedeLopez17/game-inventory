@@ -7,7 +7,7 @@ const publisherQueries = require("../db/queries/publisherQueries");
 const { body, validationResult } = require("express-validator");
 const { streamUpload, deleteImage } = require("../config/cloudinaryConfig");
 
-const GAMES_PER_PAGE = 4;
+const GAMES_PER_PAGE = 12;
 
 const validateGame = [
   body("title")

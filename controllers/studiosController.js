@@ -3,8 +3,8 @@ const gameQueries = require("../db/queries/gameQueries");
 const { streamUpload, deleteImage } = require("../config/cloudinaryConfig");
 const { body, validationResult } = require("express-validator");
 
-const STUDIOS_PER_PAGE = 4;
-const GAMES_PER_PAGE = 4;
+const STUDIOS_PER_PAGE = 12;
+const GAMES_PER_PAGE = 12;
 
 const validateStudio = [
   body("name")
