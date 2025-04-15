@@ -127,7 +127,17 @@ a.card-anchor:hover {
 }
 
 .outer-container aside {
-  background-color: red;
+  background-color: rgb(0, 0, 73);
+}
+
+.outer-container aside h3,
+.outer-container aside a,
+.outer-container aside a:active,
+.outer-container aside a:visited,
+.outer-container aside a:link,
+.outer-container aside a:hover {
+  color: white;
+  text-decoration: none;
 }
 
 .outer-container main {
@@ -135,39 +145,42 @@ a.card-anchor:hover {
   flex: 1;
 }
 
-/* Genre selector */
+/* Genre and Platform selectors */
 
-.genre-selector {
+.genre-selector,
+.platform-selector {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   justify-content: center;
   margin: 20px;
 }
 
-.genre-selector .genre-bubble,
+.genre-bubble,
+.platform-bubble,
 .add-genre {
-  background-color: lightgray;
+  display: flex;
+  align-items: center;
+}
+
+.genre-anchor {
+  flex: 1;
+}
+
+.genre-anchor section,
+.platform-anchor section {
   display: flex;
   gap: 4px;
   align-items: center;
 }
 
-.genre-selector .genre-anchor {
-  flex: 1;
-}
-
-.genre-selector .genre-anchor section {
-  display: flex;
-  gap: 2px;
-  align-items: center;
-}
-
-.genre-selector .genre-bubble.active {
+.genre-bubble.active,
+.platform-bubble.active {
   background-color: lightblue;
 }
 
-.genre-bubble img {
+.genre-bubble img,
+.platform-bubble img {
   width: 16px;
 }
 

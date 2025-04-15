@@ -104,10 +104,32 @@ module.exports = {
     return rows;
   },
 
-  getGamesCount: async () => {
+  getGamesCount: async (query) => {
+    const { genre, platform } = query;
+    const values = [];
+    const whereClauses = [];
+
+    if (genre && genre !== "all") {
+      values.push(genre);
+      whereClauses.push(`g.name = $${values.length}`);
+    }
+
+    if (platform && platform !== "all") {
+      values.push(platform);
+      whereClauses.push(`p.name = $${values.length}`);
+    }
+
     const { rows } = await pool.query(
-      `SELECT COUNT(*) AS total FROM videogames`
+      `SELECT COUNT(DISTINCT v.id) AS total FROM public.videogames v
+      LEFT JOIN public.videogames_genres vg ON v.id = vg.videogame_id
+      LEFT JOIN public.genres g ON vg.genre_id = g.id
+      LEFT JOIN public.videogames_platforms vp ON v.id = vp.videogame_id
+      LEFT JOIN public.platforms p ON vp.platform_id = p.id
+      ${whereClauses.length > 0 ? `WHERE ${whereClauses.join(" AND ")}` : ""}
+      `,
+      values
     );
+
     return parseInt(rows[0].total, 10);
   },
 
@@ -120,8 +142,6 @@ module.exports = {
   },
 
   searchTotalByStudio: async (search, studioId) => {
-    console.log(search, studioId);
-
     const { rows } = await pool.query(
       `
       SELECT COUNT(*) AS total
@@ -147,41 +167,41 @@ module.exports = {
     return rows[0]?.total || 0;
   },
 
-  getGamesByGenreCount: async (genre) => {
-    const { rows } = await pool.query(
-      `SELECT COUNT(*) AS total FROM public.videogames v
-      LEFT JOIN public.videogames_genres vg ON v.id = vg.videogame_id
-      LEFT JOIN public.genres g ON vg.genre_id = g.id
-      WHERE g.name = $1`,
-      [genre]
-    );
-    return parseInt(rows[0].total, 10);
-  },
+  getAllGames: async (query, limit, offset) => {
+    const { genre, platform } = query;
+    const values = [];
+    const whereClauses = [];
 
-  getAllGames: async (limit, offset) => {
+    if (genre && genre !== "all") {
+      values.push(genre);
+      whereClauses.push(`g.name = $${values.length}`);
+    }
+
+    if (platform && platform !== "all") {
+      values.push(platform);
+      whereClauses.push(`p.name = $${values.length}`);
+    }
+
+    values.push(limit, offset);
+
     const { rows } = await pool.query(
       `
-     ${BASE_SELECT_QUERY} 
-    GROUP BY
-        v.id, er.id, pr.id
-    LIMIT $1 OFFSET $2
+      ${BASE_SELECT_QUERY}
+      WHERE v.id IN (
+        SELECT DISTINCT v.id
+        FROM public.videogames v
+        LEFT JOIN public.videogames_genres vg ON v.id = vg.videogame_id
+        LEFT JOIN public.genres g ON vg.genre_id = g.id
+        LEFT JOIN public.videogames_platforms vp ON v.id = vp.videogame_id
+        LEFT JOIN public.platforms p ON vp.platform_id = p.id
+        ${whereClauses.length > 0 ? `WHERE ${whereClauses.join(" AND ")}` : ""}
+      )
+      GROUP BY v.id, er.id, pr.id
+      LIMIT $${values.length - 1} OFFSET $${values.length}
     `,
-      [limit, offset]
+      values
     );
-    return rows;
-  },
 
-  getGamesByGenre: async (genre, limit, offset) => {
-    const { rows } = await pool.query(
-      `
-    ${BASE_SELECT_QUERY} 
-    WHERE g.name = $1
-    GROUP BY
-        v.id, er.id, pr.id
-    LIMIT $2 OFFSET $3
-    `,
-      [genre, limit, offset]
-    );
     return rows;
   },
 

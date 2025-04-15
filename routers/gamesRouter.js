@@ -5,7 +5,6 @@ const upload = require("../config/multerConfig");
 const gamesRouter = express.Router();
 
 gamesRouter.get("/", gamesController.getGames);
-gamesRouter.get("/genre/:genre", gamesController.getGamesByGenre);
 
 gamesRouter.post("/search", gamesController.searchGames);
 gamesRouter.get("/search", gamesController.getGamesBySearch);
@@ -17,7 +16,7 @@ gamesRouter.post(
   upload.fields([
     { name: "cover", maxCount: 1 },
     { name: "banner", maxCount: 1 },
-    { name: "gallery-images"}, // max count is validated in the controller
+    { name: "gallery-images" }, // max count is validated in the controller
   ]),
   gamesController.addGame
 );
@@ -32,7 +31,7 @@ gamesRouter.put(
   upload.fields([
     { name: "cover", maxCount: 1 },
     { name: "banner", maxCount: 1 },
-    { name: "gallery-images"}, // max count is validated in the controller
+    { name: "gallery-images" }, // max count is validated in the controller
   ]),
   gamesController.updateGame
 );

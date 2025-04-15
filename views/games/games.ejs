@@ -1,3 +1,9 @@
+<% const getGeneralPlatformLogo = (platform) =>  {
+  const lowerCasePlatform = platform.toLowerCase()
+  return lowerCasePlatform.includes("playstation") ? "playstation" : lowerCasePlatform.includes("nintendo") ? "nintendo" : lowerCasePlatform.includes("xbox") ? "xbox" : "windows"
+  }  
+%>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -14,8 +20,8 @@
       <aside>
         <section class="genre-selector">
           <h3>Genres</h3>
-          <a href="/games">
-            <section class="genre-bubble genre-bubble <%= !locals.currentGenre ? 'active' : '' %>">
+          <a href="/games?genre=all&platform=<%= locals.currentPlatform || 'all' %>">
+            <section class="genre-bubble <%= locals.currentGenre == 'all' ? 'active' : '' %>">
               <img src="/assets/images/icons/all.svg" alt="All genres icon">
               <p>All</p>
             </section>
@@ -23,7 +29,7 @@
     
           <% genres.forEach((genre)=> {%>
             <section class="genre-bubble <%= genre.name == locals.currentGenre ? 'active' : '' %>">
-              <a href="/games/genre/<%= genre.name %>" class="genre-anchor">
+              <a href="/games?genre=<%= genre.name %>&platform=<%= locals.currentPlatform || 'all' %>" class="genre-anchor">
                 <section>
                   <img src="<%= genre.icon_url %>" alt="<%= genre.name %> genre icon">
                   <p><%= genre.name %></p>
@@ -38,10 +44,32 @@
           <%})%>
 
           <section class="add-genre">
-            <a href="genres/add">
+            <a href="/genres/add">
               Add Genre
             </a>
           </section>
+        </section>
+
+        <section class="platform-selector">
+          <h3>Platforms</h3>
+          <a href="/games?genre=<%= locals.currentGenre || 'all' %>&platform=all">
+            <section class="platform-bubble all <%= locals.currentPlatform == 'all' ? 'active' : '' %>">
+              <img src="/assets/images/icons/all.svg" alt="All platforms icon">
+              <p>All</p>
+            </section>
+
+            <% platforms.forEach((platform)=> {%>
+              <section class="platform-bubble <%= platform.name == locals.currentPlatform ? 'active' : '' %>">
+                <a href="/games?genre=<%= locals.currentGenre || 'all' %>&platform=<%= platform.name %>" class="platform-anchor">
+                  <section>
+                    <img src="/assets/images/platforms/<%= getGeneralPlatformLogo(platform.logo_image_url) %>-light.png" alt="<%= platform.name %> platform icon">
+                    <p><%= platform.name %></p>
+                    
+                  </section>
+                </a>
+              </section>
+            <%})%>
+          </a>
         </section>
       </aside>
 

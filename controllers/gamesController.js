@@ -204,13 +204,26 @@ module.exports = {
     const gamesPerPage = parseInt(limit, 10);
     const offset = (pageNumber - 1) * gamesPerPage;
 
-    const pageGames = await gameQueries.getAllGames(gamesPerPage, offset);
-    const totalGames = await gameQueries.getGamesCount();
+    if (!req.query.genre) req.query.genre = "all";
+    if (!req.query.platform) req.query.platform = "all";
+
+    const pageGames = await gameQueries.getAllGames(
+      req.query,
+      gamesPerPage,
+      offset
+    );
+    const totalGames = await gameQueries.getGamesCount(req.query);
+
     const genres = await genreQueries.getAllGenres();
+    const platforms = await platformQueries.getAllPlatforms();
 
     res.render("games/games", {
       games: pageGames,
       genres,
+      currentGenre: req.query.genre,
+      platforms,
+      currentPlatform: req.query.platform,
+      query: req.query,
       page: {
         number: pageNumber,
         total: Math.ceil(totalGames / gamesPerPage),
@@ -326,33 +339,6 @@ module.exports = {
     }
 
     return res.send({ total });
-  },
-
-  getGamesByGenre: async (req, res) => {
-    const { genre } = req.params;
-    const { page = 1, limit = GAMES_PER_PAGE } = req.query;
-    const pageNumber = parseInt(page, 10);
-    const gamesPerPage = parseInt(limit, 10);
-    const offset = (pageNumber - 1) * gamesPerPage;
-
-    const pageGames = await gameQueries.getGamesByGenre(
-      genre,
-      gamesPerPage,
-      offset
-    );
-    const totalGames = await gameQueries.getGamesByGenreCount(genre);
-    const genres = await genreQueries.getAllGenres();
-
-    res.render("games/games", {
-      games: pageGames,
-      genres,
-      currentGenre: genre,
-      page: {
-        number: pageNumber,
-        total: Math.ceil(totalGames / gamesPerPage),
-        gamesPerPage,
-      },
-    });
   },
 
   getGameById: async (req, res) => {
