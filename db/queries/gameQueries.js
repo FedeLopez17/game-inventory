@@ -168,7 +168,7 @@ module.exports = {
   },
 
   getAllGames: async (query, limit, offset) => {
-    const { genre, platform } = query;
+    const { genre, platform, sort } = query;
     const values = [];
     const whereClauses = [];
 
@@ -184,6 +184,23 @@ module.exports = {
 
     values.push(limit, offset);
 
+    const sortOptionsMap = {
+      az: "LOWER(v.title) ASC",
+      za: "LOWER(v.title) DESC",
+      "release-latest": "v.release_date DESC",
+      "release-oldest": "v.release_date ASC",
+      "pegi-most-mature": "pr.maturity_level DESC NULLS LAST",
+      "pegi-least-mature": "pr.maturity_level ASC NULLS LAST",
+      "esrb-most-mature": "er.maturity_level DESC NULLS LAST",
+      "esrb-least-mature": "er.maturity_level ASC NULLS LAST",
+      "metacritic-highest": "v.metacritic_rating DESC NULLS LAST",
+      "metacritic-lowest": "v.metacritic_rating ASC NULLS LAST",
+      "opencritic-highest": "v.opencritic_rating DESC NULLS LAST",
+      "opencritic-lowest": "v.opencritic_rating ASC NULLS LAST",
+      "ign-highest": "v.ign_rating DESC NULLS LAST",
+      "ign-lowest": "v.ign_rating ASC NULLS LAST",
+    };
+
     const { rows } = await pool.query(
       `
       ${BASE_SELECT_QUERY}
@@ -197,6 +214,7 @@ module.exports = {
         ${whereClauses.length > 0 ? `WHERE ${whereClauses.join(" AND ")}` : ""}
       )
       GROUP BY v.id, er.id, pr.id
+      ${sort && sortOptionsMap[sort] ? `ORDER BY ${sortOptionsMap[sort]}` : ""}
       LIMIT $${values.length - 1} OFFSET $${values.length}
     `,
       values

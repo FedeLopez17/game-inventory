@@ -11,6 +11,7 @@
     <%- include("../partials/header", { activeEntity: "publishers", addButtonText: "Add Publisher"  }) %>
 
     <%- include("../partials/searchbar", {entityType: 'Publishers', }) %>
+    <%- include("../partials/sort-by-dropdown", { sort }) %>
     
     <% if(publishers.length) { %>
       <section class="card-wrapper publishers">

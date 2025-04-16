@@ -223,6 +223,7 @@ module.exports = {
       currentGenre: req.query.genre,
       platforms,
       currentPlatform: req.query.platform,
+      sort: req.query.sort,
       query: req.query,
       page: {
         number: pageNumber,

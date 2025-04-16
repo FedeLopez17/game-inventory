@@ -17,9 +17,14 @@ module.exports = {
     return rows;
   },
 
-  getAllStudios: async (limit, offset) => {
+  getAllStudios: async (sort, limit, offset) => {
+    const sortBy =
+      sort == "az" ? "LOWER(name) ASC" : sort == "za" ? "LOWER(name) DESC" : "";
+
     const { rows } = await pool.query(
-      "SELECT * FROM studios LIMIT $1 OFFSET $2",
+      `SELECT * FROM studios 
+      ${sortBy ? `ORDER BY ${sortBy}` : ""} 
+        LIMIT $1 OFFSET $2`,
       [limit, offset]
     );
     return rows;

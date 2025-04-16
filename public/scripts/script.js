@@ -951,3 +951,14 @@ const removeWarning = (errorPath) => {
   const error = document.querySelector(`.error[data-path=${errorPath}]`);
   if (error) error.remove();
 };
+
+const sortBySelect = document.getElementById("sort-by");
+if (sortBySelect) {
+  sortBySelect.addEventListener("change", (e) => {
+    const value = e.target.value;
+    const params = new URLSearchParams(window.location.search);
+    params.set("sort", value);
+
+    window.location.search = params.toString();
+  });
+}

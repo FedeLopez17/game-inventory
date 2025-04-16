@@ -17,9 +17,15 @@ module.exports = {
     return rows;
   },
 
-  getAllPublishers: async (limit, offset) => {
+  getAllPublishers: async (sort, limit, offset) => {
+    const sortBy =
+      sort == "az" ? "LOWER(name) ASC" : sort == "za" ? "LOWER(name) DESC" : "";
+
     const { rows } = await pool.query(
-      "SELECT * FROM publishers LIMIT $1 OFFSET $2",
+      `SELECT * FROM publishers 
+      ${sortBy ? `ORDER BY ${sortBy}` : ""} 
+        LIMIT $1 OFFSET $2
+      `,
       [limit, offset]
     );
     return rows;

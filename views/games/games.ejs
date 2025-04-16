@@ -20,7 +20,7 @@
       <aside>
         <section class="genre-selector">
           <h3>Genres</h3>
-          <a href="/games?genre=all&platform=<%= locals.currentPlatform || 'all' %>">
+          <a href="/games?genre=all&platform=<%= locals.currentPlatform || 'all' %>&sort=<%= locals.sort || 'none' %>">
             <section class="genre-bubble <%= locals.currentGenre == 'all' ? 'active' : '' %>">
               <img src="/assets/images/icons/all.svg" alt="All genres icon">
               <p>All</p>
@@ -29,7 +29,7 @@
     
           <% genres.forEach((genre)=> {%>
             <section class="genre-bubble <%= genre.name == locals.currentGenre ? 'active' : '' %>">
-              <a href="/games?genre=<%= genre.name %>&platform=<%= locals.currentPlatform || 'all' %>" class="genre-anchor">
+              <a href="/games?genre=<%= genre.name %>&platform=<%= locals.currentPlatform || 'all' %>&sort=<%= locals.sort || 'none' %>" class="genre-anchor">
                 <section>
                   <img src="<%= genre.icon_url %>" alt="<%= genre.name %> genre icon">
                   <p><%= genre.name %></p>
@@ -52,7 +52,7 @@
 
         <section class="platform-selector">
           <h3>Platforms</h3>
-          <a href="/games?genre=<%= locals.currentGenre || 'all' %>&platform=all">
+          <a href="/games?genre=<%= locals.currentGenre || 'all' %>&platform=all&sort=<%= locals.sort || 'none' %>">
             <section class="platform-bubble all <%= locals.currentPlatform == 'all' ? 'active' : '' %>">
               <img src="/assets/images/icons/all.svg" alt="All platforms icon">
               <p>All</p>
@@ -60,7 +60,7 @@
 
             <% platforms.forEach((platform)=> {%>
               <section class="platform-bubble <%= platform.name == locals.currentPlatform ? 'active' : '' %>">
-                <a href="/games?genre=<%= locals.currentGenre || 'all' %>&platform=<%= platform.name %>" class="platform-anchor">
+                <a href="/games?genre=<%= locals.currentGenre || 'all' %>&platform=<%= platform.name %>&sort=<%= locals.sort || 'none' %>" class="platform-anchor">
                   <section>
                     <img src="/assets/images/platforms/<%= getGeneralPlatformLogo(platform.logo_image_url) %>-light.png" alt="<%= platform.name %> platform icon">
                     <p><%= platform.name %></p>
@@ -74,7 +74,8 @@
       </aside>
 
       <main>
-        <%- include("../partials/searchbar", {entityType: 'Games', }) %>
+        <%- include("../partials/searchbar", {entityType: 'Games' }) %>
+        <%- include("../partials/sort-by-dropdown", {isGames: true, sort}) %>
 
         <% if(games.length) { %>
           <section class="card-wrapper">

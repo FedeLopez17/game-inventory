@@ -56,12 +56,13 @@ const validatePublisherUpdate = [
 
 module.exports = {
   getPublishers: async (req, res) => {
-    const { page = 1, limit = PUBLISHERS_PER_PAGE } = req.query;
+    const { page = 1, limit = PUBLISHERS_PER_PAGE, sort } = req.query;
     const pageNumber = parseInt(page, 10);
     const publishersPerPage = parseInt(limit, 10);
     const offset = (pageNumber - 1) * publishersPerPage;
 
     const publishers = await publisherQueries.getAllPublishers(
+      sort,
       publishersPerPage,
       offset
     );
@@ -69,6 +70,8 @@ module.exports = {
 
     res.render("publishers/publishers", {
       publishers,
+      sort: req.query.sort,
+      query: req.query,
       page: {
         number: pageNumber,
         total: Math.ceil(totalPublishers / publishersPerPage),

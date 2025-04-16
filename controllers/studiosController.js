@@ -56,16 +56,22 @@ const validateStudioUpdate = [
 
 module.exports = {
   getStudios: async (req, res) => {
-    const { page = 1, limit = STUDIOS_PER_PAGE } = req.query;
+    const { page = 1, limit = STUDIOS_PER_PAGE, sort } = req.query;
     const pageNumber = parseInt(page, 10);
     const studiosPerPage = parseInt(limit, 10);
     const offset = (pageNumber - 1) * studiosPerPage;
 
-    const studios = await studioQueries.getAllStudios(studiosPerPage, offset);
+    const studios = await studioQueries.getAllStudios(
+      sort,
+      studiosPerPage,
+      offset
+    );
     const totalStudios = await studioQueries.getStudiosCount();
 
     res.render("studios/studios", {
       studios,
+      sort: req.query.sort,
+      query: req.query,
       page: {
         number: pageNumber,
         total: Math.ceil(totalStudios / studiosPerPage),

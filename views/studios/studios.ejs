@@ -11,6 +11,7 @@
     <%- include("../partials/header", { activeEntity: "studios", addButtonText: "Add Studio"  }) %>
 
     <%- include("../partials/searchbar", {entityType: 'Studios', }) %>
+    <%- include("../partials/sort-by-dropdown", { sort }) %>
 
     <% if(studios.length) { %>
       <section class="card-wrapper studios">

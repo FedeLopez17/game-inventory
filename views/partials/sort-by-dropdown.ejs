@@ -1,0 +1,30 @@
+<% const generalSortOptions = [
+    {name: 'Alphabetically [A-Z]', image: 'alphabet', value:'az'},
+    {name: 'Alphabetically [Z-A]', image: 'alphabet', value:'za'}
+] %>
+
+<% const gameSortOptions = [
+    ...generalSortOptions,
+    {name: 'Release Date - latest first', image: 'date', value:'release-latest'},
+    {name: 'Release Date - oldest first', image: 'date', value:'release-oldest'},
+    {name: 'PEGI - most mature first', image: 'pegi', value:'pegi-most-mature'},
+    {name: 'PEGI - least mature first', image: 'pegi', value:'pegi-least-mature'},
+    {name: 'ESRB - most mature first', image: 'esrb', value:'esrb-most-mature'},
+    {name: 'ESRB - least mature first', image: 'esrb', value:'esrb-least-mature'},
+    {name: 'Metacritic - highest score first', image: 'metacritic', value:'metacritic-highest'},
+    {name: 'Metacritic - lowest score first', image: 'metacritic', value:'metacritic-lowest'},
+    {name: 'OpenCritic - highest score first', image: 'opencritic', value:'opencritic-highest'},
+    {name: 'OpenCritic - lowest score first', image: 'opencritic', value:'opencritic-lowest'},
+    {name: 'IGN - highest score first', image: 'ign', value:'ign-highest'},
+    {name: 'IGN - lowest score first', image: 'ign', value:'ign-lowest'},
+] %>
+
+<section class="sort-by-wrapper">
+  <label for="sort-by">Sort By</label>
+  <select name="sort-by" id="sort-by">
+    <option value="none" <%= !sort || sort == 'none' ? 'selected' : '' %>> - </option>
+    <% (locals.isGames ? gameSortOptions : generalSortOptions).forEach(sortOption => { %>
+        <option value="<%= sortOption.value %>" <%= sort == sortOption.value ? 'selected' : '' %>><%= sortOption.name %></option>
+    <% }) %>
+  </select>
+</section>
