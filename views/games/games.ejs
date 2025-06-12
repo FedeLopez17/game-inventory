@@ -36,6 +36,10 @@
                   
                 </section>
               </a>
+              
+              <button type="button" title="Options" class="options-button" onClick="toggleOptionsSection(<%= genre.id %>)"><img src="/assets/images/icons/ellipsis-vertical.svg" alt="options"></button>
+            </section>
+            <section class="options hidden" id="genre-<%= genre.id %>">
               <a href="/genres/update/<%= genre.id %>">Update</a>
               <button type="button" onClick="deleteEntity('genre', <%= genre.id %>, '/genres/delete', 'reload')">
                 Delete

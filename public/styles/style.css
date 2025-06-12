@@ -127,7 +127,7 @@ a.card-anchor:hover {
 }
 
 .outer-container aside {
-  background-color: rgb(0, 0, 73);
+  background-color: rgb(88, 88, 224);
 }
 
 .outer-container aside h3,
@@ -141,7 +141,33 @@ a.card-anchor:hover {
 }
 
 .outer-container main {
+  position: relative;
+}
+
+.outer-container main {
   background-color: blue;
+  flex: 1;
+}
+
+.options-button {
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  background: transparent;
+  border: none;
+}
+
+.options.hidden {
+  display: none;
+}
+
+.options {
+  display: flex;
+  align-items: center;
+  background-color: aqua;
+}
+
+.options > * {
   flex: 1;
 }
 
@@ -180,8 +206,10 @@ a.card-anchor:hover {
 }
 
 .genre-bubble img,
-.platform-bubble img {
+.platform-bubble img,
+.options-button img {
   width: 16px;
+  height: 16px;
 }
 
 /* Page Selector */

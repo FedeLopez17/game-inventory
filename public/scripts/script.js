@@ -962,3 +962,21 @@ if (sortBySelect) {
     window.location.search = params.toString();
   });
 }
+
+const hideAllOptionSections = () => {
+  document
+    .querySelectorAll("section.options")
+    .forEach(
+      (section) =>
+        !section.classList.contains("hidden") && section.classList.add("hidden")
+    );
+};
+
+const toggleOptionsSection = (genreId) => {
+  const optionsSection = document.getElementById(`genre-${genreId}`);
+  const optionWasHidden = optionsSection.classList.contains("hidden");
+
+  hideAllOptionSections();
+
+  if (optionWasHidden) optionsSection.classList.remove("hidden");
+};
