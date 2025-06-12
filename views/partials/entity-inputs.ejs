@@ -30,8 +30,25 @@
       <%- include("error", { errors: locals.errors, fieldName: 'description' }) %>
     </section>
     
+    <% if(locals.formData && formData.logo_image_url) { %>
+      <section>
+        <label for="previous-image">Current Image:</label>
+        <img id="previous-image" alt="logo" src="<%= formData.logo_image_url %>" >
+      </section>
+    <% } else if(locals.formData && formData.icon_url) { %>
+      <section>
+        <label for="previous-image">Current Image:</label>
+        <img id="previous-image" alt="logo" src="<%= formData.icon_url %>" >
+      </section>
+    <% } %>  
+    
     <section>
-      <label for="logo-image">Image: <%- include("required-symbol") %></label>
+      <% if(locals.formData && (formData.logo_image_url || formData.icon_url)) { %>
+        <label for="logo-image">New Image: </label>
+      <% } else { %>
+        <label for="logo-image">Image: <%- include("required-symbol") %></label>
+      <% } %>  
+          
       <input 
       type="file" 
       name="<%= entity %>-image"
