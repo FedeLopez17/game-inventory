@@ -223,6 +223,19 @@ module.exports = {
     return rows;
   },
 
+  getGamesByGenre: async (genreName) => {
+    const { rows } = await pool.query(
+      `
+    ${BASE_SELECT_QUERY} 
+    WHERE g.name = $1
+    GROUP BY
+        v.id, er.id, pr.id
+    `,
+      [genreName]
+    );
+    return rows;
+  },
+
   getGamesByStudio: async (studioId, limit, offset) => {
     const { rows } = await pool.query(
       `

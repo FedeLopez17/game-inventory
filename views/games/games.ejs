@@ -41,7 +41,7 @@
             </section>
             <section class="options hidden" id="genre-<%= genre.id %>">
               <a href="/genres/update/<%= genre.id %>">Update</a>
-              <button type="button" onClick="deleteEntity('genre', <%= genre.id %>, '/genres/delete', 'reload')">
+              <button type="button" onClick="showDeleteModal('genre', <%= genre.id %>, '/genres/delete', 'reload')">
                 Delete
               </button>
             </section>
@@ -92,5 +92,7 @@
         <%- include("../partials/page-selector", { ...page}) %>
       </main>
     </section>
+
+    <%- include("../partials/delete-modal") %>
   </body>
 </html>

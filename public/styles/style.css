@@ -6,6 +6,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  position: relative;
 }
 
 /* Toggleable Forms */
@@ -23,7 +24,7 @@ body {
 
 /* Header */
 
-header {
+body > header {
   background-color: grey;
   display: flex;
   align-items: center;
@@ -33,7 +34,7 @@ header {
   height: 48px;
 }
 
-header > .add-button {
+body > header > .add-button {
   display: flex;
   align-items: center;
   justify-content: end;
@@ -41,11 +42,11 @@ header > .add-button {
   gap: 6px;
 }
 
-header img {
+body > header img {
   width: 1rem;
 }
 
-header a.active {
+body > header a.active {
   background-color: red;
 }
 
@@ -375,4 +376,86 @@ a.card-anchor:hover {
 .gallery-video-warning.hidden,
 #hidden-videos-input {
   display: none;
+}
+
+/* Delete modal */
+
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  z-index: 20;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-backdrop.hidden {
+  display: none;
+}
+
+.delete-modal {
+  background-color: white;
+  width: min(95%, 450px);
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  margin-top: 100px;
+  gap: 22px;
+}
+
+.delete-modal header {
+  display: flex;
+  justify-content: end;
+  background-color: lightgray;
+  padding: 4px 0;
+}
+
+.delete-modal header button {
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+.delete-modal header img {
+  width: 0.9rem;
+}
+
+.delete-modal .text-wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;
+  align-self: center;
+  gap: 12px;
+}
+
+.delete-modal .text-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.delete-modal .modal-actions {
+  display: flex;
+  justify-content: end;
+  padding: 8px;
+  gap: 6px;
+}
+
+.delete-modal .modal-actions button {
+  cursor: pointer;
+}
+
+.delete-modal .password-button img {
+  width: 16px;
+}
+
+.delete-modal .password-button.hidden,
+.delete-modal .password-warning.hidden,
+.delete-modal .wrong-password-warning.hidden {
+  display: none;
+}
+
+.delete-modal .password-warning,
+.delete-modal .wrong-password-warning {
+  color: red;
 }

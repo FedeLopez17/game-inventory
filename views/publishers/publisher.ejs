@@ -18,7 +18,7 @@
     <p><%= publisher.name %></p>
     <p><%= publisher.description %></p>
 
-    <button type="button" onClick="deleteEntity('publisher', <%= publisher.id %>, '/publishers/delete', '/publishers')">
+    <button type="button" onClick="showDeleteModal('publisher', <%= publisher.id %>, '/publishers/delete', '/publishers')">
       Delete
     </button>
 
@@ -32,5 +32,6 @@
     <% } %>
 
     <%- include("../partials/page-selector", { ...page, query}) %>
+    <%- include("../partials/delete-modal") %>
   </body>
 </html>

@@ -19,7 +19,7 @@
 
       <h1><%= game.title %></h1>
 
-      <button type="button" onClick="deleteEntity('game', <%= game.videogame_id %>, '/games/delete', '/games')">Delete</button>
+      <button type="button" onClick="showDeleteModal('game', <%= game.videogame_id %>, '/games/delete', '/games')">Delete</button>
       <a href="/games/update/<%= game.videogame_id %>">Update</a>
 
       <% if(game.images.length) { %>
@@ -108,5 +108,7 @@
         <% }); %>
       </ul>
     </article>
+
+    <%- include("../partials/delete-modal") %>
   </body>
 </html>

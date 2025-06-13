@@ -1,0 +1,31 @@
+<section class="modal-backdrop hidden" onClick="closeDeleteModal()">
+  <section class="delete-modal" onClick="event.stopPropagation()">
+    <header>
+      <button class="close-button" title="close" onClick="closeDeleteModal()">
+        <img src="/assets/images/icons/x-mark.svg" alt="close icon" />
+      </button>
+    </header>
+    <section class="text-wrapper">
+      <p class="modal-text"></p>
+      <section class="password-wrapper">
+        <label for="admin-password">Admin password <%- include("./required-symbol") %></label>
+        <section class="password-input-wrapper">
+            <input
+                type="password"
+                name="password"
+                id="password"
+                autocomplete="off"
+            />
+            <button type="button" class="password-button show" onClick="togglePassword()" title="show"><img src="/assets/images/icons/eye.svg" alt="show password"></button>
+            <button type="button" class="password-button hide hidden" onClick="togglePassword()" title="hide"><img src="/assets/images/icons/eye-slash.svg" alt="hide password"></button>
+        </section>
+        <p class="password-warning hidden">Admin password is required!</p>
+        <p class="wrong-password-warning hidden">Wrong password!</p>
+      </section>
+    </section>
+    <section class="modal-actions">
+      <button class="cancel-button" onClick="closeDeleteModal()">Cancel</button>
+      <button class="delete-button" onClick="deleteEntity()">Delete</button>
+    </section>
+  </section>
+</section>

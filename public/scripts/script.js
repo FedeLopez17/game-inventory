@@ -261,17 +261,37 @@ function updateEntity(entity, id, fetchUrl, redirect) {
     .catch((error) => console.error("Error:", error));
 }
 
-function deleteEntity(entity, id, fetchUrl, redirect) {
-  const confirmDelete = confirm(
-    `Are you sure you want to delete this ${entity} ${
-      entity != "game" ? "and all related games" : ""
-    }?`
-  );
-  if (!confirmDelete) return;
+const passwordInput = document.querySelector(".delete-modal #password");
+if (passwordInput) {
+  passwordInput.addEventListener("input", () => {
+    const passwordWarning = document.querySelector(".password-warning");
+    if (!passwordWarning.classList.contains("hidden")) {
+      passwordWarning.classList.add("hidden");
+    }
 
-  const password = prompt("Please enter your password to confirm deletion:");
+    const wrongPasswordWarning = document.querySelector(
+      ".wrong-password-warning"
+    );
+    if (!wrongPasswordWarning.classList.contains("hidden")) {
+      wrongPasswordWarning.classList.add("hidden");
+    }
+  });
+}
+
+function deleteEntity() {
+  const deleteModal = document.querySelector(".delete-modal");
+  const data = JSON.parse(deleteModal.getAttribute("data-delete"));
+
+  const { id, fetchUrl, redirect } = data;
+
+  const passwordInput = deleteModal.querySelector("#password");
+  const password = passwordInput.value;
+
   if (!password) {
-    alert(`Password is required to delete the ${entity}.`);
+    const passwordWarning = document.querySelector(".password-warning");
+    if (passwordWarning.classList.contains("hidden")) {
+      passwordWarning.classList.remove("hidden");
+    }
     return;
   }
 
@@ -290,11 +310,58 @@ function deleteEntity(entity, id, fetchUrl, redirect) {
           window.location.href = redirect;
         }
       } else if (response.status === 401) {
-        alert("Wrong password");
+        const wrongPasswordWarning = document.querySelector(
+          ".wrong-password-warning"
+        );
+        if (wrongPasswordWarning.classList.contains("hidden")) {
+          wrongPasswordWarning.classList.remove("hidden");
+        }
       }
     })
     .catch((error) => console.error("Error:", error));
 }
+
+const showDeleteModal = (entity, id, fetchUrl, redirect) => {
+  const passwordInput = document.querySelector(".delete-modal #password");
+  passwordInput.value = "";
+  const showPasswordButton = document.querySelector(".password-button.show");
+  const hidePasswordButton = document.querySelector(".password-button.hide");
+
+  if (showPasswordButton.classList.contains("hidden")) {
+    showPasswordButton.classList.remove("hidden");
+  }
+  if (!hidePasswordButton.classList.contains("hidden")) {
+    hidePasswordButton.classList.add("hidden");
+  }
+
+  const modalBackdrop = document.querySelector(".modal-backdrop");
+  modalBackdrop.classList.remove("hidden");
+
+  const modalText = document.querySelector(".modal-text");
+  modalText.innerText = `Are you sure you want to delete this ${entity} ${
+    entity != "game" ? "and all related games" : ""
+  }?`;
+
+  const deleteModal = document.querySelector(".delete-modal");
+  deleteModal.setAttribute(
+    "data-delete",
+    JSON.stringify({ id, fetchUrl, redirect })
+  );
+};
+
+const closeDeleteModal = () => {
+  const modalBackdrop = document.querySelector(".modal-backdrop");
+  if (!modalBackdrop.classList.contains("hidden"))
+    modalBackdrop.classList.add("hidden");
+};
+
+const togglePassword = () => {
+  const passwordInput = document.querySelector(".delete-modal #password");
+  passwordInput.type = passwordInput.type == "text" ? "password" : "text";
+
+  document.querySelector(".password-button.show").classList.toggle("hidden");
+  document.querySelector(".password-button.hide").classList.toggle("hidden");
+};
 
 const imageInputs = document.querySelectorAll(
   ".banner-image, .cover-image, .logo-image"
