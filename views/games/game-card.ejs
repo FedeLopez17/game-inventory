@@ -1,5 +1,48 @@
+<% function formatRating(num){ %>
+<% const rounded = Math.round(num * 10) / 10; %>
+<% return Number.isInteger(rounded) ? rounded : rounded.toFixed(1); %>
+<% } %>
+
 <a class="card-anchor" href="/games/<%= game.videogame_id %>">
   <article class="card">
+    <section class="ratings">
+      <% if(game.metacritic_rating) { %>
+        <section class="rating-wrapper">
+          <img
+          src="/assets/images/ratings/metacritic.png"
+          alt="Metacritic Rating"
+          title="Metacritic Rating"
+          class="metacritic rating"
+          />
+          <span><%= Math.floor(game.metacritic_rating) %></span>
+        </section>
+      <% } %>
+
+      <% if(game.opencritic_rating) { %>
+        <section class="rating-wrapper">
+          <img
+          src="/assets/images/ratings/opencritic.png"
+          alt="Opencritic Rating"
+          title="Opencritic Rating"
+          class="opencritic rating"
+          />
+          <span><%= Math.floor(game.opencritic_rating) %></span>
+        </section>
+      <% } %>
+
+      <% if(game.ign_rating) { %>
+        <section class="rating-wrapper">
+          <img
+          src="/assets/images/ratings/ign.png"
+          alt="ign Rating"
+          title="ign Rating"
+          class="ign rating"
+          />
+          <span><%= formatRating(game.ign_rating) %></span>
+        </section>
+      <% } %>
+    </section>
+
     <section class="cover-wrapper">
       <img
         src="<%= game.cover_image_url %>"
