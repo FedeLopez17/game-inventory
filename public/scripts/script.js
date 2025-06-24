@@ -127,7 +127,7 @@ function updateGame(id) {
   const title = document.querySelector("#title").value;
   const coverInput = document.querySelector("#cover-image");
   const bannerInput = document.querySelector("#banner-image");
-  const deleteBanner = document.querySelector("#delete-banner").checked;
+  const deleteBanner = document.querySelector("#delete-banner")?.checked;
   const releaseDate = document.querySelector("#release-date").value;
   const description = document.querySelector("#description").value;
   const website = document.querySelector("#website").value;

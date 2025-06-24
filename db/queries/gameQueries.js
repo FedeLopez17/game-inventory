@@ -578,10 +578,12 @@ module.exports = {
         }
       }
 
-      if (videos) {
+      const videoUrls = JSON.parse(videos);
+
+      if (videoUrls[0]) {
         await client.query("DELETE FROM videos WHERE videogame_id = $1", [id]);
 
-        for (videoUrl of JSON.parse(videos)) {
+        for (const videoUrl of videoUrls) {
           await client.query(
             "INSERT INTO videos (videogame_id, video_url) VALUES ($1, $2)",
             [id, videoUrl]
