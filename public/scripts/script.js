@@ -1047,3 +1047,9 @@ const toggleOptionsSection = (genreId) => {
 
   if (optionWasHidden) optionsSection.classList.remove("hidden");
 };
+
+const toggleSidebar = () => {
+  const sidebar = document.querySelector(".outer-container aside");
+  sidebar.classList.toggle("expanded");
+  document.body.classList.toggle("expanded-sidebar");
+};

@@ -165,6 +165,53 @@ a.card-anchor:hover {
   text-decoration: none;
 }
 
+.sidebar-toggle {
+  display: none;
+}
+
+@media (max-width: 650px) {
+  .sidebar-toggle {
+    display: block;
+    position: absolute;
+    width: 24px;
+    top: 0;
+    right: -24px;
+    z-index: 1;
+    cursor: pointer;
+  }
+
+  aside.expanded .sidebar-toggle {
+    right: 0;
+  }
+
+  aside:not(.expanded) img.collapse {
+    display: none;
+  }
+
+  aside.expanded img.expand {
+    display: none;
+  }
+
+  .outer-container aside {
+    background-color: red;
+    width: 0;
+    position: relative;
+    transition: width 0.1s;
+  }
+
+  .outer-container aside.expanded {
+    background-color: red;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 10;
+  }
+
+  body.expanded-sidebar {
+    overflow: hidden;
+  }
+}
+
 .outer-container main {
   position: relative;
 }
