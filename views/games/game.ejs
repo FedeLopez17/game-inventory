@@ -51,11 +51,11 @@
       <p>Added At: <%= game.added_at %></p>
 
       <% if (game.metacritic_rating !== null) { %>
-      <p>Metacritic Rating: <%= game.metacritic_rating %></p>
+      <p>Metacritic Rating: <%= Math.floor(game.metacritic_rating) %></p>
       <% } %>
     
       <% if (game.opencritic_rating !== null) { %>
-      <p>OpenCritic Rating: <%= game.opencritic_rating %></p>
+      <p>OpenCritic Rating: <%= Math.floor(game.opencritic_rating) %></p>
       <% } %>
       
       <% if (game.ign_rating !== null) { %>
@@ -108,6 +108,8 @@
         <% }); %>
       </ul>
     </article>
+
+    <%= JSON.stringify(game) %>
 
     <%- include("../partials/delete-modal") %>
   </body>

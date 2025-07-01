@@ -154,7 +154,7 @@
           max="100"
           step="1"
           placeholder="OpenCritic Score"
-          value="<%= formData.opencritic_rating || '' %>"
+          value="<%= formData.opencritic_rating && Math.floor(formData.opencritic_rating) || '' %>"
           onInput="removeWarning('opencritic')"
         />
         <<%- include("../partials/error", { fieldName: 'opencritic', visible: true }) %>
@@ -168,7 +168,7 @@
           max="100"
           step="1"
           placeholder="Metacritic Score"
-          value="<%= formData.metacritic_rating || '' %>"
+          value="<%= formData.metacritic_rating && Math.floor(formData.metacritic_rating) || '' %>"
           onInput="removeWarning('metacritic')"
         />
         <%- include("../partials/error", { fieldName: 'metacritic', visible: true }) %>
