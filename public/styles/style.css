@@ -1,3 +1,10 @@
+:root {
+  --header-height: 70px;
+  --dark-theme-100: #10151a;
+  --dark-theme-200: #36404b;
+  --dark-theme-text-100: #ffffff;
+}
+
 * {
   margin: 0;
 }
@@ -7,6 +14,8 @@ body {
   flex-direction: column;
   min-height: 100vh;
   position: relative;
+  background-color: var(--dark-theme-100);
+  color: var(--dark-theme-text-100);
 }
 
 /* Toggleable Forms */
@@ -25,13 +34,13 @@ body {
 /* Header */
 
 body > header {
-  background-color: grey;
   display: flex;
   align-items: center;
   gap: 12px;
   box-sizing: border-box;
   padding: 0 12px;
-  height: 48px;
+  height: var(--header-height);
+  border-bottom: 1px solid var(--dark-theme-200);
 }
 
 body > header > .add-button {
@@ -46,6 +55,15 @@ body > header img {
   width: 1rem;
 }
 
+body > header a,
+body > header a.link,
+body > header a.hover,
+body > header a.link,
+body > header a.visited {
+  text-decoration: none;
+  color: var(--dark-theme-text-100);
+}
+
 body > header a.active {
   background-color: red;
 }
@@ -58,6 +76,8 @@ body > header a.active {
   justify-content: center;
   justify-items: center;
   gap: 12px;
+  box-sizing: border-box;
+  padding: 10px;
 }
 
 .card {
@@ -148,11 +168,12 @@ a.card-anchor:hover {
 /* Games Page Layout */
 .outer-container {
   display: flex;
-  min-height: calc(100vh - 48px);
+  min-height: calc(100vh - var(--header-height));
 }
 
 .outer-container aside {
-  background-color: rgb(88, 88, 224);
+  border-right: 1px solid var(--dark-theme-200);
+  padding-right: 10px;
 }
 
 .outer-container aside h3,
@@ -163,6 +184,13 @@ a.card-anchor:hover {
 .outer-container aside a:hover {
   color: white;
   text-decoration: none;
+}
+
+.sort-by-outer-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 349px);
+  justify-content: center;
+  padding: 0 10px;
 }
 
 .sidebar-toggle {
@@ -197,6 +225,7 @@ a.card-anchor:hover {
     width: 0;
     position: relative;
     transition: width 0.1s;
+    padding: 0;
   }
 
   .outer-container aside.expanded {
@@ -217,7 +246,6 @@ a.card-anchor:hover {
 }
 
 .outer-container main {
-  background-color: blue;
   flex: 1;
 }
 
@@ -432,11 +460,56 @@ a.card-anchor:hover {
   cursor: pointer;
 }
 
-.gallery {
+.gallery-wrapper {
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  gap: 6px;
+  width: min(800px, 95%);
+  margin: 0 auto;
+}
+
+.selected-image-container {
+  width: 100%;
+  height: 500px;
+  display: flex;
+  justify-content: center;
   align-items: center;
+  background-color: black;
+}
+
+.selected-image-container > * {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.gallery-previews {
+  display: flex;
+  gap: 4px;
   overflow: auto;
+  height: 115px;
+}
+
+.preview-wrapper {
+  position: relative;
+  display: flex;
+}
+
+.preview-wrapper .video-icon {
+  position: absolute;
+  width: 30%;
+  top: 35%;
+  left: 35%;
+  pointer-events: none;
+}
+
+.gallery-preview {
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.gallery-preview.selected {
+  border-color: white;
 }
 
 .gallery-max-warning {
@@ -529,4 +602,25 @@ a.card-anchor:hover {
 .delete-modal .password-warning,
 .delete-modal .wrong-password-warning {
   color: red;
+}
+
+/* Scrollbar */
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

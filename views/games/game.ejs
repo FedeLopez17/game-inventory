@@ -1,3 +1,6 @@
+<% const getThumbnail = url => `https://img.youtube.com/vi/${url.match(/embed\/([a-zA-Z0-9_-]{11})/)[1]}/hqdefault.jpg`; %>
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -22,15 +25,29 @@
       <button type="button" onClick="showDeleteModal('game', <%= game.videogame_id %>, '/games/delete', '/games')">Delete</button>
       <a href="/games/update/<%= game.videogame_id %>">Update</a>
 
-      <% if(game.images.length) { %>
-        <section class="gallery">
-          <% game.videos.forEach(videoUrl =>  { %>
-            <iframe src="<%= videoUrl %>" id="<%= videoUrl %>" type="text/html" width="400" height="225" frameborder="0" allowfullscreen></iframe>
+      <% if(game.images.length || game.videos.length) { %>
+        <section class="gallery-wrapper">
+          <section class="selected-image-container">
+            <% if(game.videos.length) { %>
+              <iframe src="<%= game.videos[0] %>" type="text/html" frameborder="0" allowfullscreen></iframe>
+            <% } else { %>
+              <img src="<%= game.images[0] %>" alt="<%= game.title %> image"/>
+            <% } %>
+          </section>
+
+          <section class="gallery-previews">
+          <% game.videos.forEach((videoUrl, index) =>  { %>
+            <section class="preview-wrapper">
+              <img src="<%= getThumbnail(videoUrl) %>" class="gallery-preview <%= index === 0 ? 'selected' : '' %>" alt="<%= game.title %> video" onClick="showSelected(event, '<%= videoUrl %>', true)"  />
+              <img src="/assets/images/icons/video.png" alt="video icon" class="video-icon">
+            </section>
           <% })%>
 
-          <% game.images.forEach(imageUrl =>  { %>
-            <img src="<%= imageUrl %>" alt="<%= game.title %> image" />
+          <% game.images.forEach((imageUrl, index) =>  { %>
+            <img src="<%= imageUrl %>" alt="<%= game.title %> image" class="gallery-preview <%= (index === 0 && game.videos.length === 0) ? 'selected' : '' %>" onClick="showSelected(event, '<%= imageUrl %>')" />
           <% })%>
+        </section>
+
         </section>
       <% } %>
 
@@ -109,7 +126,6 @@
       </ul>
     </article>
 
-    <%= JSON.stringify(game) %>
 
     <%- include("../partials/delete-modal") %>
   </body>

@@ -1053,3 +1053,35 @@ const toggleSidebar = () => {
   sidebar.classList.toggle("expanded");
   document.body.classList.toggle("expanded-sidebar");
 };
+
+const showSelected = (event, url, isVideo) => {
+  const container = document.querySelector(".selected-image-container");
+  if (!container) return;
+
+  if (event) {
+    const previousSelection = document.querySelector(
+      ".gallery-preview.selected"
+    );
+    if (previousSelection) previousSelection.classList.remove("selected");
+    event.target.classList.add("selected");
+  }
+
+  container.innerHTML = "";
+
+  if (isVideo) {
+    const iframe = document.createElement("iframe");
+    iframe.id = url;
+    iframe.type = "text/html";
+    iframe.width = "400";
+    iframe.height = "225";
+    iframe.setAttribute("allowfullscreen", "true");
+    iframe.src = url;
+
+    container.appendChild(iframe);
+    return;
+  }
+
+  const image = document.createElement("img");
+  image.src = url;
+  container.appendChild(image);
+};
